@@ -1,0 +1,277 @@
+<script src="/public/js/import.js?v=4"></script>
+
+<form id="importForm">
+
+<div class="row">
+
+   <div class="col-md-2 col-sm-2">
+
+        <br><br>
+
+	{section name=selectedIndex loop=$rules}
+	<a href='#' onclick='loadImportSettings( "{$rules[selectedIndex]['rule_file_name']}" );'>
+		{$rules[selectedIndex]['rule_name']}<br>
+	</a>
+	{/section}
+   </div>
+
+   <div class="col-md-10 col-sm-10">
+      <div class="row">
+         <div class="col-md-12 col-sm-12">
+
+
+<div class="row">
+
+   <div class="col-md-6 col-sm-6">
+      <div class="row">
+         <div class="col-md-12 col-sm-12">
+
+         <br><br>
+
+         <table class="table table-sm">
+            <thead>
+               <tr>
+                  <th scope="col">Source settings:</th>
+                  <th scope="col">Value</th>
+                  <th scope="col">Actions</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr>
+                  <td>Source type:</td>
+                  <td>  
+                     <select class="source-settings form-control form-control-sm" id="sourceType" onchange="updateSourceSettings();">
+                        <option value="web">Web Page</option>
+                        <option value="sql">DB table</option>
+                        <option value="csv">CSV file</option>
+                        <option value="dbf">DBF file</option>
+                     </select>
+                  </td>
+                  <td>
+                     <button type="button" class="btn btn-primary btn-sm" onclick="srcTestConnection();">Test</button>
+                  </td>
+               </tr>
+               <tr class="source-settings-line source-settings-web-line">
+                  <td>Web page URL:</td>
+                  <td>  
+                     <input type="text" class="source-settings source-settings-web form-control form-control-sm" id="sourceUrl" placeholder="www.example.com" value="https://greg-butcher.livejournal.com/122967.html">
+                  </td>
+                  <td></td>
+               </tr>
+               <tr class="source-settings-line source-settings-sql-line">
+                  <td>Host</td>
+                  <td>  
+                     <input type="text" class="source-settings source-settings-sql form-control form-control-sm" id="sourceHost" placeholder="localhost" value="localhost">
+                  </td>
+                  <td></td>
+               </tr>
+               <tr class="source-settings-line source-settings-sql-line">
+                  <td>User</td>
+                  <td>  
+                     <input type="text" class="source-settings source-settings-sql form-control form-control-sm" id="sourceUser" placeholder="root" value="recipe">
+                  </td>
+                  <td></td>
+               </tr>
+               <tr class="source-settings-line source-settings-sql-line">
+                  <td>Pass</td>
+                  <td>  
+                     <input type="text" class="source-settings source-settings-sql form-control form-control-sm" id="sourcePass" placeholder="" value="g9NacKpPidGqCSq4">
+                  </td>
+                  <td></td>
+               </tr>
+               <tr class="source-settings-line source-settings-sql-line">
+                  <td>Encoding</td>
+                  <td>  
+                     <input type="text" class="source-settings source-settings-sql form-control form-control-sm" id="sourceEncoding" placeholder="" value="utf-8">
+                  </td>
+                  <td></td>
+               </tr>
+               <tr class="source-settings-line source-settings-sql-line">
+                  <td>DB</td>
+                  <td>  
+                     <input type="text" class="source-settings source-settings-sql form-control form-control-sm" id="sourceDB" placeholder="" value="">
+                  </td>
+                  <td></td>
+               </tr>
+               <tr class="source-settings-line source-settings-sql-line">
+                  <td>Table</td>
+                  <td>  
+                     <select class="source-settings source-settings-sql form-control form-control-sm" id="sourceTable" onchange="loadSourceTable();"></select>
+                  </td>
+                  <td></td>
+               </tr>
+            </tbody>
+         </table>
+         
+         </div>
+      </div>
+   </div>
+
+
+   <div class="col-md-6 col-sm-6">
+      <div class="row">
+         <div class="col-md-12 col-sm-12">
+
+         <br><br>
+
+         <table class="table table-sm">
+            <thead>
+               <tr>
+                  <th scope="col">Destination settings:</th>
+                  <th scope="col">value</th>
+                  <th scope="col">Actions</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr>
+                  <td>Source type:</td>
+                  <td>  
+                     <select class="destination-settings form-control form-control-sm" id="destinationType" onchange="updateDestinationSettings();">
+                        <option value="sql">DB table</option>
+                        <option value="web">Web Page</option>
+                        <option value="csv">CSV file</option>
+                        <option value="dbf">DBF file</option>
+                     </select>
+
+                  </td>
+                  <td>
+                     <button type="button" class="btn btn-primary btn-sm" onclick="dstTestConnection();">Test</button>
+                  </td>
+               </tr>
+               <tr class="destination-settings-line destination-settings-web-line">
+                  <td>Web page URL:</td>
+                  <td>  
+                     <input type="text" class="destination-settings destination-settings-web form-control form-control-sm" id="destinationUrl" placeholder="www.example.com" value="">
+                  </td>
+                  <td></td>
+               </tr>
+               <tr class="destination-settings-line destination-settings-sql-line">
+                  <td>Host</td>
+                  <td>  
+                     <input type="text" class="destination-settings destination-settings-sql form-control form-control-sm" id="destinationHost" placeholder="localhost" value="localhost">
+                  </td>
+                  <td></td>
+               </tr>
+               <tr class="destination-settings-line destination-settings-sql-line">
+                  <td>User</td>
+                  <td>  
+                     <input type="text" class="destination-settings destination-settings-sql form-control form-control-sm" id="destinationUser" placeholder="root" value="recipe">
+                  </td>
+                  <td></td>
+               </tr>
+               <tr class="destination-settings-line destination-settings-sql-line">
+                  <td>Pass</td>
+                  <td>  
+                     <input type="text" class="destination-settings destination-settings-sql form-control form-control-sm" id="destinationPass" placeholder="" value="g9NacKpPidGqCSq4">
+                  </td>
+                  <td></td>
+               </tr>
+               <tr class="destination-settings-line destination-settings-sql-line">
+                  <td>Encoding</td>
+                  <td>  
+                     <input type="text" class="destination-settings destination-settings-sql form-control form-control-sm" id="destinationEncoding" placeholder="" value="utf-8">
+                  </td>
+                  <td></td>
+               </tr>
+               <tr class="destination-settings-line destination-settings-sql-line">
+                  <td>DB</td>
+                  <td>  
+                     <input type="text" class="destination-settings destination-settings-sql form-control form-control-sm" id="destinationDB" placeholder="" value="recipe">
+                  </td>
+                  <td></td>
+               </tr>
+               <tr class="destination-settings-line destination-settings-sql-line">
+                  <td>Table</td>
+                  <td>  
+                     <select class="destination-settings destination-settings-sql form-control form-control-sm" id="destinationTable" onchange="loadDestinationTable();"></select>
+                  </td>
+                  <td></td>
+               </tr>
+            </tbody>
+         </table>
+
+
+
+         </div>
+      </div>
+   </div>
+
+</div>
+<div class="row">
+
+   <div class="col-md-12 col-sm-12">
+
+      <table class="table table-sm" id="importTableGeneral">
+           <thead>
+            <tr>
+               <th style="width: 25.00%" scope="col">Field Name:</th>
+               <th style="width: 75.00%" scope="col">Value</th>
+            </tr>
+           </thead>
+           <tbody>
+            <tr>
+               <td>Title:</td>
+               <td><input type="text" class="general-settings form-control form-control-sm" id="ruleTitle" placeholder="" value="Greg Butcher Update"></td>
+            </tr>
+            <tr>
+               <td>Condition:</td>
+               <td><textarea onmouseup="openModalEditor('ruleCondition');" cols="100" rows="2" class="rule general-settings form-control form-control-sm" id="ruleCondition"></textarea></td>
+            </tr>
+            <tr>
+               <td>After Rule:</td>
+               <td><textarea onmouseup="openModalEditor('ruleAfter');" cols="100" rows="2" class="rule general-settings form-control form-control-sm" id="ruleAfter"></textarea></td>
+            </tr>
+           </tbody>
+      </table>
+
+
+	
+
+   </div>
+
+</div>
+<div class="row">
+
+   <div class="col-md-12 col-sm-12">
+
+      <br><br>
+
+      <table class="table table-sm" id="importTableRule">
+           <thead>
+            <tr>
+               <th style="width: 12.50%" scope="col">Field Name:</th>
+               <th style="width: 12.50%" scope="col">Type</th>
+               <th style="width: 12.50%" scope="col">Key</th>
+               <th style="width: 62.50%" scope="col">Code</th>
+            </tr>
+           </thead>
+           <tbody>
+           </tbody>
+      </table>
+
+   </div>
+
+</div>   
+<div class="row">
+
+   <div class="col-md-12 col-sm-12">
+
+      <div class="btn-group" role="group" aria-label="">
+           <button type="button" class="btn btn-light" onclick="saveImportSettings();">Save Import settings</button>
+           <button type="button" class="btn btn-light" onclick="startImport();">Start import</button>
+      </div>
+
+   </div>
+
+</div>
+
+	
+         </div>
+      </div>
+   </div>
+
+</div>
+
+
+
+</form>

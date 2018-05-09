@@ -1,0 +1,22 @@
+{
+    "name": "recipe",
+    "type": "project",
+    "description": "A recipe manager",
+    "keywords": ["recipe"],
+    "homepage": "https://github.com/mikhail-leonov/recipe",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "mikhail-leonov",
+            "homepage": "",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/mikhail-leonov/recipe/issues",
+        "source": "https://github.com/mikhail-leonov/recipe"
+    },
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
