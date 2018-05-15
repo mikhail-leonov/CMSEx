@@ -1,14 +1,13 @@
 <?php
-
 /**
- * Abstract controller
+ * Include section
  */
-require_once( CONTROLLER . 'abstract.controller.php' );
-require_once( FACTORY . 'model.factory.php' );
-require_once( FACTORY . 'view.factory.php' );
+require_once(CONTROLLER . 'abstract.controller.php');
+require_once(FACTORY . 'model.factory.php');
+require_once(FACTORY . 'view.factory.php');
 
 /**
- * Class Home
+ * Class Home Controller
  *
  * Please note:
  * Don't use the same name for class and method, as this might trigger an (unintended) __construct of the class.
@@ -18,42 +17,47 @@ require_once( FACTORY . 'view.factory.php' );
 class HomeController extends AbstractController
 {
     /**
-     * Whenever a controller is created, we set it's name
+     * Constructor 
+     * 
+     * @return void
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
     /**
-     * Implementation AbstractController setControllerName function
+     * Implementation AbstractController setControllerName function - Whenever a controller is created, we set it's name
+     * 
+     * @return void
      */
-    function setControllerName()
+    public function setControllerName()
     {
-	$this->name = "home";
+        $this->name = "home";
     }
 
     /**
      * PAGE: index
      * This method handles what happens when you move to http://yourproject/home/index (which is the default page btw)
+     * 
+     * @var array $params parameters 
+     * 
+     * @return string
      */
-    public function index( $params )
+    public function index($params)
     {
-	$pageView     = ViewFactory::build("page.page");
+        $pageView     = ViewFactory::build("page.page");
 
-	$leftmenuView = ViewFactory::build("left_menu.part");
-	$tagModel = ModelFactory::build("tag");
-	$leftmenuView->assign("tags", $tagModel->getTags() );
-	$pageView->assign("left_menu", $leftmenuView->fetch() );
+        $leftmenuView = ViewFactory::build("left_menu.part");
+        $tagModel = ModelFactory::build("tag");
+        $leftmenuView->assign("tags", $tagModel->getTags());
+        $pageView->assign("left_menu", $leftmenuView->fetch());
 
-	$entryView = ViewFactory::build("entry.part");
-	$recipeModel = ModelFactory::build("recipe");
-	$recipiesView   = ViewFactory::build("recipies.part");
-	$recipiesView->assign("entries", $recipeModel->getRecipies() );
+        $recipeModel = ModelFactory::build("recipe");
+        $recipiesView   = ViewFactory::build("recipies.part");
+        $recipiesView->assign("entries", $recipeModel->getRecipies());
 
-	$pageView->assign("content", $recipiesView->fetch() );
+        $pageView->assign("content", $recipiesView->fetch());
 
-        // Display Page
-	$pageView->display();
+        $pageView->display();
     }
-
 }

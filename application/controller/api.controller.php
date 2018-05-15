@@ -1,10 +1,9 @@
 <?php
-
 /**
- * Abstract controller
+ * Include section
  */
-require_once( CONTROLLER . 'abstract.controller.php' );
-require_once( FACTORY . 'model.factory.php ' );
+require_once(CONTROLLER . 'abstract.controller.php');
+require_once(FACTORY . 'model.factory.php ');
 
 /**
  * Class Api Controller
@@ -17,46 +16,60 @@ require_once( FACTORY . 'model.factory.php ' );
 class ApiController extends AbstractController
 {
     /**
-     * Whenever a controller is created, we set it's name
+     * Constructor 
+     * 
+     * @return void
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
+
     /**
-     * Implementation AbstractController setControllerName function
+     * Implementation AbstractController setControllerName function - Whenever a controller is created, we set it's name
+     * 
+     * @return void
      */
-    function setControllerName()
+    public function setControllerName()
     {
-	$this->name = "api";
+        $this->name = "api";
     }
+
     /**
      * PAGE: api/index
      * This method handles what happens when you move to http://yourproject/api/index
      */
-    public function index( $params )
+    public function index($params)
     {
-	header('Location: /');
+        header('Location: /');
     }
+
     /**
      * PAGE: api/select_tag
      * This method handles what happens when you move to http://yourproject/api/select_tag
+     * 
+     * @var array $params parameters 
+     * 
+     * @return void
      */
-    public function select_tag( $params )
+    public function select_tag($params)
     {
-	$apiModel = ModelFactory::build("api");
-	$apiModel->select_tag();
-	header('Location: /');
+        $apiModel = ModelFactory::build("api");
+        $apiModel->select_tag();
+        header('Location: /');
     }
     /**
      * PAGE: api/unselect_tag
      * This method handles what happens when you move to http://yourproject/api/unselect_tag
+     * 
+     * @var array $params parameters 
+     * 
+     * @return void
      */
-    public function unselect_tag( $params )
+    public function unselect_tag($params)
     {
-	$apiModel = ModelFactory::build("api");
-	$apiModel->unselect_tag();
-	header('Location: /');
+        $apiModel = ModelFactory::build("api");
+        $apiModel->unselect_tag();
+        header('Location: /');
     }
-
 }
