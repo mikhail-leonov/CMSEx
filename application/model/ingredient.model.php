@@ -2,10 +2,10 @@
 /**
  * Abstract controller
  */
-require_once( MODEL . 'abstract.model.php' );
+require_once(MODEL . 'abstract.model.php');
 
 /**
- * Model
+ * Ingridient Model
  *
  * Please note:
  * Don't use the same name for class and method, as this might trigger an (unintended) __construct of the class.
@@ -15,19 +15,25 @@ require_once( MODEL . 'abstract.model.php' );
 class IngredientModel extends AbstractModel
 {
     /**
-     * Get all selected/grouped not selected tags from tags Table 
+     * Get list of all ingridients
+     * 
+     * @return array 
      */
-    public function getIngredients()
+    public function getIngredients() : array
     {
-	$result = array();
-	return $result;
+        $result = array();
+        return $result;
     }
     /**
-     * Get all tags for entry 
+     * Get list of entry ingridients by entry_id
+     * 
+     * @var string $entry_id 
+     * 
+     * @return array 
      */
-    public function getEntryIngredients($entry_id)
+    public function getEntryIngredients(string $entry_id) : array
     {
-	$result = array();
-	return $result;
+        $result = array();
+        return $result;
     }
 }

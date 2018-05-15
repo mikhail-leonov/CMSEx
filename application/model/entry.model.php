@@ -2,10 +2,10 @@
 /**
  * Abstract controller
  */
-require_once( MODEL . 'abstract.model.php' );
+require_once(MODEL . 'abstract.model.php');
 
 /**
- * Model
+ * Entry Model
  *
  * Please note:
  * Don't use the same name for class and method, as this might trigger an (unintended) __construct of the class.
@@ -15,29 +15,40 @@ require_once( MODEL . 'abstract.model.php' );
 class EntryModel extends AbstractModel
 {
     /**
-     * Get all selected/grouped niot selected tags from tags Table 
+     * Get all selected/grouped niot selected tags from tags Table
+     * 
+     * @var array $params parameters
+     * 
+     * @return array
      */
-    public function get_content( $params )
+    public function get_content(array $params) : array
     {
-	$result = array();
-	$entry_id = (count($params)> 0) ? $params[0] : 0;
-	if ( intval($entry_id) > 0) {
-		$where = array( "entry_id" => $entry_id );
-		$result = $this->db->select("*")->from("entries")->where($where)->first();
-	}
-	return $result;
+        $result = array();
+        $entry_id = (count($params)> 0) ? $params[0] : 0;
+        if (intval($entry_id) > 0) {
+            $where = array( "entry_id" => $entry_id );
+            $result = $this->db->select("*")->from("entries")->where($where)->first();
+        }
+        return $result;
     }
 
     /**
      * Update Entry in Entries table by entry_id
+     * 
+     * @var string $entry_id
+     * 
+     * @var string $entry_name
+     * 
+     * @var string $entry_text
+     * 
+     * @return int 0|1
      */
-    public function updateEntry($entry_id, $entry_name, $entry_text)
+    public function updateEntry(string $entry_id, string $entry_name, string $entry_text) : int
     {
-	$result = 0;
-	$where = array( "entry_id" => $entry_id );
-	$fields = array("entry_name" => $entry_name, "entry_text" => $entry_text);
-	$result = $this->db->update($fields)->into("entries")->where($where)->exec();
-	return $result;
+        $result = 0;
+        $where = array( "entry_id" => $entry_id );
+        $fields = array("entry_name" => $entry_name, "entry_text" => $entry_text);
+        $result = $this->db->update($fields)->into("entries")->where($where)->exec();
+        return $result;
     }
-
 }

@@ -18,10 +18,10 @@
  *       $array = XML2Array::createArray($xml);
  */
 
-class XML2Array {
-
+class XML2Array
+{
     private static $xml = null;
-	private static $encoding = 'UTF-8';
+    private static $encoding = 'UTF-8';
 
     /**
      * Initialize the root XML node [optional]
@@ -29,10 +29,11 @@ class XML2Array {
      * @param $encoding
      * @param $format_output
      */
-    public static function init($version = '1.0', $encoding = 'UTF-8', $format_output = true) {
+    public static function init($version = '1.0', $encoding = 'UTF-8', $format_output = true)
+    {
         self::$xml = new DOMDocument($version, $encoding);
         self::$xml->formatOutput = $format_output;
-		self::$encoding = $encoding;
+        self::$encoding = $encoding;
     }
 
     /**
@@ -41,20 +42,21 @@ class XML2Array {
      * @param array $arr - aray to be converterd
      * @return DOMDocument
      */
-    public static function &createArray($input_xml) {
+    public static function &createArray($input_xml)
+    {
         $xml = self::getXMLRoot();
-		if(is_string($input_xml)) {
-			$parsed = $xml->loadXML($input_xml);
-			if(!$parsed) {
-				throw new Exception('[XML2Array] Error parsing the XML string.');
-			}
-		} else {
-			if(get_class($input_xml) != 'DOMDocument') {
-				throw new Exception('[XML2Array] The input XML object should be of type: DOMDocument.');
-			}
-			$xml = self::$xml = $input_xml;
-		}
-		$array[$xml->documentElement->tagName] = self::convert($xml->documentElement);
+        if (is_string($input_xml)) {
+            $parsed = $xml->loadXML($input_xml);
+            if (!$parsed) {
+                throw new Exception('[XML2Array] Error parsing the XML string.');
+            }
+        } else {
+            if (get_class($input_xml) != 'DOMDocument') {
+                throw new Exception('[XML2Array] The input XML object should be of type: DOMDocument.');
+            }
+            $xml = self::$xml = $input_xml;
+        }
+        $array[$xml->documentElement->tagName] = self::convert($xml->documentElement);
         self::$xml = null;    // clear the xml node in the class for 2nd time use.
         return $array;
     }
@@ -64,75 +66,77 @@ class XML2Array {
      * @param mixed $node - XML as a string or as an object of DOMDocument
      * @return mixed
      */
-    private static function &convert($node) {
-		$output = array();
+    private static function &convert($node)
+    {
+        $output = array();
 
-		switch ($node->nodeType) {
-			case XML_CDATA_SECTION_NODE:
-				$output['@cdata'] = trim($node->textContent);
-				break;
+        switch ($node->nodeType) {
+            case XML_CDATA_SECTION_NODE:
+                $output['@cdata'] = trim($node->textContent);
+                break;
 
-			case XML_TEXT_NODE:
-				$output = trim($node->textContent);
-				break;
+            case XML_TEXT_NODE:
+                $output = trim($node->textContent);
+                break;
 
-			case XML_ELEMENT_NODE:
+            case XML_ELEMENT_NODE:
 
-				// for each child node, call the covert function recursively
-				for ($i=0, $m=$node->childNodes->length; $i<$m; $i++) {
-					$child = $node->childNodes->item($i);
-					$v = self::convert($child);
-					if(isset($child->tagName)) {
-						$t = $child->tagName;
+                // for each child node, call the covert function recursively
+                for ($i=0, $m=$node->childNodes->length; $i<$m; $i++) {
+                    $child = $node->childNodes->item($i);
+                    $v = self::convert($child);
+                    if (isset($child->tagName)) {
+                        $t = $child->tagName;
 
-						// assume more nodes of same kind are coming
-						if(!isset($output[$t])) {
-							$output[$t] = array();
-						}
-						$output[$t][] = $v;
-					} else {
-						//check if it is not an empty text node
-						if($v !== '') {
-							$output = $v;
-						}
-					}
-				}
+                        // assume more nodes of same kind are coming
+                        if (!isset($output[$t])) {
+                            $output[$t] = array();
+                        }
+                        $output[$t][] = $v;
+                    } else {
+                        //check if it is not an empty text node
+                        if ($v !== '') {
+                            $output = $v;
+                        }
+                    }
+                }
 
-				if(is_array($output)) {
-					// if only one node of its kind, assign it directly instead if array($value);
-					foreach ($output as $t => $v) {
-						if(is_array($v) && count($v)==1) {
-							$output[$t] = $v[0];
-						}
-					}
-					if(empty($output)) {
-						//for empty nodes
-						$output = '';
-					}
-				}
+                if (is_array($output)) {
+                    // if only one node of its kind, assign it directly instead if array($value);
+                    foreach ($output as $t => $v) {
+                        if (is_array($v) && count($v)==1) {
+                            $output[$t] = $v[0];
+                        }
+                    }
+                    if (empty($output)) {
+                        //for empty nodes
+                        $output = '';
+                    }
+                }
 
-				// loop through the attributes and collect them
-				if($node->attributes->length) {
-					$a = array();
-					foreach($node->attributes as $attrName => $attrNode) {
-						$a[$attrName] = (string) $attrNode->value;
-					}
-					// if its an leaf node, store the value in @value instead of directly storing it.
-					if(!is_array($output)) {
-						$output = array('@value' => $output);
-					}
-					$output['@attributes'] = $a;
-				}
-				break;
-		}
-		return $output;
+                // loop through the attributes and collect them
+                if ($node->attributes->length) {
+                    $a = array();
+                    foreach ($node->attributes as $attrName => $attrNode) {
+                        $a[$attrName] = (string) $attrNode->value;
+                    }
+                    // if its an leaf node, store the value in @value instead of directly storing it.
+                    if (!is_array($output)) {
+                        $output = array('@value' => $output);
+                    }
+                    $output['@attributes'] = $a;
+                }
+                break;
+        }
+        return $output;
     }
 
     /*
      * Get the root XML node, if there isn't one, create it.
      */
-    private static function getXMLRoot(){
-        if(empty(self::$xml)) {
+    private static function getXMLRoot()
+    {
+        if (empty(self::$xml)) {
             self::init();
         }
         return self::$xml;
@@ -172,10 +176,10 @@ class XML2Array {
  *       echo $xml->saveXML();
  */
 
-class Array2XML {
-
+class Array2XML
+{
     private static $xml = null;
-	private static $encoding = 'UTF-8';
+    private static $encoding = 'UTF-8';
 
     /**
      * Initialize the root XML node [optional]
@@ -183,10 +187,11 @@ class Array2XML {
      * @param $encoding
      * @param $format_output
      */
-    public static function init($version = '1.0', $encoding = 'UTF-8', $format_output = true) {
+    public static function init($version = '1.0', $encoding = 'UTF-8', $format_output = true)
+    {
         self::$xml = new DomDocument($version, $encoding);
         self::$xml->formatOutput = $format_output;
-		self::$encoding = $encoding;
+        self::$encoding = $encoding;
     }
 
     /**
@@ -195,7 +200,8 @@ class Array2XML {
      * @param array $arr - aray to be converterd
      * @return DomDocument
      */
-    public static function &createXML($node_name, $arr=array()) {
+    public static function &createXML($node_name, $arr=array())
+    {
         $xml = self::getXMLRoot();
         $xml->appendChild(self::convert($node_name, $arr));
 
@@ -209,17 +215,18 @@ class Array2XML {
      * @param array $arr - aray to be converterd
      * @return DOMNode
      */
-    private static function &convert($node_name, $arr=array()) {
+    private static function &convert($node_name, $arr=array())
+    {
 
         //print_arr($node_name);
         $xml = self::getXMLRoot();
         $node = $xml->createElement($node_name);
 
-        if(is_array($arr)){
+        if (is_array($arr)) {
             // get the attributes first.;
-            if(isset($arr['@attributes'])) {
-                foreach($arr['@attributes'] as $key => $value) {
-                    if(!self::isValidTagName($key)) {
+            if (isset($arr['@attributes'])) {
+                foreach ($arr['@attributes'] as $key => $value) {
+                    if (!self::isValidTagName($key)) {
                         throw new Exception('[Array2XML] Illegal character in attribute name. attribute: '.$key.' in node: '.$node_name);
                     }
                     $node->setAttribute($key, self::bool2str($value));
@@ -229,12 +236,12 @@ class Array2XML {
 
             // check if it has a value stored in @value, if yes store the value and return
             // else check if its directly stored as string
-            if(isset($arr['@value'])) {
+            if (isset($arr['@value'])) {
                 $node->appendChild($xml->createTextNode(self::bool2str($arr['@value'])));
                 unset($arr['@value']);    //remove the key from the array once done.
                 //return from recursion, as a note with value cannot have child nodes.
                 return $node;
-            } else if(isset($arr['@cdata'])) {
+            } elseif (isset($arr['@cdata'])) {
                 $node->appendChild($xml->createCDATASection(self::bool2str($arr['@cdata'])));
                 unset($arr['@cdata']);    //remove the key from the array once done.
                 //return from recursion, as a note with cdata cannot have child nodes.
@@ -243,17 +250,17 @@ class Array2XML {
         }
 
         //create subnodes using recursion
-        if(is_array($arr)){
+        if (is_array($arr)) {
             // recurse to get the node for that key
-            foreach($arr as $key=>$value){
-                if(!self::isValidTagName($key)) {
+            foreach ($arr as $key=>$value) {
+                if (!self::isValidTagName($key)) {
                     throw new Exception('[Array2XML] Illegal character in tag name. tag: '.$key.' in node: '.$node_name);
                 }
-                if(is_array($value) && is_numeric(key($value))) {
+                if (is_array($value) && is_numeric(key($value))) {
                     // MORE THAN ONE NODE OF ITS KIND;
                     // if the new array is numeric index, means it is array of nodes of the same kind
                     // it should follow the parent key name
-                    foreach($value as $k=>$v){
+                    foreach ($value as $k=>$v) {
                         $node->appendChild(self::convert($key, $v));
                     }
                 } else {
@@ -266,7 +273,7 @@ class Array2XML {
 
         // after we are done with all the keys in the array (if it is one)
         // we check if it has any text value, if yes, append it.
-        if(!is_array($arr)) {
+        if (!is_array($arr)) {
             $node->appendChild($xml->createTextNode(self::bool2str($arr)));
         }
 
@@ -276,8 +283,9 @@ class Array2XML {
     /*
      * Get the root XML node, if there isn't one, create it.
      */
-    private static function getXMLRoot(){
-        if(empty(self::$xml)) {
+    private static function getXMLRoot()
+    {
+        if (empty(self::$xml)) {
             self::init();
         }
         return self::$xml;
@@ -286,7 +294,8 @@ class Array2XML {
     /*
      * Get string representation of boolean value
      */
-    private static function bool2str($v){
+    private static function bool2str($v)
+    {
         //convert boolean to text value.
         $v = $v === true ? 'true' : $v;
         $v = $v === false ? 'false' : $v;
@@ -297,10 +306,9 @@ class Array2XML {
      * Check if the tag name or attribute name contains illegal characters
      * Ref: http://www.w3.org/TR/xml/#sec-common-syn
      */
-    private static function isValidTagName($tag){
+    private static function isValidTagName($tag)
+    {
         $pattern = '/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i';
         return preg_match($pattern, $tag, $matches) && $matches[0] == $tag;
     }
 }
-
-

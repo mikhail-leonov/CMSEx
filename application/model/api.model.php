@@ -2,11 +2,11 @@
 /**
  * Abstract controller
  */
-require_once( MODEL . 'abstract.model.php' );
-require_once( LIB . 'cookie.class.php ' );
+require_once(MODEL . 'abstract.model.php');
+require_once(LIB . 'cookie.class.php ');
 
 /**
- * Model
+ * API Model
  *
  * Please note:
  * Don't use the same name for class and method, as this might trigger an (unintended) __construct of the class.
@@ -17,23 +17,27 @@ class ApiModel extends AbstractModel
 {
     /**
      * select_tag
+     * 
+     * @return void
      */
     public function select_tag()
     {
-	$tag = Util::GetAttribute( $_GET, 'tag', array() );
-	foreach( $tag as $name => $value ) {
-		Cookie::setCookieFOREVER( "tag[$name]", $value );
-	}
+        $tag = Util::GetAttribute($_GET, 'tag', array());
+        foreach ($tag as $name => $value) {
+            Cookie::setCookieFOREVER("tag[$name]", $value);
+        }
     }
     /**
      * unselect_tag
+     * 
+     * @return void
      */
     public function unselect_tag()
     {
-	$tag = Util::GetAttribute( $_GET, 'tag', array() );
-	foreach( $tag as $name => $value ) {
-		unset( $_COOKIE[ "tag" ][$name] );
-		Cookie::setCookie( "tag[$name]", false, - Cookie::YEAR );
-	}
+        $tag = Util::GetAttribute($_GET, 'tag', array());
+        foreach ($tag as $name => $value) {
+            unset($_COOKIE[ "tag" ][$name]);
+            Cookie::setCookie("tag[$name]", false, - Cookie::YEAR);
+        }
     }
 }

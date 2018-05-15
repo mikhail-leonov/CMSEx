@@ -3,14 +3,20 @@
 /**
  * Require Abstractfactory
  */
-require_once( LIB . 'abstractobject.class.php' );
-
+require_once(LIB . 'abstractobject.class.php');
 
 /**
- * This is the "Abstract Destination data source class". 
+ * This is the "Destination interface".
  */
-abstract class AbstractDestination extends AbstractObject
+interface IDestination
 {
-	public abstract function put($data, $keys, $settings);
+    public function put($data, $keys, $settings);
 }
 
+/**
+ * This is the "Abstract Destination data source class".
+ */
+abstract class AbstractDestination extends AbstractObject implements IDestination
+{
+    abstract public function put($data, $keys, $settings);
+}

@@ -1,15 +1,26 @@
 <?php
-
 /**
  * Include section
  */
-require_once( LIB . 'abstractobject.class.php' );
-require_once( SMARTY . 'Smarty.class.php' );
+require_once(LIB . 'abstractobject.class.php');
+require_once(SMARTY . 'Smarty.class.php');
+
+
+/**
+ * This is the "View interface".
+ */
+interface IView
+{
+    public function __construct(string $name);
+    public function assign(string $name, $value);
+    public function fetch() : string;
+    public function display();
+}
 
 /**
  * This is the "base view class". All other "real" views extend this class.
  */
-abstract class AbstractView extends AbstractObject
+abstract class AbstractView extends AbstractObject implements IView
 {
     /**
      * @var '' Template Name to display
@@ -27,54 +38,63 @@ abstract class AbstractView extends AbstractObject
     protected $smarty = null;
 
     /**
-     * The idea behind is to have ONE View.
+     * Constructor
+     * 
+     * @var array $name View name
+     * 
+     * @return void
      */
-    public function __construct($name)
+    public function __construct(string $name)
     {
-	$this->dir = '';
+        $this->dir = '';
         $this->name = $name;
-	$this->smarty = new Smarty();
-	$this->smarty->setTemplateDir( VIEW );
-        $tmpDir = TEMP . "templates_c/$name"; 
-	if (!file_exists($tmpDir)) {
-	    mkdir($tmpDir); 
-	}
+        $this->smarty = new Smarty();
+        $this->smarty->setTemplateDir(VIEW);
+        $tmpDir = TEMP . "templates_c/$name";
+        if (!file_exists($tmpDir)) {
+            mkdir($tmpDir);
+        }
         $this->smarty->setCompileDir($tmpDir);
-	$this->smarty->force_compile = DEBUG;
-	$this->smarty->debugging = false;
+        $this->smarty->force_compile = DEBUG;
+        $this->smarty->debugging = false;
     }
     
     /**
-     * Assign($name, $value)
+     * Assign parameter to smarty object
+     * 
+     * @var array $name parameter name
+     * 
+     * @var any $value parameter value
+     * 
+     * @return void
      */
-    public function assign($name, $value)
+    public function assign(string $name, $value)
     {
-	$this->smarty->assign($name, $value);
+        $this->smarty->assign($name, $value);
     }
 
     /**
-     * Fetch()
+     * Fetch smarty template as a string
+     * 
+     * @return string
      */
-    public function fetch()
+    public function fetch() : string
     {
-	$result = "";
-	$templateName = VIEW . $this->dir . DS . $this->name . ".view.html";
-        if ( $this->smarty->templateExists( $templateName ) ) {
-       		$result = $this->smarty->fetch( $templateName );
-	}
-	return $result;
+        $result = "";
+        $templateName = VIEW . $this->dir . DS . $this->name . ".view.html";
+        if ($this->smarty->templateExists($templateName)) {
+            $result = $this->smarty->fetch($templateName);
+        }
+        return $result;
     }
 
     /**
-     * Display()
+     * Display smarty template as a string
+     * 
+     * @return void
      */
     public function display()
     {
-	print( $this->fetch() );
+        print($this->fetch());
     }
-
-
- 
-
-
 }
