@@ -17,17 +17,17 @@
         /// <summary>
         /// Day field
         /// </summary>
-    const DAY = 86400; // 24 * 60 * 60;
+        const DAY = 86400; // 24 * 60 * 60;
         
         /// <summary>
         /// Month field
         /// </summary>
-    const MONTH = 2592000; // 30 * self::DAY;
+        const MONTH = 2592000; // 30 * self::DAY;
         
         /// <summary>
         /// Year field
         /// </summary>
-    const YEAR = 31536000 ; // 365 * self::DAY;
+        const YEAR = 31536000 ; // 365 * self::DAY;
         
         /// <summary>
         /// Domain field

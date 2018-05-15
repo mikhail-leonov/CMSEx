@@ -8,7 +8,7 @@ final class DB
 {
     /**
      * Call this method to get DB singleton instance
-      */
+     */
     public static function instance()
     {
         static $instance = false;
@@ -20,32 +20,32 @@ final class DB
     }
     /**
      * Make constructor private, so nobody can call "new Class".
-      */
+     */
     private function __construct()
     {
     }
     /**
-         * Make clone magic method private, so nobody can clone instance.
-      	 */
+     * Make clone magic method private, so nobody can clone instance.
+     */
     private function __clone()
     {
     }
     /**
      * Make sleep magic method private, so nobody can serialize instance.
-      */
+     */
     private function __sleep()
     {
     }
     /**
-         * Make wakeup magic method private, so nobody can unserialize instance.
-      	 */
+     * Make wakeup magic method private, so nobody can unserialize instance.
+     */
     private function __wakeup()
     {
     }
 
     /**
-         * Internal variables
-      	 */
+     * Internal variables
+     */
     private $query;
     private $cache;
     private $sqlQuery;
@@ -61,8 +61,8 @@ final class DB
     private $stmt;
 
     /**
-         * pdo connect to mysql
-      	 */
+     * pdo connect to mysql
+     */
     public function connect($cfg)
     {
         $host = $cfg['host'];

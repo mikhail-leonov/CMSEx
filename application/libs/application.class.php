@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Include section
  */
@@ -21,6 +20,8 @@ class Application
     /**
      * "Start" the application:
      * Analyze the URL elements and calls the according controller/method or the fallback
+     * 
+     * @return void
      */
     public function __construct()
     {
