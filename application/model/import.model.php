@@ -1,6 +1,6 @@
 <?php
 /**
- * Abstract controller
+ * Include section
  */
 require_once(MODEL . 'abstract.model.php');
 require_once(LIB . 'fs.class.php');
