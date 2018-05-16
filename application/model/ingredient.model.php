@@ -16,8 +16,8 @@ class IngredientModel extends AbstractModel
 {
     /**
      * Get list of all ingridients
-     * 
-     * @return array 
+     *
+     * @return array
      */
     public function getIngredients() : array
     {
@@ -26,10 +26,10 @@ class IngredientModel extends AbstractModel
     }
     /**
      * Get list of entry ingridients by entry_id
-     * 
-     * @var string $entry_id 
-     * 
-     * @return array 
+     *
+     * @var string $entry_id
+     *
+     * @return array
      */
     public function getEntryIngredients(string $entry_id) : array
     {

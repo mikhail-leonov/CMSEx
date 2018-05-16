@@ -13,7 +13,7 @@ interface IController
 {
     /**
      * Set Controller name
-     * 
+     *
      * @return void
      */
     public function setControllerName();
@@ -37,8 +37,8 @@ abstract class AbstractController extends AbstractObject implements IController
     public $name = "";
 
     /**
-     * Set Controller name inside constructor with overriden in child class setControllerName function 
-     * 
+     * Set Controller name inside constructor with overriden in child class setControllerName function
+     *
      * @return void
      */
     public function __construct()
@@ -46,8 +46,8 @@ abstract class AbstractController extends AbstractObject implements IController
         $this->setControllerName();
     }
     /**
-     * Set Controller name 
-     * 
+     * Set Controller name
+     *
      * @return void
      */
     abstract public function setControllerName();

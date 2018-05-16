@@ -25,9 +25,9 @@ define('URL', 'http://recipe.localhost.com/');
  * This is the place where you define your database credentials, database type etc.
  */
 $dbcfg = array();
-$dbcfg["host"] = "";
-$dbcfg["user"] = "";
-$dbcfg["pass"] = "";
-$dbcfg["name"] = "";
+$dbcfg["host"] = "localhost";
+$dbcfg["user"] = "recipe";
+$dbcfg["pass"] = "g9NacKpPidGqCSq4";
+$dbcfg["name"] = "recipe";
 $dbcfg["char"] = "utf8";
 $GLOBALS["dbcfg"] = $dbcfg;

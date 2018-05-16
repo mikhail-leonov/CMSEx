@@ -17,8 +17,8 @@ require_once(FACTORY . 'view.factory.php');
 class EntryController extends AbstractController
 {
     /**
-     * Constructor 
-     * 
+     * Constructor
+     *
      * @return void
      */
     public function __construct()
@@ -27,7 +27,7 @@ class EntryController extends AbstractController
     }
     /**
      * Implementation AbstractController setControllerName function - Whenever a controller is created, we set it's name
-     * 
+     *
      * @return void
      */
     public function setControllerName()
@@ -38,9 +38,9 @@ class EntryController extends AbstractController
     /**
      * PAGE: api/index
      * This method handles what happens when you move to http://yourproject/entry/index
-     * 
-     * @var array $params parameters 
-     * 
+     *
+     * @var array $params parameters
+     *
      * @return void
      */
     public function index($params)
@@ -51,9 +51,9 @@ class EntryController extends AbstractController
     /**
      * PAGE: entry/view
      * This method handles what happens when you move to http://yourproject/entry/view/ID
-     * 
-     * @var array $params parameters 
-     * 
+     *
+     * @var array $params parameters
+     *
      * @return string
      */
     public function view($params)
@@ -62,18 +62,23 @@ class EntryController extends AbstractController
 
         $pageView     = ViewFactory::build("page.page");
 
-        $leftmenuView = ViewFactory::build("left_menu.part");
+        $entryModel = ModelFactory::build("entry");
+        $entry = $entryModel->get_content($params);
+
+        $leftmenuView = ViewFactory::build("left_menu_ex.part");
         $tagModel = ModelFactory::build("tag");
         $leftmenuView->assign("tags", $tagModel->getTags());
+        $leftmenuView->assign("entry", $entry);
         $pageView->assign("left_menu", $leftmenuView->fetch());
 
         $entryviewView = ViewFactory::build("entry_view.part");
+
+        $groups = $tagModel->getGroups();
+        $entryviewView->assign("groups", $groups);
     
         $entry_tags = $tagModel->getEntryTags($entry_id);
         $entryviewView->assign("entry_tags", $entry_tags);
 
-        $entryModel = ModelFactory::build("entry");
-        $entry = $entryModel->get_content($params);
         $entryviewView->assign("entry", $entry);
 
         $ingredientModel = ModelFactory::build("ingredient");
@@ -88,9 +93,9 @@ class EntryController extends AbstractController
     /**
      * PAGE: entry/print
      * This method handles what happens when you move to http://yourproject/entry/print/ID
-     * 
-     * @var array $params parameters 
-     * 
+     *
+     * @var array $params parameters
+     *
      * @return string
      */
     public function print($params)
@@ -120,9 +125,9 @@ class EntryController extends AbstractController
     /**
      * PAGE: entry/edit
      * This method handles what happens when you move to http://yourproject/entry/edit/ID
-     * 
-     * @var array $params parameters 
-     * 
+     *
+     * @var array $params parameters
+     *
      * @return string
      */
     public function edit($params)
@@ -131,9 +136,14 @@ class EntryController extends AbstractController
 
         $pageView     = ViewFactory::build("edit.page");
 
-        $leftmenuView = ViewFactory::build("left_menu.part");
+        $entryModel = ModelFactory::build("entry");
+        $entry = $entryModel->get_content($params);
+
+        $leftmenuView = ViewFactory::build("left_menu_ex.part");
         $tagModel = ModelFactory::build("tag");
         $leftmenuView->assign("tags", $tagModel->getTags());
+        $leftmenuView->assign("entry", $entry);
+
         $pageView->assign("left_menu", $leftmenuView->fetch());
 
         $entryviewView = ViewFactory::build("entry_edit.part");
@@ -141,8 +151,6 @@ class EntryController extends AbstractController
         $entry_tags = $tagModel->getEntryTags($entry_id);
         $entryviewView->assign("entry_tags", $entry_tags);
 
-        $entryModel = ModelFactory::build("entry");
-        $entry = $entryModel->get_content($params);
         $entryviewView->assign("entry", $entry);
 
         $ingredientModel = ModelFactory::build("ingredient");
@@ -157,9 +165,9 @@ class EntryController extends AbstractController
     /**
      * PAGE: entry/save
      * This method handles what happens when you move to http://yourproject/entry/save/ID
-     * 
-     * @var array $params parameters 
-     * 
+     *
+     * @var array $params parameters
+     *
      * @return string
      */
     public function save($params)
@@ -181,9 +189,9 @@ class EntryController extends AbstractController
     /**
      * PAGE: entry/edittag
      * This method handles what happens when you move to http://yourproject/entry/edittags/ID
-     * 
-     * @var array $params parameters 
-     * 
+     *
+     * @var array $params parameters
+     *
      * @return string
      */
     public function edittags($params)

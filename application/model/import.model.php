@@ -19,7 +19,7 @@ class ImportModel extends AbstractModel
 {
     /**
      * Get all rules stored in RULES dir
-     * 
+     *
      * @return array rules as array
      */
     public function getRules() : array
@@ -38,9 +38,9 @@ class ImportModel extends AbstractModel
     
     /**
      * Save rule as xml file
-     * 
+     *
      * @var string $rule_file_name  Rule file name to save
-     * 
+     *
      * @return void
      */
     public function save(string $rule_file_name)
@@ -67,9 +67,9 @@ class ImportModel extends AbstractModel
     
     /**
      * Load rule xml file
-     * 
+     *
      * @var string $rule_file_name  Rule file name to save
-     * 
+     *
      * @return array Rule fields as array
      */
     public function load(string $rule_file_name) : array
@@ -80,9 +80,9 @@ class ImportModel extends AbstractModel
     
     /**
      * Load rule xml file
-     * 
+     *
      * @var string $rule_file_name  Rule file name to start executing
-     * 
+     *
      * @return void
      */
     public function start(string $rule_file_name)
@@ -102,17 +102,17 @@ class ImportModel extends AbstractModel
 
     /**
      * Run data query/process/save operation
-     * 
+     *
      * @var array $src Source data
-     * 
+     *
      * @var array $dst Destination data
-     * 
+     *
      * @var array $key Key data for table destination
-     * 
+     *
      * @var array $settings settings
-     * 
+     *
      * @var array $rule rule to execute
-     * 
+     *
      * @return void
      */
     public function run($src, $dst, $keys, $settings, $rule)
@@ -142,12 +142,12 @@ class ImportModel extends AbstractModel
     
     /**
      * proccess data according to a rule
-     * 
+     *
      * @var array $src Source data
-     * 
+     *
      * @var array $dst Destination data
-     * 
-     * @return array 
+     *
+     * @return array
      */
     public function buildEnv($src, $dst) : array
     {
@@ -163,14 +163,14 @@ class ImportModel extends AbstractModel
 
     /**
      * proccess data according to a rule
-     * 
+     *
      * @var array $env Environment data
-     * 
+     *
      * @var array $data Data from source
-     * 
+     *
      * @var array $rule Rule to execute
-     * 
-     * @return array 
+     *
+     * @return array
      */
     public function proccess($env, $data, $rule) : array
     {
@@ -183,13 +183,13 @@ class ImportModel extends AbstractModel
 
     /**
      * proccess data according to a rule line
-     * 
+     *
      * @var array $env Environment data
-     * 
+     *
      * @var array $data Data from source
-     * 
+     *
      * @var array $item Rule field to execute
-     * 
+     *
      * @return string
      */
     public function proccessItem($env, $data, $item) : string
@@ -204,7 +204,7 @@ class ImportModel extends AbstractModel
 
     /**
      * Test connection rule settings
-     * 
+     *
      * @return int 0|1
      */
     public function test() : int
@@ -232,7 +232,7 @@ class ImportModel extends AbstractModel
 
     /**
      * Get Table metadata settings
-     * 
+     *
      * @return array Table metadata settings as array
      */
     public function table() : array
@@ -248,8 +248,8 @@ class ImportModel extends AbstractModel
 
     /**
      * Get Table list for DB connection settings
-     * 
-     * @return array Tables in DB as array 
+     *
+     * @return array Tables in DB as array
      */
     public function tablelist() : array
     {
@@ -264,7 +264,7 @@ class ImportModel extends AbstractModel
 
     /**
      * Get Table list for DB connection settings
-     * 
+     *
      * @return array DB connection settings as array
      */
     public function getCFG($arr) : array
@@ -276,6 +276,6 @@ class ImportModel extends AbstractModel
             'name'  => Util::GetAttribute($arr, 'name', ""),
             'code'  => Util::GetAttribute($arr, 'code', ""),
             'table' => Util::GetAttribute($arr, 'table', "")
-    ];
+    	];
     }
 }

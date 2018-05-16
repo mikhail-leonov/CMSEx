@@ -16,9 +16,9 @@ class EntryModel extends AbstractModel
 {
     /**
      * Get all selected/grouped niot selected tags from tags Table
-     * 
+     *
      * @var array $params parameters
-     * 
+     *
      * @return array
      */
     public function get_content(array $params) : array
@@ -34,13 +34,13 @@ class EntryModel extends AbstractModel
 
     /**
      * Update Entry in Entries table by entry_id
-     * 
+     *
      * @var string $entry_id
-     * 
+     *
      * @var string $entry_name
-     * 
+     *
      * @var string $entry_text
-     * 
+     *
      * @return int 0|1
      */
     public function updateEntry(string $entry_id, string $entry_name, string $entry_text) : int

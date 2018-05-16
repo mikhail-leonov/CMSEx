@@ -16,8 +16,8 @@ require_once(FACTORY . 'model.factory.php ');
 class ApiController extends AbstractController
 {
     /**
-     * Constructor 
-     * 
+     * Constructor
+     *
      * @return void
      */
     public function __construct()
@@ -27,7 +27,7 @@ class ApiController extends AbstractController
 
     /**
      * Implementation AbstractController setControllerName function - Whenever a controller is created, we set it's name
-     * 
+     *
      * @return void
      */
     public function setControllerName()
@@ -47,9 +47,9 @@ class ApiController extends AbstractController
     /**
      * PAGE: api/select_tag
      * This method handles what happens when you move to http://yourproject/api/select_tag
-     * 
-     * @var array $params parameters 
-     * 
+     *
+     * @var array $params parameters
+     *
      * @return void
      */
     public function select_tag($params)
@@ -58,12 +58,13 @@ class ApiController extends AbstractController
         $apiModel->select_tag();
         header('Location: /');
     }
+
     /**
      * PAGE: api/unselect_tag
      * This method handles what happens when you move to http://yourproject/api/unselect_tag
-     * 
-     * @var array $params parameters 
-     * 
+     *
+     * @var array $params parameters
+     *
      * @return void
      */
     public function unselect_tag($params)
@@ -71,5 +72,51 @@ class ApiController extends AbstractController
         $apiModel = ModelFactory::build("api");
         $apiModel->unselect_tag();
         header('Location: /');
+    }
+
+    /**
+     * PAGE: api/add_tag
+     * This method handles what happens when you move to http://yourproject/api/add_tag
+     *
+     * @var array $params parameters
+     *
+     * @return void
+     */
+    public function add_tag($params)
+    {
+        $apiModel = ModelFactory::build("api");
+        $apiModel->add_tag($_GET);
+        $href = Util::GetAttribute($_GET, 'href', '/');
+        header("Location: {$href}");
+    }
+
+    /**
+     * PAGE: api/del_tag
+     * This method handles what happens when you move to http://yourproject/api/del_tag
+     *
+     * @var array $params parameters
+     *
+     * @return void
+     */
+    public function del_tag($params)
+    {
+        $apiModel = ModelFactory::build("api");
+        $apiModel->del_tag($_GET);
+        $href = Util::GetAttribute($_GET, 'href', '/');
+        header("Location: {$href}");
+    }
+
+    /**
+     * PAGE: api/new_tag
+     * This method handles what happens when you move to http://yourproject/api/new_tag
+     *
+     * @var array $params parameters
+     *
+     * @return int 0|1
+     */
+    public function new_tag($params)
+    {
+        $apiModel = ModelFactory::build("api");
+        print($apiModel->new_tag($_POST));
     }
 }

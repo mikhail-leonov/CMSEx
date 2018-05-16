@@ -12,11 +12,11 @@ interface IModelFactory
 {
     /**
      * Method to build an Model object of $name type IModel
-     * 
+     *
      * @var string $name Modelname to create
-     * 
+     *
      * @throws Exception if the provided name does not match existing php model files
-     * 
+     *
      * @return IModel Model we have created
      */
     public static function build(string $name) : IModel;
@@ -30,11 +30,11 @@ class ModelFactory extends AbstractFactory implements IModelFactory
 {
     /**
      * Method to build an Model object of $name type IModel
-     * 
+     *
      * @var string $name Modelname to create
-     * 
+     *
      * @throws ModelNotFoundException if the provided name does not match to any of existing php model files
-     * 
+     *
      * @return IModel Model we have created
      */
     public static function build(string $name) : IModel

@@ -16,7 +16,7 @@ class RecipeModel extends AbstractModel
 {
     /**
      * Get all selected/grouped niot selected tags from tags Table
-     * 
+     *
      * @return array All entries matched to selected Tags
      */
     public function getRecipies() : array
@@ -49,6 +49,23 @@ class RecipeModel extends AbstractModel
                 $splitter=",";
             }
             $result = $this->db->select("*")->from("entries")->where("entry_id in ($selectedIds)")->all();
+        }
+        return $result;
+    }
+    /**
+     * Get all selected/grouped niot selected tags from tags Table
+     *
+     * @var array $params Parameters
+     *
+     * @return array All entries matched to selected Tags
+     */
+    public function searchRecipies(array $params) : array
+    {
+        $result = array();
+        $q = Util::GetAttribute($params, 'q', '');
+        if (!empty($q)) {
+            $where = array("entry_name LIKE '%{$q}%'");
+            $result = $this->db->select("*")->from("entries")->where($where)->all();
         }
         return $result;
     }
