@@ -39,9 +39,9 @@ abstract class AbstractView extends AbstractObject implements IView
 
     /**
      * Constructor
-     * 
+     *
      * @var array $name View name
-     * 
+     *
      * @return void
      */
     public function __construct(string $name)
@@ -61,11 +61,11 @@ abstract class AbstractView extends AbstractObject implements IView
     
     /**
      * Assign parameter to smarty object
-     * 
+     *
      * @var array $name parameter name
-     * 
+     *
      * @var any $value parameter value
-     * 
+     *
      * @return void
      */
     public function assign(string $name, $value)
@@ -75,7 +75,7 @@ abstract class AbstractView extends AbstractObject implements IView
 
     /**
      * Fetch smarty template as a string
-     * 
+     *
      * @return string
      */
     public function fetch() : string
@@ -90,7 +90,7 @@ abstract class AbstractView extends AbstractObject implements IView
 
     /**
      * Display smarty template as a string
-     * 
+     *
      * @return void
      */
     public function display()

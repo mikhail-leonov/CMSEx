@@ -4,6 +4,7 @@
  */
 require_once(CONTROLLER . 'abstract.controller.php');
 require_once(FACTORY . 'model.factory.php ');
+require_once(FACTORY . 'decorator.factory.php ');
 
 /**
  * Class Api Controller
@@ -38,85 +39,180 @@ class ApiController extends AbstractController
     /**
      * PAGE: api/index
      * This method handles what happens when you move to http://yourproject/api/index
-     */
-    public function index($params)
-    {
-        header('Location: /');
-    }
-
-    /**
-     * PAGE: api/select_tag
-     * This method handles what happens when you move to http://yourproject/api/select_tag
      *
      * @var array $params parameters
      *
      * @return void
      */
-    public function select_tag($params)
+    public function index(array $params)
     {
-        $apiModel = ModelFactory::build("api");
-        $apiModel->select_tag();
         header('Location: /');
     }
 
     /**
-     * PAGE: api/unselect_tag
-     * This method handles what happens when you move to http://yourproject/api/unselect_tag
+     * PAGE: api/SelectTag
+     * This method handles what happens when you move to http://yourproject/api/SelectTag
      *
      * @var array $params parameters
      *
      * @return void
      */
-    public function unselect_tag($params)
+    public function SelectTag(array $params)
     {
         $apiModel = ModelFactory::build("api");
-        $apiModel->unselect_tag();
+        $result = $apiModel->SelectTag();
+
         header('Location: /');
     }
 
     /**
-     * PAGE: api/add_tag
-     * This method handles what happens when you move to http://yourproject/api/add_tag
+     * PAGE: api/UnselectTag
+     * This method handles what happens when you move to http://yourproject/api/UnselectTag
      *
      * @var array $params parameters
      *
      * @return void
      */
-    public function add_tag($params)
+    public function UnselectTag(array $params)
     {
         $apiModel = ModelFactory::build("api");
-        $apiModel->add_tag($_GET);
+        $result = $apiModel->UnselectTag();
+
+        header('Location: /');
+    }
+
+    /**
+     * PAGE: api/AddTag
+     * This method handles what happens when you move to http://yourproject/api/AddTag
+     *
+     * @var array $params parameters
+     *
+     * @return void
+     */
+    public function AddTag(array $params)
+    {
+        $apiModel = ModelFactory::build("api");
+        $result = $apiModel->AddTag($_GET);
+
         $href = Util::GetAttribute($_GET, 'href', '/');
         header("Location: {$href}");
     }
 
     /**
-     * PAGE: api/del_tag
-     * This method handles what happens when you move to http://yourproject/api/del_tag
+     * PAGE: api/DelTag
+     * This method handles what happens when you move to http://yourproject/api/DelTag
      *
      * @var array $params parameters
      *
      * @return void
      */
-    public function del_tag($params)
+    public function DelTag(array $params)
     {
         $apiModel = ModelFactory::build("api");
-        $apiModel->del_tag($_GET);
+        $result = $apiModel->DelTag($_GET);
+
         $href = Util::GetAttribute($_GET, 'href', '/');
         header("Location: {$href}");
     }
 
     /**
-     * PAGE: api/new_tag
-     * This method handles what happens when you move to http://yourproject/api/new_tag
+     * PAGE: api/NewTag
+     * This method handles what happens when you move to http://yourproject/api/NewTag
      *
      * @var array $params parameters
      *
-     * @return int 0|1
+     * @return void
      */
-    public function new_tag($params)
+    public function NewTag(array $params)
     {
         $apiModel = ModelFactory::build("api");
-        print($apiModel->new_tag($_POST));
+	$result = $apiModel->NewTag($_POST);
+
+        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
+	$decorator = DecoratorFactory::build($decoratorName);
+	$result = $decorator->Decorate($result);
+
+        print($result);
+    }
+
+    /**
+     * PAGE: api/FindTags
+     * This method handles what happens when you move to http://yourproject/api/FindTags
+     *
+     * @var array $params parameters
+     *
+     * @return void
+     */
+    public function FindTags(array $params)
+    {
+        $apiModel = ModelFactory::build("api");
+	$result = $apiModel->FindTags($_POST);
+
+        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
+	$decorator = DecoratorFactory::build($decoratorName);
+	$result = $decorator->Decorate($result);
+
+        print($result);
+    }
+
+    /**
+     * PAGE: api/AssignTags
+     * This method handles what happens when you move to http://yourproject/api/AssignTags
+     *
+     * @var array $params parameters
+     *
+     * @return void
+     */
+    public function AssignTags(array $params)
+    {
+        $apiModel = ModelFactory::build("api");
+	$result = $apiModel->AssignTags($_POST);
+
+        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
+	$decorator = DecoratorFactory::build($decoratorName);
+	$result = $decorator->Decorate($result);
+
+
+        print($result);
+    }
+    
+    /**
+     * PAGE: api/SaveEntry
+     * This method handles what happens when you move to http://yourproject/api/SaveEntry
+     *
+     * @var array $params parameters
+     *
+     * @return void
+     */
+    public function SaveEntry(array $params)
+    {
+        $apiModel = ModelFactory::build("api");
+	$result = $apiModel->SaveEntry($_POST);
+
+        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
+	$decorator = DecoratorFactory::build($decoratorName);
+	$result = $decorator->Decorate($result);
+
+        print($result);
+    }
+    
+    /**
+     * PAGE: api/SaveNewEntry
+     * This method handles what happens when you move to http://yourproject/api/SaveNewEntry
+     *
+     * @var array $params parameters
+     *
+     * @return void
+     */
+    public function SaveNewEntry(array $params)
+    {
+        $apiModel = ModelFactory::build("api");
+	$result = $apiModel->SaveNewEntry($_POST);
+
+        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
+	$decorator = DecoratorFactory::build($decoratorName);
+	$result = $decorator->Decorate($result);
+
+        print($result);
     }
 }

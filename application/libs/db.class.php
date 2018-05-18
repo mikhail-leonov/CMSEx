@@ -158,10 +158,9 @@ final class DB
     /**
          * Entry point for Delete query
       	 */
-    public function delete($field)
+    public function delete()
     {
         $this->clean();
-        $this->field($field);
         $this->query = "DELETE";
         return $this;
     }

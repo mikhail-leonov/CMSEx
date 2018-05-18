@@ -12,7 +12,7 @@ class Language
     public $cfg = null;
     /**
      * Load appropriate language file
-     * 
+     *
      * @return void
      */
     public function __construct($lang)

@@ -1,4 +1,4 @@
-<div class="col-md-8 col-sm-8">
+<div class="col-md-9 col-sm-9">
 	<br>
 	<div class="card mb-12">
         	<div class="card-header">
@@ -7,22 +7,30 @@
 		<div class="card-body">
 			<nav aria-label="toolbutton">
 
-				{if count($entry_tags)> 0}
 				<ul class="list-group">
-  					<li class="list-group-item align-items-left">
-					{section name=tagIndex loop=$entry_tags}
-    						<span class="badge badge-primary">{$entry_tags[tagIndex]['tag_name']}</span>
-		       	       		{/section}
+					<li class="list-group-item align-items-left">
+						<a href="#" onclick="newTagEdit();">
+    						<span class="badge badge-danger">Новый <span class="badge badge-danger">&nbsp;</span></span>
+						</a><br>
+						{if count($entry_tags)> 0}
+							{section name=tagIndex loop=$entry_tags}
+    								<span class="badge badge-primary" title="{$entry_tags[tagIndex]['tag_text']}">
+									{$entry_tags[tagIndex]['tag_name']} 
+									<a href='#' onclick='return delTag( "{$entry['entry_id']}", "{$entry_tags[tagIndex]['tag_id']}" )'>
+										<span class="badge badge-light">x</span>
+									</a>
+								</span>
+			       	       			{/section}
+						{/if}
   					</li>
-				</ul>
 				<br>
-				{/if}
+				</ul>
   				<ul class="pagination">
 
-    					<li class="page-item"><a class="page-link" href="/"><i class="material-icons">reply</i></a></li>
+    					<li class="page-item"><a class="page-link" href="#" onclick="window.location.href = '{$href}';"><i class="material-icons">reply</i></a></li>
     					<li class="page-item"><a class="page-link" href="/entry/print/{$entry['entry_id']}" target="_blank"><i class="material-icons">print</i></a></li>
     					<li class="page-item"><a class="page-link" href="/entry/edit/{$entry['entry_id']}"><i class="material-icons">mode_edit</i></a></li>
-    					<li class="page-item"><a class="page-link" href="/entry/edittags/{$entry['entry_id']}"><i class="material-icons">format_list_numbered</i></a></li>
+    					<li class="page-item"><a class="page-link" href="#" onclick="return assignTags();"><i class="material-icons">format_list_numbered</i></a></li>
   				</ul>
 
 			</nav>
@@ -32,26 +40,79 @@
             	<div class="card-footer small text-muted"><a href="/">Back</a></div>
 	</div>
 	<br>
-</div>
 
 <br>
 
-<div class="col-md-2 col-sm-2">
-	<br>
-	<div class="card mb-12">
-        	<div class="card-header">
-			<strong><a href="/">Ingredients</a></strong>
-		</div>
-		<div class="card-body">
-			{if count($ingredients)> 0}
-			<ul>
-				{section name=ingredientIndex loop=$ingredients}
-				<li class="">{$ingredients[ingredientIndex]['ingredient_name']}</li>
-	       	       		{/section}
-			</ul>
-			{/if}
-			<br>
-            	</div>
-            	<div class="card-footer small text-muted">&nbsp;<br></div>
-	</div>
+<div class="modal fade" id="newTagModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New Tag</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="new_tag_name" class="col-form-label">Tag name:</label>
+            <input type="text" class="form-control" id="new_tag_name">
+          </div>
+          <div class="form-group">
+            <label for="new_tag_text" class="col-form-label">Tag text:</label>
+            <input type="text" class="form-control" id="new_tag_text">
+          </div>
+          <div class="form-group">
+            <label for="new_tag_group_id" class="col-form-label">Tag group:</label>
+	    <select id="new_tag_group_id" class="form-control">
+		{section name=groupIndex loop=$groups}
+	            <option value="{$groups[groupIndex]['group_id']}">{$groups[groupIndex]['group_id']} - {$groups[groupIndex]['group_name']}</option>
+   	       	{/section}
+	    </select>            
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="newTag();" >Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<br>
+
+<div class="modal fade" id="assignTagsModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Add found tags</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="new_tag_name" class="col-form-label">Text:</label>
+            <textarea cols="20" rows="10" class="form-control" id="tags_text"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="new_tag_text" class="col-form-label">Tags:</label>
+            <select multiple size="16" style="height: 100%;" class="form-control" id="tags"></select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="findTags();" >Find</button>
+        <button type="button" class="btn btn-primary" onclick="assingFoundTags('{$entry['entry_id']}');" >Assign</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 </div>

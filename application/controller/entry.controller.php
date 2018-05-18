@@ -43,7 +43,7 @@ class EntryController extends AbstractController
      *
      * @return void
      */
-    public function index($params)
+    public function index(array $params)
     {
         header('Location: /');
     }
@@ -54,42 +54,46 @@ class EntryController extends AbstractController
      *
      * @var array $params parameters
      *
-     * @return string
+     * @return void
      */
-    public function view($params)
+    public function view(array $params)
     {
+        $href = Util::GetAttribute($_SERVER, 'HTTP_REFERER', '/');
+
         $entry_id = Util::GetAttribute($params, 0, "0");
-
-        $pageView     = ViewFactory::build("page.page");
-
+        
         $entryModel = ModelFactory::build("entry");
-        $entry = $entryModel->get_content($params);
+            $entry      = $entryModel->GetEntryData($entry_id);
 
-        $leftmenuView = ViewFactory::build("left_menu_ex.part");
-        $tagModel = ModelFactory::build("tag");
-        $leftmenuView->assign("tags", $tagModel->getTags());
-        $leftmenuView->assign("entry", $entry);
-        $pageView->assign("left_menu", $leftmenuView->fetch());
+        $tagModel   = ModelFactory::build("tag");
+            $groups     = $tagModel->getGroups();
+            $entry_tags = $tagModel->getEntryTags($entry_id);
+	    $tags       = $tagModel->getTags();
+  	    $selected   = $tagModel->getSelectedTags();
 
-        $entryviewView = ViewFactory::build("entry_view.part");
+        $pageView   = ViewFactory::build("page.page");
 
-        $groups = $tagModel->getGroups();
-        $entryviewView->assign("groups", $groups);
-    
-        $entry_tags = $tagModel->getEntryTags($entry_id);
-        $entryviewView->assign("entry_tags", $entry_tags);
+            $leftmenuView = ViewFactory::build("left_menu_ex.part");
+                $leftmenuView->assign("entry", $entry);
+                $leftmenuView->assign("selected", $selected);
+                $leftmenuView->assign("tags", $tags);
+                $leftmenuView->assign("groups", $groups);
+            $left_menu = $leftmenuView->fetch();
+            
+        $pageView->assign("left_menu", $left_menu);
 
-        $entryviewView->assign("entry", $entry);
+            $entryviewView = ViewFactory::build("entry_view.part");
+                $entryviewView->assign("groups", $groups);
+                $entryviewView->assign("entry_tags", $entry_tags);
+                $entryviewView->assign("entry", $entry);
+                $entryviewView->assign("href", $href);
+   	    $content = $entryviewView->fetch();
 
-        $ingredientModel = ModelFactory::build("ingredient");
-        $ingredients = $ingredientModel->getEntryIngredients($entry_id);
-        $entryviewView->assign("ingredients", $ingredients);
-    
-
-        $pageView->assign("content", $entryviewView->fetch());
+        $pageView->assign("content", $content);
 
         $pageView->display();
     }
+
     /**
      * PAGE: entry/print
      * This method handles what happens when you move to http://yourproject/entry/print/ID
@@ -98,129 +102,111 @@ class EntryController extends AbstractController
      *
      * @return string
      */
-    public function print($params)
+    public function print(array $params)
     {
+        $href = Util::GetAttribute($_SERVER, 'HTTP_REFERER', '/');
+
         $entry_id = Util::GetAttribute($params, 0, "0");
+
+        $entryModel = ModelFactory::build("entry");
+            $entry      = $entryModel->GetEntryData($entry_id);
+
+        $tagModel = ModelFactory::build("tag");
+            $entry_tags = $tagModel->getEntryTags($entry_id);
 
         $pageView     = ViewFactory::build("print.page");
 
         $entryviewView = ViewFactory::build("entry_print.part");
-    
-        $tagModel = ModelFactory::build("tag");
-        $entry_tags = $tagModel->getEntryTags($entry_id);
-        $entryviewView->assign("entry_tags", $entry_tags);
+            $entryviewView->assign("entry_tags", $entry_tags);
+            $entryviewView->assign("entry", $entry);
+            $entryviewView->assign("href", $href);
+	    $content = $entryviewView->fetch();
 
-        $entryModel = ModelFactory::build("entry");
-        $entry = $entryModel->get_content($params);
-        $entryviewView->assign("entry", $entry);
-
-        $ingredientModel = ModelFactory::build("ingredient");
-        $ingredients = $ingredientModel->getEntryIngredients($entry_id);
-        $entryviewView->assign("ingredients", $ingredients);
-
-        $pageView->assign("content", $entryviewView->fetch());
-
+        $pageView->assign("content", $content);
+        
         $pageView->display();
     }
+
     /**
      * PAGE: entry/edit
      * This method handles what happens when you move to http://yourproject/entry/edit/ID
      *
      * @var array $params parameters
      *
-     * @return string
+     * @return void
      */
-    public function edit($params)
+    public function edit(array $params)
     {
+        $href = Util::GetAttribute($_SERVER, 'HTTP_REFERER', '/');
+
         $entry_id = Util::GetAttribute($params, 0, "0");
+
+        $entryModel = ModelFactory::build("entry");
+            $entry = $entryModel->GetEntryData($entry_id);
+
+        $tagModel   = ModelFactory::build("tag");
+            $groups     = $tagModel->getGroups();
+            $entry_tags = $tagModel->getEntryTags($entry_id);
+	    $tags       = $tagModel->getTags();
+  	    $selected   = $tagModel->getSelectedTags();
 
         $pageView     = ViewFactory::build("edit.page");
 
-        $entryModel = ModelFactory::build("entry");
-        $entry = $entryModel->get_content($params);
+            $leftmenuView = ViewFactory::build("left_menu_ex.part");
+                $leftmenuView->assign("entry", $entry);
+                $leftmenuView->assign("selected", $selected);
+                $leftmenuView->assign("tags", $tags);
+                $leftmenuView->assign("groups", $groups);
+            $left_menu = $leftmenuView->fetch();
 
-        $leftmenuView = ViewFactory::build("left_menu_ex.part");
-        $tagModel = ModelFactory::build("tag");
-        $leftmenuView->assign("tags", $tagModel->getTags());
-        $leftmenuView->assign("entry", $entry);
+        $pageView->assign("left_menu", $left_menu);
 
-        $pageView->assign("left_menu", $leftmenuView->fetch());
+            $entryviewView = ViewFactory::build("entry_edit.part");
+                $entryviewView->assign("groups", $groups);
+                $entryviewView->assign("entry_tags", $entry_tags);
+                $entryviewView->assign("entry", $entry);
+                $entryviewView->assign("href", $href);
+   	    $content = $entryviewView->fetch();
 
-        $entryviewView = ViewFactory::build("entry_edit.part");
-    
-        $entry_tags = $tagModel->getEntryTags($entry_id);
-        $entryviewView->assign("entry_tags", $entry_tags);
-
-        $entryviewView->assign("entry", $entry);
-
-        $ingredientModel = ModelFactory::build("ingredient");
-        $ingredients = $ingredientModel->getEntryIngredients($entry_id);
-        $entryviewView->assign("ingredients", $ingredients);
-    
-
-        $pageView->assign("content", $entryviewView->fetch());
+        $pageView->assign("content", $content);
 
         $pageView->display();
     }
+
     /**
-     * PAGE: entry/save
-     * This method handles what happens when you move to http://yourproject/entry/save/ID
+     * PAGE: entry/new
+     * This method handles what happens when you move to http://yourproject/entry/new
      *
      * @var array $params parameters
      *
-     * @return string
+     * @return void
      */
-    public function save($params)
+    public function new(array $params)
     {
-        $result = 0;
-        $entry_id   = Util::GetAttribute($_POST, "entry_id", 0);
-        $entry_name = Util::GetAttribute($_POST, "entry_name", '');
-        $entry_text = Util::GetAttribute($_POST, "entry_text", '');
+        $href = Util::GetAttribute($_SERVER, 'HTTP_REFERER', '/');
 
-        $entry_id   = filter_var($entry_id, FILTER_VALIDATE_INT);
-
-        if ((false !== $entry_id) && (false !== $entry_name) && (false !== $entry_text)) {
-            $entryModel = ModelFactory::build("entry");
-            $result = $entryModel->updateEntry($entry_id, $entry_name, $entry_text);
-        }
-        print($result);
-    }
-
-    /**
-     * PAGE: entry/edittag
-     * This method handles what happens when you move to http://yourproject/entry/edittags/ID
-     *
-     * @var array $params parameters
-     *
-     * @return string
-     */
-    public function edittags($params)
-    {
-        $entry_id = Util::GetAttribute($params, 0, "0");
+        $tagModel   = ModelFactory::build("tag");
+            $groups     = $tagModel->getGroups();
+	    $tags       = $tagModel->getTags();
+  	    $selected   = $tagModel->getSelectedTags();
 
         $pageView     = ViewFactory::build("edit.page");
 
-        $leftmenuView = ViewFactory::build("left_menu.part");
-        $tagModel = ModelFactory::build("tag");
-        $leftmenuView->assign("tags", $tagModel->getTags());
-        $pageView->assign("left_menu", $leftmenuView->fetch());
+            $leftmenuView = ViewFactory::build("left_menu.part");
+                $leftmenuView->assign("selected", $selected);
+                $leftmenuView->assign("tags", $tags);
+                $leftmenuView->assign("groups", $groups);
+            $left_menu = $leftmenuView->fetch();
 
-        $entryviewView = ViewFactory::build("entry_edit.part");
-    
-        $entry_tags = $tagModel->getEntryTags($entry_id);
-        $entryviewView->assign("entry_tags", $entry_tags);
+        $pageView->assign("left_menu", $left_menu);
 
-        $entryModel = ModelFactory::build("entry");
-        $entry = $entryModel->get_content($params);
-        $entryviewView->assign("entry", $entry);
+            $entryviewView = ViewFactory::build("entry_new.part");
+                $entryviewView->assign("href", $href);
+  	    $content = $entryviewView->fetch();
 
-        $ingredientModel = ModelFactory::build("ingredient");
-        $ingredients = $ingredientModel->getEntryIngredients($entry_id);
-        $entryviewView->assign("ingredients", $ingredients);
-    
-
-        $pageView->assign("content", $entryviewView->fetch());
+        $pageView->assign("content", $content);
 
         $pageView->display();
     }
+
 }

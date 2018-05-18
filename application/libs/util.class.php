@@ -4,6 +4,105 @@
     /// </summary>
     class Util
     {
+
+	public static function obj2arr( $obj ) {
+
+    		$array = (array) $obj;
+    		foreach ($array as &$attribute ) {
+      		    if ( is_object($attribute) ) {
+		        $attribute = self::obj2arr($attribute);
+		    }
+		}
+		return $array;
+	}
+        /// <summary>
+        /// FindEntries
+        /// </summary>
+        public static function FindTag($obj, $part, &$arr)
+        {
+	    $result = 0;
+            $where = [ "tag_name LIKE '%$part%'" ];
+            $found = $obj->db->select("*")->from("tags")->where($where)->first();
+	    if (false !== $found) {
+		$arr[ $found['tag_id'] ] = $found;
+	        $result = 1;
+	    } 
+            $where = [ "tag_text LIKE '%$part%'" ];
+            $found = $obj->db->select("*")->from("tags")->where($where)->first();
+	    if (false !== $found) {
+	        $arr[ $found['tag_id'] ] = $found;
+		$result = 1;
+	    } 
+	    return $result;	
+	}
+        /// <summary>
+        /// FindEntries
+        /// </summary>
+	public static function possibleWord($part) {
+		$result = 1; 
+		if (mb_strlen($part) < 3) { $result = 0; }
+		if (is_int   ($part)    ) { $result = 0; }
+		return $result;
+	}
+
+        /// <summary>
+        /// FindEntries
+        /// </summary>
+        public static function FindTags($obj, $text)
+        {
+      	    $arr = [];
+	    $result = 0;
+
+            if (!empty($text)) {
+	        $parts = self::explodeEx( ["\n", " ", ","], $text);
+	        foreach($parts as $k => $part) {
+		    $part = trim($part);
+	  	    if ( '' !==  $part) {
+	  	        
+			if ( self::possibleWord($part) ) {
+
+	  	            if (self::FindTag($obj, $part, $arr) ) { $result = 1; }
+			    if (mb_strlen($part) >= 4) { $part = mb_substr($part, 0, -1); if ( self::FindTag($obj, $part, $arr) ) { $result = 1; } }
+			    if (mb_strlen($part) >= 4) { $part = mb_substr($part, 0, -1); if ( self::FindTag($obj, $part, $arr) ) { $result = 1; } }
+			    if (mb_strlen($part) >= 4) { $part = mb_substr($part, 0, -1); if ( self::FindTag($obj, $part, $arr) ) { $result = 1; } }
+			    if (mb_strlen($part) >= 4) { $part = mb_substr($part, 0, -1); if ( self::FindTag($obj, $part, $arr) ) { $result = 1; } }
+
+			}
+ 		    }
+  	        } 
+            }
+	    return [ 'result' => $result, 'data' => $arr ];
+	}
+
+	function mb_ucfirst($str) {
+  		$fc = mb_strtoupper(mb_substr($str, 0, 1)); return $fc.mb_substr($str, 1);	
+	}
+
+        /// <summary>
+        /// Find Tags By Id
+        /// </summary>
+        public static function FindTagsById($obj, $ids)
+        {
+      	    $arr = [];
+	    $result = 0;
+
+            if (!empty($ids)) {
+	        foreach($ids as $k => $id) {
+		    $id = trim($id);
+	  	    if ( '' !==  $id) {
+	  	        
+                        $where = [ "tag_id" => $id ];
+                        $found = $obj->db->select("*")->from("tags")->where($where)->first();
+	                if (false !== $found) {
+	                    $arr[ $found['tag_id'] ] = $found;
+		            $result = 1;
+	                } 
+ 		    }
+  	        } 
+            }
+	    return [ 'result' => $result, 'data' => $arr ];
+	}
+
         /// <summary>
         /// Arr To xml Cnvertor
         /// </summary>
@@ -33,14 +132,6 @@
             var_dump($obj);
             print("</pre>");
         }
-        /// <summary>
-        /// Explode Array
-        /// </summary>
-        public function explodeEx($delimiters, $string)
-        {
-            $ready = str_replace($delimiters, $delimiters[0], $string);
-            return explode($delimiters[0], $ready);
-        }
 
         /// <summary>
         /// Get Widget Content
@@ -53,6 +144,15 @@
                 $result[] = array( "tag_id" => $elements_id, "tag_name" => $elements_title );
             }
             return $result;
+        }
+
+        /// <summary>
+        /// Explode Array
+        /// </summary>
+        public static function explodeEx($delimiters, $string)
+        {
+            $ready = str_replace($delimiters, $delimiters[0], $string);
+            return explode($delimiters[0], $ready);
         }
 
         /// <summary>

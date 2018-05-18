@@ -18,27 +18,33 @@ class ApiModel extends AbstractModel
     /**
      * select_tag
      *
-     * @return void
+     * @return stdClass { result: 0|1, data: object };
      */
-    public function select_tag()
+    public function SelectTag() : stdClass
     {
+        $result = 0;
         $tag = Util::GetAttribute($_GET, 'tag', array());
         foreach ($tag as $name => $value) {
             Cookie::setCookieFOREVER("tag[$name]", $value);
+	    $result = 1;
         }
+        return (object)[ 'result' => $result, 'data' => (object)[] ];
     }
     /**
      * unselect_tag
      *
-     * @return void
+     * @return stdClass { result: 0|1, data: object };
      */
-    public function unselect_tag()
+    public function UnselectTag() : stdClass
     {
+        $result = 0;
         $tag = Util::GetAttribute($_GET, 'tag', array());
         foreach ($tag as $name => $value) {
             unset($_COOKIE[ "tag" ][$name]);
             Cookie::setCookie("tag[$name]", false, - Cookie::YEAR);
+	    $result = 1;
         }
+        return (object)[ 'result' => $result, 'data' => (object)[] ];
     }
 
     /**
@@ -46,18 +52,22 @@ class ApiModel extends AbstractModel
      *
      * @var array $params parameters
      *
-     * @return void
+     * @return stdClass { result: 0|1, data: object };
      */
-    public function add_tag($params)
+    public function AddTag(array $params) : stdClass
     {
+        $result = 0;
+
         $tag_id   = Util::GetAttribute($params, 'tag_id', 0);
         $entry_id = Util::GetAttribute($params, 'entry_id', 0);
         if (!empty($tag_id)) {
             if (!empty($entry_id)) {
                 $fields = array( "tag_id" => $tag_id, "entry_id" => $entry_id );
                 $this->db->insert($fields)->into("entries_tags")->exec();
+	        $result = 1;
             }
         }
+        return (object)[ 'result' => $result, 'data' => (object)[] ];
     }
 
     /**
@@ -65,41 +75,132 @@ class ApiModel extends AbstractModel
      *
      * @var array $params parameters
      *
-     * @return void
+     * @return stdClass { result: 0|1, data: object };
      */
-    public function del_tag($params)
+    public function DelTag(array $params) : stdClass
     {
+        $result = 0;
         $tag_id   = Util::GetAttribute($params, 'tag_id', 0);
         $entry_id = Util::GetAttribute($params, 'entry_id', 0);
         if (!empty($tag_id)) {
             if (!empty($entry_id)) {
                 $where = array( "tag_id" => $tag_id, "entry_id" => $entry_id );
                 $this->db->delete()->from("entries_tags")->where($where)->exec();
+	        $result = 1;
             }
         }
+        return (object)[ 'result' => $result, 'data' => (object)[] ];
     }
-
+    
     /**
      * new_tag
      *
      * @var array $params parameters
      *
-     * @return void
+     * @return stdClass { result: 0|1, data: object };
      */
-    public function new_tag($params)
+    public function NewTag(array $params) : stdClass
     {
         $result = 0;
 
         $tag_name     = Util::GetAttribute($params, 'tag_name', '');
+	$tag_text     = Util::GetAttribute($params, 'tag_text', '');
         $tag_group_id = Util::GetAttribute($params, 'tag_group_id', 0);
 
         if (!empty($tag_name)) {
             if (!empty($tag_group_id)) {
-                $fields = array( "tag_name" => $tag_name, "tag_text" => $tag_name, "tag_group_id" => $tag_group_id );
+                $fields = array( "tag_name" => $tag_name, "tag_text" => $tag_text, "tag_group_id" => $tag_group_id );
                 $this->db->insert($fields)->into("tags")->exec();
                 $result = 1;
             }
         }
-        return $result;
+        return (object)[ 'result' => $result, 'data' => (object)[] ];
     }
+    
+    /**
+     * FindTags
+     *
+     * @var array $params parameters
+     *
+     * @return stdClass { result: 0|1, data: object };
+     */
+    public function FindTags(array $params) : stdClass
+    {
+        $tags_text = Util::GetAttribute($params, 'tags_text', '');
+	$tags_text = trim( $tags_text );
+	$data = Util::FindTags($this, $tags_text);
+        return (object)[ 'result' => $data['result'], 'data' => (object)['tags' => $data['data']] ];
+    }
+    
+    /**
+     * AssignTags
+     *
+     * @var array $params parameters
+     *
+     * @return stdClass { result: 0|1, data: object };
+     */
+    public function AssignTags(array $params) : stdClass
+    {
+        $result = 0;
+        $entry_id = Util::GetAttribute($params, 'entry_id', 0);
+	if (0 !== $entry_id) {
+
+            $tag_ids = Util::GetAttribute($params, 'tag_ids', []);
+
+	    $data = Util::FindTagsById($this, $tag_ids);
+
+            $tags = Util::GetAttribute($data, 'data', []);
+            foreach($tags as $k => $tag) {
+                $fields = array( "tag_id" => $tag['tag_id'], "entry_id" => $entry_id );
+                $this->db->insert($fields)->into("entries_tags")->exec();
+	        $result = 1;
+            }
+ 	}	
+        return (object)[ 'result' => $result, 'data' => (object)[] ];
+    }
+    
+    /**
+     * Save Entry
+     *
+     * @var array $params parameters
+     *
+     * @return stdClass { result: 0|1, data: object };
+     */
+    public function SaveEntry(array $params) : stdClass
+    {
+        $result = 0;
+        $entry_id   = Util::GetAttribute($_POST, "entry_id", 0);
+        $entry_name = Util::GetAttribute($_POST, "entry_name", '');
+        $entry_text = Util::GetAttribute($_POST, "entry_text", '');
+
+        $entry_id   = filter_var($entry_id, FILTER_VALIDATE_INT);
+
+        if ((false !== $entry_id) && (false !== $entry_name) && (false !== $entry_text)) {
+            $entryModel = ModelFactory::build("entry");
+            $result = $entryModel->UpdateEntry($entry_id, $entry_name, $entry_text);
+        }
+        return (object)[ 'result' => $result, 'data' => (object)[] ];
+    }	
+    
+    /**
+     * Save New Entry
+     *
+     * @var array $params parameters
+     *
+     * @return stdClass { result: 0|1, data: object };
+     */
+    public function SaveNewEntry(array $params) : stdClass
+    {
+        $result = 0;
+        $entry_name = Util::GetAttribute($_POST, "entry_name", '');
+        $entry_text = Util::GetAttribute($_POST, "entry_text", '');
+        $entry_id = '';
+
+        if ((false !== $entry_name) && (false !== $entry_text)) {
+            $entryModel = ModelFactory::build("entry");
+            $entry_id = $entryModel->CreateEntry($entry_name, $entry_text);
+	    $result = ('' !== $entry_id);
+        }
+        return (object)[ 'result' => $result, 'data' => (object)['entry_id' => $entry_id] ];
+    }	
 }

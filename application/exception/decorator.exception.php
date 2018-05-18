@@ -5,9 +5,9 @@
 require_once(EXCEPTION . 'abstract.exception.php');
 
 /**
- * This is the "View File Not Found Exception class".
+ * This is the "Decorator Not Found Exception class".
  */
-class ViewNotFoundException extends AbstractException
+class DecoratorNotFoundException extends AbstractException
 {
     /**
      * Constructor
@@ -20,6 +20,6 @@ class ViewNotFoundException extends AbstractException
      */
     public function __construct($name, $fileName)
     {
-        parent::__construct("View [{$name}] is not found in file: {$fileName}.");
+        parent::__construct("Decorator [{$name}] is not found in file: {$fileName}.");
     }
 }

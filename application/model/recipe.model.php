@@ -15,11 +15,11 @@ require_once(MODEL . 'abstract.model.php');
 class RecipeModel extends AbstractModel
 {
     /**
-     * Get all selected/grouped niot selected tags from tags Table
+     * Get all selected recepies
      *
      * @return array All entries matched to selected Tags
      */
-    public function getRecipies() : array
+    public function GetRecipies() : array
     {
         $result = array();
         $selectedTags = Util::GetAlreadySelected("tag");
@@ -52,6 +52,7 @@ class RecipeModel extends AbstractModel
         }
         return $result;
     }
+
     /**
      * Get all selected/grouped niot selected tags from tags Table
      *
@@ -59,7 +60,7 @@ class RecipeModel extends AbstractModel
      *
      * @return array All entries matched to selected Tags
      */
-    public function searchRecipies(array $params) : array
+    public function SearchRecipies(array $params) : array
     {
         $result = array();
         $q = Util::GetAttribute($params, 'q', '');

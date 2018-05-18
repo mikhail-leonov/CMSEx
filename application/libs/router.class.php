@@ -17,8 +17,8 @@ class Router
     private $language = null;
 
     /**
-     * Constructor for router 
-     * 
+     * Constructor for router
+     *
      * @return void
      */
     public function __construct($language)
@@ -28,7 +28,7 @@ class Router
 
     /**
      * Actual routing
-     * 
+     *
      * @return void
      */
     public function route()
@@ -68,7 +68,7 @@ class Router
 
     /**
      * Get and split the URL into controller, action and parameters
-     * 
+     *
      * @return void
      */
     private function splitUrl()

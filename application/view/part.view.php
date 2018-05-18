@@ -12,11 +12,11 @@ class PartView extends AbstractView
 {
     /**
      * Constructor
-     * 
+     *
      * @var array $name View name
-     * 
+     *
      * @throws ViewNotFoundException if the provided name does not match to any of existing php view files
-     * 
+     *
      * @return void
      */
     public function __construct(string $name)

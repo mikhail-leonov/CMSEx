@@ -47,16 +47,26 @@ class HomeController extends AbstractController
     {
         $pageView     = ViewFactory::build("page.page");
 
+        $tagModel   = ModelFactory::build("tag");
+            $groups     = $tagModel->getGroups();
+	    $tags       = $tagModel->getTags();
+  	    $selected   = $tagModel->getSelectedTags();
+
+      	$recipeModel = ModelFactory::build("recipe");
+	    $entries = $recipeModel->GetRecipies();
+
         $leftmenuView = ViewFactory::build("left_menu.part");
-        $tagModel = ModelFactory::build("tag");
-        $leftmenuView->assign("tags", $tagModel->getTags());
-        $pageView->assign("left_menu", $leftmenuView->fetch());
+            $leftmenuView->assign("selected", $selected);
+            $leftmenuView->assign("tags", $tags);
+            $leftmenuView->assign("groups", $groups);
+        $left_menu = $leftmenuView->fetch();
+            
+       	$recipiesView   = ViewFactory::build("recipies.part");
+       	    $recipiesView->assign("entries", $entries);
+	    $content = $recipiesView->fetch();
 
-        $recipeModel = ModelFactory::build("recipe");
-        $recipiesView   = ViewFactory::build("recipies.part");
-        $recipiesView->assign("entries", $recipeModel->getRecipies());
-
-        $pageView->assign("content", $recipiesView->fetch());
+        $pageView->assign("left_menu", $left_menu);
+        $pageView->assign("content", $content);
 
         $pageView->display();
     }
@@ -73,17 +83,26 @@ class HomeController extends AbstractController
     {
         $pageView     = ViewFactory::build("page.page");
 
+        $tagModel   = ModelFactory::build("tag");
+            $groups     = $tagModel->getGroups();
+	    $tags       = $tagModel->getTags();
+  	    $selected   = $tagModel->getSelectedTags();
+
+      	$recipeModel = ModelFactory::build("recipe");
+	    $entries = $recipeModel->SearchRecipies($_GET);
+
         $leftmenuView = ViewFactory::build("left_menu.part");
-        $tagModel = ModelFactory::build("tag");
-        $leftmenuView->assign("tags", $tagModel->getTags());
-        $pageView->assign("left_menu", $leftmenuView->fetch());
+            $leftmenuView->assign("selected", $selected);
+            $leftmenuView->assign("tags", $tags);
+            $leftmenuView->assign("groups", $groups);
+        $left_menu = $leftmenuView->fetch();
 
-        $recipeModel = ModelFactory::build("recipe");
         $recipiesView   = ViewFactory::build("recipies.part");
- 
-        $recipiesView->assign("entries", $recipeModel->searchRecipies($_GET));
-
-        $pageView->assign("content", $recipiesView->fetch());
+            $recipiesView->assign("entries", $entries);
+	    $content = $recipiesView->fetch();
+    
+        $pageView->assign("left_menu", $left_menu);
+        $pageView->assign("content", $content);
 
         $pageView->display();
     }
