@@ -42,19 +42,19 @@ class ImportController extends AbstractController
      *
      * @var array $params parameters
      *
-     * @return string
+     * @return void
      */
-    public function index($params)
+    public function index(array $params)
     {
         $pageView    = ViewFactory::build("import.page");
         $importView  = ViewFactory::build("import.part");
 
         $importModel = ModelFactory::build("import");
-        $importView->assign("rules", $importModel->getRules());
+
+	$rules = $importModel->getRules();
+        $importView->assign("rules", $rules);
 
         $pageView->assign("content", $importView->fetch());
-
-        // Display Page
         $pageView->display();
     }
 
@@ -64,18 +64,18 @@ class ImportController extends AbstractController
      *
      * @var array $params parameters
      *
-     * @return string json encoded rule array
+     * @return void 
      */
-    public function load($params)
+    public function load(array $params)
     {
-        $rule = [];
-        $rule_file_name = Util::GetAttribute($_POST, 'rule_file_name', '');
-        $rule_file_name = RULES . $rule_file_name;
-        if (file_exists($rule_file_name)) {
-            $importModel = ModelFactory::build("import");
-            $rule = $importModel->load($rule_file_name);
-        }
-        print(json_encode($rule));
+        $importModel = ModelFactory::build("import");
+        $result = $importModel->load($_POST);
+
+        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
+	$decorator = DecoratorFactory::build($decoratorName);
+	$result = $decorator->Decorate($result);
+	
+        print($result);
     }
 
     /**
@@ -84,23 +84,18 @@ class ImportController extends AbstractController
      *
      * @var array $params parameters
      *
-     * @return int 0|1
+     * @return void
      */
-    public function save($params)
+    public function save(array $params)
     {
-        $result = 0;
-        $settings = Util::GetAttribute($_POST, 'settings', []);
-        $title = Util::GetAttribute($settings, 'ruleTitle', '');
-        $title = trim($title);
-        if ('' !== $title) {
-            $slug = str_replace(' ', '_', strtolower($title));
-            $rule_file_name = RULES . $slug . ".rule.xml";
+        $importModel = ModelFactory::build("import");
+        $result = $importModel->save($_POST);
 
-            $importModel = ModelFactory::build("import");
-            $importModel->save($rule_file_name);
-            $result = 1;
-        }
-        return $result;
+        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
+	$decorator = DecoratorFactory::build($decoratorName);
+	$result = $decorator->Decorate($result);
+        
+        print($result);
     }
 
     /**
@@ -113,19 +108,14 @@ class ImportController extends AbstractController
      */
     public function start($params)
     {
-        $result = 0;
-        $settings = Util::GetAttribute($_POST, 'settings', []);
-        $title = Util::GetAttribute($settings, 'ruleTitle', '');
-        $title = trim($title);
-        if ('' !== $title) {
-            $slug = str_replace(' ', '_', strtolower($title));
-            $rule_file_name = RULES . $slug . ".rule.xml";
-
-            $importModel = ModelFactory::build("import");
-            $importModel->start($rule_file_name);
-            $result = 1;
-        }
-        return $result;
+        $importModel = ModelFactory::build("import");
+        $result = $importModel->start($_POST);
+        
+        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
+	$decorator = DecoratorFactory::build($decoratorName);
+	$result = $decorator->Decorate($result);
+        
+        print($result);
     }
 
     /**
@@ -134,12 +124,17 @@ class ImportController extends AbstractController
      *
      * @var array $params parameters
      *
-     * @return string
+     * @return void
      */
-    public function test($params)
+    public function test(array $params)
     {
         $importModel = ModelFactory::build("import");
         $result = $importModel->test();
+        
+        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
+	$decorator = DecoratorFactory::build($decoratorName);
+	$result = $decorator->Decorate($result);
+        
         print($result);
     }
 
@@ -149,14 +144,18 @@ class ImportController extends AbstractController
      *
      * @var array $params parameters
      *
-     * @return string json encoded table fields array
+     * @return void
      */
-    public function table($params)
+    public function table(array $params)
     {
         $importModel = ModelFactory::build("import");
         $result = $importModel->table();
-
-        print(json_encode($result));
+        
+        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
+	$decorator = DecoratorFactory::build($decoratorName);
+	$result = $decorator->Decorate($result);
+        
+        print($result);
     }
     /**
      * PAGE: Get DB table list
@@ -164,13 +163,17 @@ class ImportController extends AbstractController
      *
      * @var array $params parameters
      *
-     * @return string json encoded table array
+     * @return void
      */
-    public function tablelist($params)
+    public function tablelist(array $params)
     {
         $importModel = ModelFactory::build("import");
         $result = $importModel->tablelist();
-
-        print(json_encode($result));
+        
+        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
+	$decorator = DecoratorFactory::build($decoratorName);
+	$result = $decorator->Decorate($result);
+        
+        print($result);
     }
 }

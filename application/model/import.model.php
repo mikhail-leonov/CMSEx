@@ -20,84 +20,116 @@ class ImportModel extends AbstractModel
     /**
      * Get all rules stored in RULES dir
      *
-     * @return array rules as array
+     * @return array Get Rules list 
      */
     public function getRules() : array
     {
-        $result = array();
-
+        $rules = [];
         $files = Files::Enumerate(RULES);
         foreach ($files as $k => $file) {
             $rule_name = str_replace("_", " ", str_replace(".rule.xml", "", str_replace(RULES, '', $file)));
             $rule_file_name = str_replace(RULES, '', $file);
-            $result[] = [ 'rule_name' => $rule_name, 'rule_file_name' => $rule_file_name ];
+            $rules[] = [ 'rule_name' => $rule_name, 'rule_file_name' => $rule_file_name ];
         }
-
-        return $result;
+        return $rules;
     }
     
     /**
      * Save rule as xml file
      *
-     * @var string $rule_file_name  Rule file name to save
+     * @var array $params Parameters
      *
-     * @return void
+     * @return stdClass Save rule { result: 0|1, data: object }; 
      */
-    public function save(string $rule_file_name)
+    public function save(array $params) : stdClass
     {
-        foreach ($_POST['src'] as $k => &$r) {
-            $r = array( '@cdata' => $r );
-        }
-        foreach ($_POST['dst'] as $k => &$r) {
-            $r = array( '@cdata' => $r );
-        }
-        foreach ($_POST['rule'] as $k => &$r) {
-            $r = array( '@cdata' => $r );
-        }
-        foreach ($_POST['key'] as $k => &$r) {
-            $r = array( '@cdata' => $r );
-        }
-        foreach ($_POST['settings'] as $k => &$r) {
-            $r = array( '@cdata' => $r );
-        }
+        $result = 0;
 
-        $xml = Array2XML::createXML('root', $_POST);
-        file_put_contents($rule_file_name, $xml->saveXML());
+        $settings = Util::GetAttribute($params, 'settings', []);
+        $title = Util::GetAttribute($settings, 'ruleTitle', '');
+        $title = trim($title);
+        if ('' !== $title) {
+
+            $slug = str_replace(' ', '_', strtolower($title));
+            $rule_file_name = RULES . $slug . ".rule.xml";
+
+            foreach ($params['src'] as $k => &$r) {
+                $r = array( '@cdata' => $r );
+            }
+            foreach ($params['dst'] as $k => &$r) {
+                $r = array( '@cdata' => $r );
+            }
+            foreach ($params['rule'] as $k => &$r) {
+                $r = array( '@cdata' => $r );
+            }
+            foreach ($params['key'] as $k => &$r) {
+                $r = array( '@cdata' => $r );
+            }
+            foreach ($params['settings'] as $k => &$r) {
+                $r = array( '@cdata' => $r );
+            }
+
+            $xml = Array2XML::createXML('root', $_POST);
+            file_put_contents($rule_file_name, $xml->saveXML());
+
+            $result = 1;
+        }
+        return (object)[ 'result' => $result, 'data' => (object)[] ];
     }
     
     /**
      * Load rule xml file
      *
-     * @var string $rule_file_name  Rule file name to save
+     * @var array $params Parameters
      *
-     * @return array Rule fields as array
+     * @return stdClass Load rule { result: 0|1, data: object }; 
      */
-    public function load(string $rule_file_name) : array
+    public function load(array $params) : stdClass
     {
-        $xml = file_get_contents($rule_file_name);
-        return XML2Array::createArray($xml);
+        $result = 0;
+	$rule = [];
+        $rule_file_name = Util::GetAttribute($params, 'rule_file_name', '');
+        $rule_file_name = RULES . $rule_file_name;
+        if (file_exists($rule_file_name)) {
+            $xml = file_get_contents($rule_file_name);
+            $rule = XML2Array::createArray($xml);
+	    $result = 1;
+        }
+        return (object)[ 'result' => $result, 'data' => (object)[ 'rule' => $rule ] ];
     }
     
     /**
      * Load rule xml file
      *
-     * @var string $rule_file_name  Rule file name to start executing
+     * @var array $params
      *
-     * @return void
+     * @return stdClass Load rule result { result: 0|1, data: object }; 
      */
-    public function start(string $rule_file_name)
+    public function start(array $params) : stdClass
     {
-        $xml = file_get_contents($rule_file_name);
-        $rule = XML2Array::createArray($xml);
-        $root = Util::GetAttribute($rule, 'root', []);
+        $result = 0;
+        $settings = Util::GetAttribute($params, 'settings', []);
+        $title = Util::GetAttribute($settings, 'ruleTitle', '');
+        $title = trim($title);
+        if ('' !== $title) {
+            $slug = str_replace(' ', '_', strtolower($title));
+            $rule_file_name = RULES . $slug . ".rule.xml";
 
-        $src  = Util::GetAttribute($root, 'src', []);
-        $dst  = Util::GetAttribute($root, 'dst', []);
-        $rule = Util::GetAttribute($root, 'rule', []);
-        $key  = Util::GetAttribute($root, 'key', []);
-        $settings = Util::GetAttribute($root, 'settings', []);
+            $xml = file_get_contents($rule_file_name);
+            $rule = XML2Array::createArray($xml);
+            $root = Util::GetAttribute($rule, 'root', []);
+
+            $src  = Util::GetAttribute($root, 'src', []);
+            $dst  = Util::GetAttribute($root, 'dst', []);
+            $rule = Util::GetAttribute($root, 'rule', []);
+            $key  = Util::GetAttribute($root, 'key', []);
+            $settings = Util::GetAttribute($root, 'settings', []);
     
-        $this->run($src, $dst, $key, $settings, $rule);
+            $this->run($src, $dst, $key, $settings, $rule);
+
+            $result = 1;
+        }
+        return (object)[ 'result' => $result, 'data' => (object)[] ];
     }
 
     /**
@@ -115,7 +147,7 @@ class ImportModel extends AbstractModel
      *
      * @return void
      */
-    public function run($src, $dst, $keys, $settings, $rule)
+    protected function run($src, $dst, $keys, $settings, $rule)
     {
         $env = $this->buildEnv($src, $dst);
 
@@ -149,7 +181,7 @@ class ImportModel extends AbstractModel
      *
      * @return array
      */
-    public function buildEnv($src, $dst) : array
+    protected function buildEnv($src, $dst) : array
     {
         $result = [];
         foreach ($src as $name => $item) {
@@ -172,7 +204,7 @@ class ImportModel extends AbstractModel
      *
      * @return array
      */
-    public function proccess($env, $data, $rule) : array
+    protected function proccess($env, $data, $rule) : array
     {
         $result = [];
         foreach ($rule as $k => $item) {
@@ -192,7 +224,7 @@ class ImportModel extends AbstractModel
      *
      * @return string
      */
-    public function proccessItem($env, $data, $item) : string
+    protected function proccessItem($env, $data, $item) : string
     {
         $result = '';
         $item  = Util::GetAttribute($item, '@cdata', '');
@@ -205,14 +237,15 @@ class ImportModel extends AbstractModel
     /**
      * Test connection rule settings
      *
-     * @return int 0|1
+     * @return stdClass Table metadata settings as array { result: 0|1, data: object }; 
      */
-    public function test() : int
+    public function test() : stdClass
     {
         $result = 0;
+
         $type = Util::GetAttribute($_POST, 'type', "");
         if ("sql" === $type) {
-            $meta = new DBMeta($this->getCFG($_POST));
+            $meta = new DBMeta(Util::getCFG($_POST));
             if ($meta->testConnection()) {
                 $result = 1;
             }
@@ -227,55 +260,42 @@ class ImportModel extends AbstractModel
                 }
             }
         }
-        return $result;
+        return (object)[ 'result' => $result, 'data' => (object)[] ];
     }
 
     /**
      * Get Table metadata settings
      *
-     * @return array Table metadata settings as array
+     * @return stdClass Table metadata settings as array { result: 0|1, data: object }; 
      */
-    public function table() : array
+    public function table() : stdClass
     {
-        $result = array();
+        $result = 0;
+	$list = [];
         $type = Util::GetAttribute($_POST, 'type', "");
         if ("sql" === $type) {
-            $meta = new DBMeta($this->getCFG($_POST));
-            $result = $meta->tableMeta();
+            $meta = new DBMeta(Util::getCFG($_POST));
+            $list = $meta->tableMeta();
+            $result = 1;
         }
-        return $result;
+        return (object)[ 'result' => $result, 'data' => (object)[ 'list' => $list ] ];
     }
 
     /**
      * Get Table list for DB connection settings
      *
-     * @return array Tables in DB as array
+     * @return stdClass Tables in DB as array { result: 0|1, data: object }; 
      */
-    public function tablelist() : array
+    public function tablelist() : stdClass
     {
-        $result = array();
+        $result = 0;
+	$list = [];
         $type = Util::GetAttribute($_POST, 'type', "");
         if ("sql" === $type) {
             $meta = new DBMeta($this->getCFG($_POST));
-            $result = $meta->tableList();
+            $list = $meta->tableList();
+            $result = 1;
         }
-        return $result;
-    }
-
-    /**
-     * Get Table list for DB connection settings
-     *
-     * @return array DB connection settings as array
-     */
-    public function getCFG($arr) : array
-    {
-        return [
-            'host'  => Util::GetAttribute($arr, 'host', ""),
-            'user'  => Util::GetAttribute($arr, 'user', ""),
-            'pass'  => Util::GetAttribute($arr, 'pass', ""),
-            'name'  => Util::GetAttribute($arr, 'name', ""),
-            'code'  => Util::GetAttribute($arr, 'code', ""),
-            'table' => Util::GetAttribute($arr, 'table', "")
-    	];
+        return (object)[ 'result' => $result, 'data' => (object)[ 'list' => $list ] ];
     }
 }
