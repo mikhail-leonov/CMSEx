@@ -13,9 +13,16 @@ class DBFSourceTest extends TestCase
      *
      */
     use TestCaseEx;
-
-    public function testNothing()
+    
+    public function testInstance()
     {
-        $this->assertTrue(true);
+        $obj = new DBFsource();
+        $this->assertNotEmpty($obj);
+        $this->assertInstanceOf(DBFsource::class, $obj);
+
+        $obj = sourceFactory::build("dbf");
+        $this->assertNotEmpty($obj);
+        $this->assertInstanceOf(DBFsource::class, $obj);
     }
+
 }

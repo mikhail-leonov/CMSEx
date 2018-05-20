@@ -13,9 +13,16 @@ class SQLSourceTest extends TestCase
      *
      */
     use TestCaseEx;
-
-    public function testNothing()
+    
+    public function testInstance()
     {
-        $this->assertTrue(true);
+        $obj = new SQLsource();
+        $this->assertNotEmpty($obj);
+        $this->assertInstanceOf(SQLsource::class, $obj);
+
+        $obj = sourceFactory::build("sql");
+        $this->assertNotEmpty($obj);
+        $this->assertInstanceOf(SQLsource::class, $obj);
     }
+
 }

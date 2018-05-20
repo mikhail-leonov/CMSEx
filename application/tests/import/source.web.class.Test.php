@@ -13,9 +13,16 @@ class WebSourceTest extends TestCase
      *
      */
     use TestCaseEx;
-
-    public function testNothing()
+    
+    public function testInstance()
     {
-        $this->assertTrue(true);
+        $obj = new Websource();
+        $this->assertNotEmpty($obj);
+        $this->assertInstanceOf(Websource::class, $obj);
+
+        $obj = sourceFactory::build("web");
+        $this->assertNotEmpty($obj);
+        $this->assertInstanceOf(Websource::class, $obj);
     }
+
 }

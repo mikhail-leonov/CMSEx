@@ -14,8 +14,15 @@ class CSVSourceTest extends TestCase
      */
     use TestCaseEx;
 
-    public function testNothing()
+    public function testInstance()
     {
-        $this->assertTrue(true);
+        $obj = new CSVsource();
+        $this->assertNotEmpty($obj);
+        $this->assertInstanceOf(CSVsource::class, $obj);
+
+        $obj = sourceFactory::build("csv");
+        $this->assertNotEmpty($obj);
+        $this->assertInstanceOf(CSVsource::class, $obj);
     }
+
 }

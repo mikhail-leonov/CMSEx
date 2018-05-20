@@ -13,9 +13,16 @@ class SQLDestinationTest extends TestCase
      *
      */
     use TestCaseEx;
-
-    public function testNothing()
+    
+    public function testInstance()
     {
-        $this->assertTrue(true);
+        $obj = new SQLDestination();
+        $this->assertNotEmpty($obj);
+        $this->assertInstanceOf(SQLDestination::class, $obj);
+
+        $obj = DestinationFactory::build("sql");
+        $this->assertNotEmpty($obj);
+        $this->assertInstanceOf(SQLDestination::class, $obj);
     }
+
 }

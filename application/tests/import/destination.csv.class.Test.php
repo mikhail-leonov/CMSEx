@@ -14,8 +14,15 @@ class CSVDestinationTest extends TestCase
      */
     use TestCaseEx;
 
-    public function testNothing()
+    public function testInstance()
     {
-        $this->assertTrue(true);
+        $obj = new CSVDestination();
+        $this->assertNotEmpty($obj);
+        $this->assertInstanceOf(CSVDestination::class, $obj);
+
+        $obj = DestinationFactory::build("csv");
+        $this->assertNotEmpty($obj);
+        $this->assertInstanceOf(CSVDestination::class, $obj);
     }
+
 }

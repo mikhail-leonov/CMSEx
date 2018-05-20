@@ -13,9 +13,16 @@ class DBFDestinationTest extends TestCase
      *
      */
     use TestCaseEx;
-
-    public function testNothing()
+    
+    public function testInstance()
     {
-        $this->assertTrue(true);
+        $obj = new DBFDestination();
+        $this->assertNotEmpty($obj);
+        $this->assertInstanceOf(DBFDestination::class, $obj);
+
+        $obj = DestinationFactory::build("dbf");
+        $this->assertNotEmpty($obj);
+        $this->assertInstanceOf(DBFDestination::class, $obj);
     }
+
 }
