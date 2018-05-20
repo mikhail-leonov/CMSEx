@@ -74,7 +74,7 @@ final class DB
             $char = $cfg['char'];
         }
         $dsn = "mysql:host={$host};dbname={$name};charset={$char}";
-        $options = array( PDO::ATTR_PERSISTENT => true );
+        $options = [ PDO::ATTR_PERSISTENT => true ];
         $this->dbh = new PDO($dsn, $user, $pass, $options);
     }
     /**
@@ -253,7 +253,7 @@ final class DB
       	 */
     public function limit($limit1, $limit2)
     {
-        $this->limit = array( $limit1, $limit2 );
+        $this->limit = [ $limit1, $limit2 ];
         return $this;
     }
     /**
@@ -332,11 +332,11 @@ final class DB
         $this->sqlQuery = "";
         $this->query = "";
         $this->table = "";
-        $this->field = array();
-        $this->where = array();
-        $this->group = array();
-        $this->order = array();
-        $this->limit = array();
+        $this->field = [];
+        $this->where = [];
+        $this->group = [];
+        $this->order = [];
+        $this->limit = [];
         $this->distinct = "";
     }
     /**
@@ -554,7 +554,7 @@ final class DB
      */
     private function buildMap($rows)
     {
-        $result = array();
+        $result = [];
         if (!isset($this->map)) {
             $result = $rows;
         } else {
@@ -674,7 +674,7 @@ final class DB
     {
         $rows = $this->all();
 
-        $result = array();
+        $result = [];
         $rowCount = count($rows);
         if ($rowCount > 0) {
             $result = $rows[ Rand(0, $rowCount - 1) ];
@@ -711,7 +711,7 @@ class DBMeta
             $char = $cfg['char'];
         }
         $dsn = "mysql:host={$host};dbname={$name};charset={$char}";
-        $options = array( PDO::ATTR_PERSISTENT => true );
+        $options = [ PDO::ATTR_PERSISTENT => true ];
         $this->dbh = new PDO($dsn, $user, $pass, $options);
         $this->name = $name;
     }
@@ -742,7 +742,7 @@ class DBMeta
             $this->stmt->execute();
             $result = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            $result = array();
+            $result = [];
         }
         return $result;
     }
@@ -758,7 +758,7 @@ class DBMeta
             $this->stmt->execute();
             $result = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            $result = array();
+            $result = [];
         }
         return $result;
     }

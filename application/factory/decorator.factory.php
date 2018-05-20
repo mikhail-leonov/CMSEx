@@ -44,7 +44,7 @@ class DecoratorFactory extends AbstractFactory implements IDecoratorFactory
         if (file_exists($decoratorFileName)) {
             require_once($decoratorFileName);
             return new $decoratorName();
-  	}
+        }
         throw new DecoratorNotFoundException($decoratorName, $decoratorFileName);
     }
 }

@@ -15,7 +15,8 @@ class Timer
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->start();
     }
 
@@ -24,7 +25,8 @@ class Timer
      *
      * @return void
      */
-    public function start() {
+    public function start()
+    {
         $this->start = microtime(true);
     }
 
@@ -33,7 +35,8 @@ class Timer
      *
      * @return void
      */
-    private function stop() {
+    private function stop()
+    {
         $tis->stop = microtime(true);
     }
 
@@ -42,8 +45,9 @@ class Timer
      *
      * @return void
      */
-    public function time() {
+    public function time()
+    {
         $this->stop();
-	return ($this->stop - $this->start) * 1000;
+        return ($this->stop - $this->start) * 1000;
     }
 }

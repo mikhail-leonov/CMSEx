@@ -21,10 +21,10 @@ class RecipeModel extends AbstractModel
      */
     public function GetRecipies() : array
     {
-        $result = array();
+        $result = [];
         $selectedTags = Util::GetAlreadySelected("tag");
         if (count($selectedTags) > 0) {
-            $sqls = array();
+            $sqls = [];
             foreach ($selectedTags as $k => $tag) {
                 $tag_id = Util::GetAttribute($tag, 'tag_id', "");
                 if ($k == 0) {
@@ -62,10 +62,10 @@ class RecipeModel extends AbstractModel
      */
     public function SearchRecipies(array $params) : array
     {
-        $result = array();
+        $result = [];
         $q = Util::GetAttribute($params, 'q', '');
         if (!empty($q)) {
-            $where = array("entry_name LIKE '%{$q}%'");
+            $where = array("entry_name LIKE '%{$q}%' OR entry_text LIKE '%{$q}%'");
             $result = $this->db->select("*")->from("entries")->where($where)->all();
         }
         return $result;

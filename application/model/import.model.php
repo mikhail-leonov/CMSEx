@@ -20,7 +20,7 @@ class ImportModel extends AbstractModel
     /**
      * Get all rules stored in RULES dir
      *
-     * @return array Get Rules list 
+     * @return array Get Rules list
      */
     public function getRules() : array
     {
@@ -39,7 +39,7 @@ class ImportModel extends AbstractModel
      *
      * @var array $params Parameters
      *
-     * @return stdClass Save rule { result: 0|1, data: object }; 
+     * @return stdClass Save rule { result: 0|1, data: object };
      */
     public function save(array $params) : stdClass
     {
@@ -49,24 +49,23 @@ class ImportModel extends AbstractModel
         $title = Util::GetAttribute($settings, 'ruleTitle', '');
         $title = trim($title);
         if ('' !== $title) {
-
             $slug = str_replace(' ', '_', strtolower($title));
             $rule_file_name = RULES . $slug . ".rule.xml";
 
             foreach ($params['src'] as $k => &$r) {
-                $r = array( '@cdata' => $r );
+                $r = [ '@cdata' => $r ];
             }
             foreach ($params['dst'] as $k => &$r) {
-                $r = array( '@cdata' => $r );
+                $r = [ '@cdata' => $r ];
             }
             foreach ($params['rule'] as $k => &$r) {
-                $r = array( '@cdata' => $r );
+                $r = [ '@cdata' => $r ];
             }
             foreach ($params['key'] as $k => &$r) {
-                $r = array( '@cdata' => $r );
+                $r = [ '@cdata' => $r ];
             }
             foreach ($params['settings'] as $k => &$r) {
-                $r = array( '@cdata' => $r );
+                $r = [ '@cdata' => $r ];
             }
 
             $xml = Array2XML::createXML('root', $_POST);
@@ -82,18 +81,18 @@ class ImportModel extends AbstractModel
      *
      * @var array $params Parameters
      *
-     * @return stdClass Load rule { result: 0|1, data: object }; 
+     * @return stdClass Load rule { result: 0|1, data: object };
      */
     public function load(array $params) : stdClass
     {
         $result = 0;
-	$rule = [];
+        $rule = [];
         $rule_file_name = Util::GetAttribute($params, 'rule_file_name', '');
         $rule_file_name = RULES . $rule_file_name;
         if (file_exists($rule_file_name)) {
             $xml = file_get_contents($rule_file_name);
             $rule = XML2Array::createArray($xml);
-	    $result = 1;
+            $result = 1;
         }
         return (object)[ 'result' => $result, 'data' => (object)[ 'rule' => $rule ] ];
     }
@@ -103,7 +102,7 @@ class ImportModel extends AbstractModel
      *
      * @var array $params
      *
-     * @return stdClass Load rule result { result: 0|1, data: object }; 
+     * @return stdClass Load rule result { result: 0|1, data: object };
      */
     public function start(array $params) : stdClass
     {
@@ -149,7 +148,7 @@ class ImportModel extends AbstractModel
      */
     protected function run($src, $dst, $keys, $settings, $rule)
     {
-        $env = $this->buildEnv($src, $dst);
+        $env = $this->BuildEnv($src, $dst);
 
         require_once(LIB . 'html.class.php');
 
@@ -181,7 +180,7 @@ class ImportModel extends AbstractModel
      *
      * @return array
      */
-    protected function buildEnv($src, $dst) : array
+    protected function BuildEnv($src, $dst) : array
     {
         $result = [];
         foreach ($src as $name => $item) {
@@ -237,7 +236,7 @@ class ImportModel extends AbstractModel
     /**
      * Test connection rule settings
      *
-     * @return stdClass Table metadata settings as array { result: 0|1, data: object }; 
+     * @return stdClass Table metadata settings as array { result: 0|1, data: object };
      */
     public function test() : stdClass
     {
@@ -266,12 +265,12 @@ class ImportModel extends AbstractModel
     /**
      * Get Table metadata settings
      *
-     * @return stdClass Table metadata settings as array { result: 0|1, data: object }; 
+     * @return stdClass Table metadata settings as array { result: 0|1, data: object };
      */
     public function table() : stdClass
     {
         $result = 0;
-	$list = [];
+        $list = [];
         $type = Util::GetAttribute($_POST, 'type', "");
         if ("sql" === $type) {
             $meta = new DBMeta(Util::getCFG($_POST));
@@ -284,15 +283,15 @@ class ImportModel extends AbstractModel
     /**
      * Get Table list for DB connection settings
      *
-     * @return stdClass Tables in DB as array { result: 0|1, data: object }; 
+     * @return stdClass Tables in DB as array { result: 0|1, data: object };
      */
     public function tablelist() : stdClass
     {
         $result = 0;
-	$list = [];
+        $list = [];
         $type = Util::GetAttribute($_POST, 'type', "");
         if ("sql" === $type) {
-            $meta = new DBMeta($this->getCFG($_POST));
+            $meta = new DBMeta(Util::getCFG($_POST));
             $list = $meta->tableList();
             $result = 1;
         }

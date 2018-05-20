@@ -46,7 +46,8 @@ class ApiController extends AbstractController
      */
     public function index(array $params)
     {
-        header('Location: /');
+        $href = Util::GetAttribute($_GET, 'href', '/');
+        header("Location: {$href}");
     }
 
     /**
@@ -62,7 +63,8 @@ class ApiController extends AbstractController
         $apiModel = ModelFactory::build("api");
         $result = $apiModel->SelectTag();
 
-        header('Location: /');
+        $href = Util::GetAttribute($_GET, 'href', '/');
+        header("Location: {$href}");
     }
 
     /**
@@ -78,7 +80,8 @@ class ApiController extends AbstractController
         $apiModel = ModelFactory::build("api");
         $result = $apiModel->UnselectTag();
 
-        header('Location: /');
+        $href = Util::GetAttribute($_GET, 'href', '/');
+        header("Location: {$href}");
     }
 
     /**
@@ -125,12 +128,14 @@ class ApiController extends AbstractController
      */
     public function NewTag(array $params)
     {
-        $apiModel = ModelFactory::build("api");
-	$result = $apiModel->NewTag($_POST);
+        $params = array_merge($_POST, $_GET);
 
-        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-	$decorator = DecoratorFactory::build($decoratorName);
-	$result = $decorator->Decorate($result);
+        $apiModel = ModelFactory::build("api");
+        $result = $apiModel->NewTag($params);
+
+        $decoratorName = Util::GetAttribute($params, 'format', 'json');
+        $decorator = DecoratorFactory::build($decoratorName);
+        $result = $decorator->Decorate($result);
 
         print($result);
     }
@@ -145,12 +150,14 @@ class ApiController extends AbstractController
      */
     public function FindTags(array $params)
     {
-        $apiModel = ModelFactory::build("api");
-	$result = $apiModel->FindTags($_POST);
+        $params = array_merge($_POST, $_GET);
 
-        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-	$decorator = DecoratorFactory::build($decoratorName);
-	$result = $decorator->Decorate($result);
+        $apiModel = ModelFactory::build("api");
+        $result = $apiModel->FindTags($params);
+
+        $decoratorName = Util::GetAttribute($params, 'format', 'json');
+        $decorator = DecoratorFactory::build($decoratorName);
+        $result = $decorator->Decorate($result);
 
         print($result);
     }
@@ -165,12 +172,14 @@ class ApiController extends AbstractController
      */
     public function AssignTags(array $params)
     {
-        $apiModel = ModelFactory::build("api");
-	$result = $apiModel->AssignTags($_POST);
+        $params = array_merge($_POST, $_GET);
 
-        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-	$decorator = DecoratorFactory::build($decoratorName);
-	$result = $decorator->Decorate($result);
+        $apiModel = ModelFactory::build("api");
+        $result = $apiModel->AssignTags($params);
+
+        $decoratorName = Util::GetAttribute($params, 'format', 'json');
+        $decorator = DecoratorFactory::build($decoratorName);
+        $result = $decorator->Decorate($result);
 
 
         print($result);
@@ -186,12 +195,14 @@ class ApiController extends AbstractController
      */
     public function SaveEntry(array $params)
     {
-        $apiModel = ModelFactory::build("api");
-	$result = $apiModel->SaveEntry($_POST);
+        $params = array_merge($_POST, $_GET);
 
-        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-	$decorator = DecoratorFactory::build($decoratorName);
-	$result = $decorator->Decorate($result);
+        $apiModel = ModelFactory::build("api");
+        $result = $apiModel->SaveEntry($params);
+
+        $decoratorName = Util::GetAttribute($params, 'format', 'json');
+        $decorator = DecoratorFactory::build($decoratorName);
+        $result = $decorator->Decorate($result);
 
         print($result);
     }
@@ -206,12 +217,14 @@ class ApiController extends AbstractController
      */
     public function SaveNewEntry(array $params)
     {
-        $apiModel = ModelFactory::build("api");
-	$result = $apiModel->SaveNewEntry($_POST);
+        $params = array_merge($_POST, $_GET);
 
-        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-	$decorator = DecoratorFactory::build($decoratorName);
-	$result = $decorator->Decorate($result);
+        $apiModel = ModelFactory::build("api");
+        $result = $apiModel->SaveNewEntry($params);
+
+        $decoratorName = Util::GetAttribute($params, 'format', 'json');
+        $decorator = DecoratorFactory::build($decoratorName);
+        $result = $decorator->Decorate($result);
 
         print($result);
     }

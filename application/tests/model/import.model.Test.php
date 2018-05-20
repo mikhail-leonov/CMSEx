@@ -1,5 +1,6 @@
 <?php
 include_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/index.const');
+include_once(dirname(dirname(__FILE__)) . '/TestCaseEx.php');
 require_once(MODEL . 'import.model.php');
 
 
@@ -7,95 +8,108 @@ use PHPUnit\Framework\TestCase;
 
 class ImportModelTest extends TestCase
 {
+    /**
+     * TestCase class extention Trait
+     *
+     */
+    use TestCaseEx;
+
     public function testInstance()
     {
-	$obj = new ImportModel();
+        $obj = new ImportModel();
         $this->assertNotEmpty($obj);
-	$this->assertInstanceOf(ImportModel::class, $obj);
+        $this->assertInstanceOf(ImportModel::class, $obj);
+        
+        $obj = ModelFactory::build("import");
+        $this->assertNotEmpty($obj);
+        $this->assertInstanceOf(ImportModel::class, $obj);
     }
 
-    public function testgetRules()
+    public function testGetRules()
     {
-	$obj = new ImportModel();
-        $this->assertNotEmpty($obj);
-	$this->assertInstanceOf(ImportModel::class, $obj);
+        $methodName = "GetRules";
+        $obj = new ImportModel();
+        $this->assertClassMethodExist('ImportModel', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
 
-    public function testsave()
+    public function testSave()
     {
-	$obj = new ImportModel();
-        $this->assertNotEmpty($obj);
-	$this->assertInstanceOf(ImportModel::class, $obj);
+        $methodName = "save";
+        $obj = new ImportModel();
+        $this->assertClassMethodExist('ImportModel', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
 
-    public function testload()
+    public function testLoad()
     {
-	$obj = new ImportModel();
-        $this->assertNotEmpty($obj);
-	$this->assertInstanceOf(ImportModel::class, $obj);
+        $methodName = "load";
+        $obj = new ImportModel();
+        $this->assertClassMethodExist('ImportModel', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
 
-    public function teststart()
+    public function testStart()
     {
-	$obj = new ImportModel();
-        $this->assertNotEmpty($obj);
-	$this->assertInstanceOf(ImportModel::class, $obj);
+        $methodName = "start";
+        $obj = new ImportModel();
+        $this->assertClassMethodExist('ImportModel', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
 
-    public function testrun()
+    public function testRun()
     {
-	$obj = new ImportModel();
-        $this->assertNotEmpty($obj);
-	$this->assertInstanceOf(ImportModel::class, $obj);
+        $methodName = "run";
+        $obj = new ImportModel();
+        $this->assertClassMethodExist('ImportModel', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
 
-    public function testbuildEnv()
+    public function testBuildEnv()
     {
-	$obj = new ImportModel();
-        $this->assertNotEmpty($obj);
-	$this->assertInstanceOf(ImportModel::class, $obj);
+        $methodName = "BuildEnv";
+        $obj = new ImportModel();
+        $this->assertClassMethodExist('ImportModel', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
 
-    public function testproccess()
+    public function testProccess()
     {
-	$obj = new ImportModel();
-        $this->assertNotEmpty($obj);
-	$this->assertInstanceOf(ImportModel::class, $obj);
+        $methodName = "proccess";
+        $obj = new ImportModel();
+        $this->assertClassMethodExist('ImportModel', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
 
-    public function testproccessItem()
+    public function testProccessItem()
     {
-	$obj = new ImportModel();
-        $this->assertNotEmpty($obj);
-	$this->assertInstanceOf(ImportModel::class, $obj);
+        $methodName = "proccessItem";
+        $obj = new ImportModel();
+        $this->assertClassMethodExist('ImportModel', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
 
-    public function testtest()
+    public function testTest()
     {
-	$obj = new ImportModel();
-        $this->assertNotEmpty($obj);
-	$this->assertInstanceOf(ImportModel::class, $obj);
+        $methodName = "test";
+        $obj = new ImportModel();
+        $this->assertClassMethodExist('ImportModel', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
 
-    public function testtable()
+    public function testTable()
     {
-	$obj = new ImportModel();
-        $this->assertNotEmpty($obj);
-	$this->assertInstanceOf(ImportModel::class, $obj);
+        $methodName = "table";
+        $obj = new ImportModel();
+        $this->assertClassMethodExist('ImportModel', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
 
-    public function testtablelist()
+    public function testTableList()
     {
-	$obj = new ImportModel();
-        $this->assertNotEmpty($obj);
-	$this->assertInstanceOf(ImportModel::class, $obj);
+        $methodName = "tablelist";
+        $obj = new ImportModel();
+        $this->assertClassMethodExist('ImportModel', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
-
-    public function testgetCFG()
-    {
-	$obj = new ImportModel();
-        $this->assertNotEmpty($obj);
-	$this->assertInstanceOf(ImportModel::class, $obj);
-    }
-
 }

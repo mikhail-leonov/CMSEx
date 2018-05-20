@@ -20,9 +20,8 @@ class JsonDecorator extends AbstractDecorator
      *
      * @return string decorated Object
      */
-    public function Decorate(stdClass $obj) : string {
-
-	return json_encode($obj, JSON_FORCE_OBJECT);
-    
+    public function Decorate(stdClass $obj) : string
+    {
+        return json_encode($obj, JSON_FORCE_OBJECT);
     }
 }

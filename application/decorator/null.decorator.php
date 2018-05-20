@@ -18,11 +18,10 @@ class NullDecorator extends AbstractDecorator
      *
      * @var stdClass $obj parameters
      *
-     * @return stdClass non-decorated Object
+     * @return any non-decorated Object
      */
-    public function Decorate(stdClass $obj) : stdClass {
-    
-	return $obj;
-    
+    public function Decorate(stdClass $obj) : string
+    {
+        return print_r($obj, 1);
     }
 }

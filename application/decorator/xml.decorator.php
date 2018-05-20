@@ -21,11 +21,10 @@ class XmlDecorator extends AbstractDecorator
      *
      * @return string decorated Object
      */
-    public function Decorate(stdClass $obj) : string {
-    
-	$obj = Util::obj2arr( $obj );
-	$xml = Array2XML::createXML('root', $obj);
-	return $xml->saveXML();
-    
+    public function Decorate(stdClass $obj) : string
+    {
+        $obj = Util::obj2arr($obj);
+        $xml = Array2XML::createXML('root', $obj);
+        return $xml->saveXML();
     }
 }

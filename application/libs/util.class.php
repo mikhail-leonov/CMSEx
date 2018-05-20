@@ -5,103 +5,145 @@
     class Util
     {
 
-	public static function obj2arr( $obj ) {
+    /**
+     * Get Table list for DB connection settings
+     *
+     * @return array DB connection settings as array
+     */
+        public static function getCFG($arr) : array
+        {
+            return [
+            'host'  => Util::GetAttribute($arr, 'host', ""),
+            'user'  => Util::GetAttribute($arr, 'user', ""),
+            'pass'  => Util::GetAttribute($arr, 'pass', ""),
+            'name'  => Util::GetAttribute($arr, 'name', ""),
+            'code'  => Util::GetAttribute($arr, 'code', ""),
+            'table' => Util::GetAttribute($arr, 'table', "")
+        ];
+        }
 
-    		$array = (array) $obj;
-    		foreach ($array as &$attribute ) {
-      		    if ( is_object($attribute) ) {
-		        $attribute = self::obj2arr($attribute);
-		    }
-		}
-		return $array;
-	}
+        public static function obj2arr($obj)
+        {
+            $array = (array) $obj;
+            foreach ($array as &$attribute) {
+                if (is_object($attribute)) {
+                    $attribute = self::obj2arr($attribute);
+                }
+            }
+            return $array;
+        }
         /// <summary>
         /// FindEntries
         /// </summary>
         public static function FindTag($obj, $part, &$arr)
         {
-	    $result = 0;
+            $result = 0;
             $where = [ "tag_name LIKE '%$part%'" ];
             $found = $obj->db->select("*")->from("tags")->where($where)->first();
-	    if (false !== $found) {
-		$arr[ $found['tag_id'] ] = $found;
-	        $result = 1;
-	    } 
+            if (false !== $found) {
+                $arr[ $found['tag_id'] ] = $found;
+                $result = 1;
+            }
             $where = [ "tag_text LIKE '%$part%'" ];
             $found = $obj->db->select("*")->from("tags")->where($where)->first();
-	    if (false !== $found) {
-	        $arr[ $found['tag_id'] ] = $found;
-		$result = 1;
-	    } 
-	    return $result;	
-	}
+            if (false !== $found) {
+                $arr[ $found['tag_id'] ] = $found;
+                $result = 1;
+            }
+            return $result;
+        }
         /// <summary>
         /// FindEntries
         /// </summary>
-	public static function possibleWord($part) {
-		$result = 1; 
-		if (mb_strlen($part) < 3) { $result = 0; }
-		if (is_int   ($part)    ) { $result = 0; }
-		return $result;
-	}
+        public static function possibleWord($part)
+        {
+            $result = 1;
+            if (mb_strlen($part) < 3) {
+                $result = 0;
+            }
+            if (is_int($part)) {
+                $result = 0;
+            }
+            return $result;
+        }
 
         /// <summary>
         /// FindEntries
         /// </summary>
         public static function FindTags($obj, $text)
         {
-      	    $arr = [];
-	    $result = 0;
+            $arr = [];
+            $result = 0;
 
             if (!empty($text)) {
-	        $parts = self::explodeEx( ["\n", " ", ","], $text);
-	        foreach($parts as $k => $part) {
-		    $part = trim($part);
-	  	    if ( '' !==  $part) {
-	  	        
-			if ( self::possibleWord($part) ) {
-
-	  	            if (self::FindTag($obj, $part, $arr) ) { $result = 1; }
-			    if (mb_strlen($part) >= 4) { $part = mb_substr($part, 0, -1); if ( self::FindTag($obj, $part, $arr) ) { $result = 1; } }
-			    if (mb_strlen($part) >= 4) { $part = mb_substr($part, 0, -1); if ( self::FindTag($obj, $part, $arr) ) { $result = 1; } }
-			    if (mb_strlen($part) >= 4) { $part = mb_substr($part, 0, -1); if ( self::FindTag($obj, $part, $arr) ) { $result = 1; } }
-			    if (mb_strlen($part) >= 4) { $part = mb_substr($part, 0, -1); if ( self::FindTag($obj, $part, $arr) ) { $result = 1; } }
-
-			}
- 		    }
-  	        } 
+                $parts = self::explodeEx(["\n", " ", ","], $text);
+                foreach ($parts as $k => $part) {
+                    $part = trim($part);
+                    if ('' !==  $part) {
+                        if (self::possibleWord($part)) {
+                            if (self::FindTag($obj, $part, $arr)) {
+                                $result = 1;
+                            }
+                            if (mb_strlen($part) >= 4) {
+                                $part = mb_substr($part, 0, -1);
+                                if (self::FindTag($obj, $part, $arr)) {
+                                    $result = 1;
+                                }
+                            }
+                            if (mb_strlen($part) >= 4) {
+                                $part = mb_substr($part, 0, -1);
+                                if (self::FindTag($obj, $part, $arr)) {
+                                    $result = 1;
+                                }
+                            }
+                            if (mb_strlen($part) >= 4) {
+                                $part = mb_substr($part, 0, -1);
+                                if (self::FindTag($obj, $part, $arr)) {
+                                    $result = 1;
+                                }
+                            }
+                            if (mb_strlen($part) >= 4) {
+                                $part = mb_substr($part, 0, -1);
+                                if (self::FindTag($obj, $part, $arr)) {
+                                    $result = 1;
+                                }
+                            }
+                        }
+                    }
+                }
             }
-	    return [ 'result' => $result, 'data' => $arr ];
-	}
+            return [ 'result' => $result, 'data' => $arr ];
+        }
 
-	function mb_ucfirst($str) {
-  		$fc = mb_strtoupper(mb_substr($str, 0, 1)); return $fc.mb_substr($str, 1);	
-	}
+        public function mb_ucfirst($str)
+        {
+            $fc = mb_strtoupper(mb_substr($str, 0, 1));
+            return $fc.mb_substr($str, 1);
+        }
 
         /// <summary>
         /// Find Tags By Id
         /// </summary>
         public static function FindTagsById($obj, $ids)
         {
-      	    $arr = [];
-	    $result = 0;
+            $arr = [];
+            $result = 0;
 
             if (!empty($ids)) {
-	        foreach($ids as $k => $id) {
-		    $id = trim($id);
-	  	    if ( '' !==  $id) {
-	  	        
+                foreach ($ids as $k => $id) {
+                    $id = trim($id);
+                    if ('' !==  $id) {
                         $where = [ "tag_id" => $id ];
                         $found = $obj->db->select("*")->from("tags")->where($where)->first();
-	                if (false !== $found) {
-	                    $arr[ $found['tag_id'] ] = $found;
-		            $result = 1;
-	                } 
- 		    }
-  	        } 
+                        if (false !== $found) {
+                            $arr[ $found['tag_id'] ] = $found;
+                            $result = 1;
+                        }
+                    }
+                }
             }
-	    return [ 'result' => $result, 'data' => $arr ];
-	}
+            return [ 'result' => $result, 'data' => $arr ];
+        }
 
         /// <summary>
         /// Arr To xml Cnvertor
@@ -138,10 +180,10 @@
         /// </summary>
         public static function GetAlreadySelected($name)
         {
-            $result = array();
-            $elements = Util::GetAttribute($_COOKIE, $name, array());
+            $result = [];
+            $elements = Util::GetAttribute($_COOKIE, $name, []);
             foreach ($elements as $elements_id => $elements_title) {
-                $result[] = array( "tag_id" => $elements_id, "tag_name" => $elements_title );
+                $result[] = [ "tag_id" => $elements_id, "tag_name" => $elements_title ];
             }
             return $result;
         }
@@ -160,7 +202,7 @@
         /// </summary>
         public static function FilterSelectedTags($selected, $tags)
         {
-            $result = array();
+            $result = [];
             foreach ($tags as $k => $tag) {
                 if (!Util::IsTagSelected($selected, $tag)) {
                     $result[] = $tag;

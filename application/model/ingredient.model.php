@@ -21,7 +21,7 @@ class IngredientModel extends AbstractModel
      */
     public function getIngredients() : array
     {
-        $result = array();
+        $result = [];
         return $result;
     }
     /**
@@ -33,7 +33,7 @@ class IngredientModel extends AbstractModel
      */
     public function getEntryIngredients(string $entry_id) : array
     {
-        $result = array();
+        $result = [];
         return $result;
     }
 }

@@ -17,7 +17,7 @@ interface IDecorator
      *
      * @return string decorated Object
      */
-    public function Decorate(stdClass $obj);
+    public function Decorate(stdClass $obj) : string;
 }
 
 /**
@@ -38,5 +38,5 @@ abstract class AbstractDecorator extends AbstractObject implements IDecorator
      *
      * @return string decorated Object
      */
-    public abstract function Decorate(stdClass $obj);
+    abstract public function Decorate(stdClass $obj) : string;
 }

@@ -17,7 +17,7 @@
         /// <summary>
         /// Vars
         /// </summary>
-        public $vars = array();
+        public $vars = [];
 
         /// <summary>
         /// Constructor
@@ -109,8 +109,8 @@
         /// </summary>
         public function GetKeys($section)
         {
-            $result = array();
-            $tmpArray = Util::GetAttribute($this->vars, $section, array());
+            $result = [];
+            $tmpArray = Util::GetAttribute($this->vars, $section, []);
             foreach ($tmpArray as $key => $value) {
                 $newValue = $this->Get($section, $key, "");
                 $result[ $key ] = $newValue;
@@ -123,8 +123,8 @@
         /// </summary>
         public function GetRawKeys($section)
         {
-            $result = array();
-            $tmpArray = Util::GetAttribute($this->vars, $section, array());
+            $result = [];
+            $tmpArray = Util::GetAttribute($this->vars, $section, []);
             foreach ($tmpArray as $key => $value) {
                 $newValue = $this->GetRaw($section, $key, "");
                 $result[ $key ] = $newValue;
@@ -137,7 +137,7 @@
         /// </summary>
         public function GetAll()
         {
-            $result = array();
+            $result = [];
             foreach ($this->vars as $key => $section) {
                 $result[ $key ] = $this->GetKeys($key);
             }
@@ -149,7 +149,7 @@
         /// </summary>
         public function GetRawAll()
         {
-            $result = array();
+            $result = [];
             foreach ($this->vars as $key => $section) {
                 $result[ $key ] = $this->GetRawKeys($key);
             }

@@ -19,11 +19,10 @@ class ArrayDecorator extends AbstractDecorator
      *
      * @var stdClass $obj parameters
      *
-     * @return stdClass array decorated Object
+     * @return array array decorated Object
      */
-    public function Decorate(stdClass $obj) : stdClass {
-    
-	return Util::obj2arr( $obj );
-    
+    public function Decorate(stdClass $obj) : string
+    {
+        return print_r(Util::obj2arr($obj), 1);
     }
 }

@@ -63,31 +63,31 @@ class EntryController extends AbstractController
         $entry_id = Util::GetAttribute($params, 0, "0");
         
         $entryModel = ModelFactory::build("entry");
-            $entry      = $entryModel->GetEntryData($entry_id);
+        $entry      = $entryModel->GetEntryData($entry_id);
 
         $tagModel   = ModelFactory::build("tag");
-            $groups     = $tagModel->getGroups();
-            $entry_tags = $tagModel->getEntryTags($entry_id);
-	    $tags       = $tagModel->getTags();
-  	    $selected   = $tagModel->getSelectedTags();
+        $groups     = $tagModel->getGroups();
+        $entry_tags = $tagModel->getEntryTags($entry_id);
+        $tags       = $tagModel->getTags();
+        $selected   = $tagModel->getSelectedTags();
 
         $pageView   = ViewFactory::build("page.page");
 
-            $leftmenuView = ViewFactory::build("left_menu_ex.part");
-                $leftmenuView->assign("entry", $entry);
-                $leftmenuView->assign("selected", $selected);
-                $leftmenuView->assign("tags", $tags);
-                $leftmenuView->assign("groups", $groups);
-            $left_menu = $leftmenuView->fetch();
+        $leftmenuView = ViewFactory::build("left_menu_ex.part");
+        $leftmenuView->assign("entry", $entry);
+        $leftmenuView->assign("selected", $selected);
+        $leftmenuView->assign("tags", $tags);
+        $leftmenuView->assign("groups", $groups);
+        $left_menu = $leftmenuView->fetch();
             
         $pageView->assign("left_menu", $left_menu);
 
-            $entryviewView = ViewFactory::build("entry_view.part");
-                $entryviewView->assign("groups", $groups);
-                $entryviewView->assign("entry_tags", $entry_tags);
-                $entryviewView->assign("entry", $entry);
-                $entryviewView->assign("href", $href);
-   	    $content = $entryviewView->fetch();
+        $entryviewView = ViewFactory::build("entry_view.part");
+        $entryviewView->assign("groups", $groups);
+        $entryviewView->assign("entry_tags", $entry_tags);
+        $entryviewView->assign("entry", $entry);
+        $entryviewView->assign("href", $href);
+        $content = $entryviewView->fetch();
 
         $pageView->assign("content", $content);
 
@@ -100,7 +100,7 @@ class EntryController extends AbstractController
      *
      * @var array $params parameters
      *
-     * @return string
+     * @return void
      */
     public function print(array $params)
     {
@@ -109,18 +109,18 @@ class EntryController extends AbstractController
         $entry_id = Util::GetAttribute($params, 0, "0");
 
         $entryModel = ModelFactory::build("entry");
-            $entry      = $entryModel->GetEntryData($entry_id);
+        $entry      = $entryModel->GetEntryData($entry_id);
 
         $tagModel = ModelFactory::build("tag");
-            $entry_tags = $tagModel->getEntryTags($entry_id);
+        $entry_tags = $tagModel->getEntryTags($entry_id);
 
         $pageView     = ViewFactory::build("print.page");
 
         $entryviewView = ViewFactory::build("entry_print.part");
-            $entryviewView->assign("entry_tags", $entry_tags);
-            $entryviewView->assign("entry", $entry);
-            $entryviewView->assign("href", $href);
-	    $content = $entryviewView->fetch();
+        $entryviewView->assign("entry_tags", $entry_tags);
+        $entryviewView->assign("entry", $entry);
+        $entryviewView->assign("href", $href);
+        $content = $entryviewView->fetch();
 
         $pageView->assign("content", $content);
         
@@ -142,31 +142,31 @@ class EntryController extends AbstractController
         $entry_id = Util::GetAttribute($params, 0, "0");
 
         $entryModel = ModelFactory::build("entry");
-            $entry = $entryModel->GetEntryData($entry_id);
+        $entry = $entryModel->GetEntryData($entry_id);
 
         $tagModel   = ModelFactory::build("tag");
-            $groups     = $tagModel->getGroups();
-            $entry_tags = $tagModel->getEntryTags($entry_id);
-	    $tags       = $tagModel->getTags();
-  	    $selected   = $tagModel->getSelectedTags();
+        $groups     = $tagModel->getGroups();
+        $entry_tags = $tagModel->getEntryTags($entry_id);
+        $tags       = $tagModel->getTags();
+        $selected   = $tagModel->getSelectedTags();
 
         $pageView     = ViewFactory::build("edit.page");
 
-            $leftmenuView = ViewFactory::build("left_menu_ex.part");
-                $leftmenuView->assign("entry", $entry);
-                $leftmenuView->assign("selected", $selected);
-                $leftmenuView->assign("tags", $tags);
-                $leftmenuView->assign("groups", $groups);
-            $left_menu = $leftmenuView->fetch();
+        $leftmenuView = ViewFactory::build("left_menu_ex.part");
+        $leftmenuView->assign("entry", $entry);
+        $leftmenuView->assign("selected", $selected);
+        $leftmenuView->assign("tags", $tags);
+        $leftmenuView->assign("groups", $groups);
+        $left_menu = $leftmenuView->fetch();
 
         $pageView->assign("left_menu", $left_menu);
 
-            $entryviewView = ViewFactory::build("entry_edit.part");
-                $entryviewView->assign("groups", $groups);
-                $entryviewView->assign("entry_tags", $entry_tags);
-                $entryviewView->assign("entry", $entry);
-                $entryviewView->assign("href", $href);
-   	    $content = $entryviewView->fetch();
+        $entryviewView = ViewFactory::build("entry_edit.part");
+        $entryviewView->assign("groups", $groups);
+        $entryviewView->assign("entry_tags", $entry_tags);
+        $entryviewView->assign("entry", $entry);
+        $entryviewView->assign("href", $href);
+        $content = $entryviewView->fetch();
 
         $pageView->assign("content", $content);
 
@@ -186,27 +186,26 @@ class EntryController extends AbstractController
         $href = Util::GetAttribute($_SERVER, 'HTTP_REFERER', '/');
 
         $tagModel   = ModelFactory::build("tag");
-            $groups     = $tagModel->getGroups();
-	    $tags       = $tagModel->getTags();
-  	    $selected   = $tagModel->getSelectedTags();
+        $groups     = $tagModel->getGroups();
+        $tags       = $tagModel->getTags();
+        $selected   = $tagModel->getSelectedTags();
 
         $pageView     = ViewFactory::build("edit.page");
 
-            $leftmenuView = ViewFactory::build("left_menu.part");
-                $leftmenuView->assign("selected", $selected);
-                $leftmenuView->assign("tags", $tags);
-                $leftmenuView->assign("groups", $groups);
-            $left_menu = $leftmenuView->fetch();
+        $leftmenuView = ViewFactory::build("left_menu.part");
+        $leftmenuView->assign("selected", $selected);
+        $leftmenuView->assign("tags", $tags);
+        $leftmenuView->assign("groups", $groups);
+        $left_menu = $leftmenuView->fetch();
 
         $pageView->assign("left_menu", $left_menu);
 
-            $entryviewView = ViewFactory::build("entry_new.part");
-                $entryviewView->assign("href", $href);
-  	    $content = $entryviewView->fetch();
+        $entryviewView = ViewFactory::build("entry_new.part");
+        $entryviewView->assign("href", $href);
+        $content = $entryviewView->fetch();
 
         $pageView->assign("content", $content);
 
         $pageView->display();
     }
-
 }

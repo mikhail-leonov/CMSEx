@@ -1,5 +1,6 @@
 <?php
 include_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/index.const');
+include_once(dirname(dirname(__FILE__)) . '/TestCaseEx.php');
 require_once(MODEL . 'ingredient.model.php ');
 
 
@@ -7,29 +8,44 @@ use PHPUnit\Framework\TestCase;
 
 class IngredientModelTest extends TestCase
 {
+    /**
+     * TestCase class extention Trait
+     *
+     */
+    use TestCaseEx;
+
     public function testInstance()
     {
-	$obj = new IngredientModel();
+        $obj = new IngredientModel();
         $this->assertNotEmpty($obj);
-	$this->assertInstanceOf(IngredientModel::class, $obj);
+        $this->assertInstanceOf(IngredientModel::class, $obj);
+        
+        $obj = ModelFactory::build("ingredient");
+        $this->assertNotEmpty($obj);
+        $this->assertInstanceOf(IngredientModel::class, $obj);
     }
 
     public function testgetIngredients()
     {
-	$obj = new IngredientModel();
-	$objs = $obj->getIngredients();
+        $methodName = "getIngredients";
+        $obj = new IngredientModel();
+        $this->assertClassMethodExist('IngredientModel', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
 
-	$this->assertInternalType('array', $objs);
+        $objs = $obj->getIngredients();
+        $this->assertInternalType('array', $objs);
         $this->assertEquals(0, count($objs));
     }
 
     public function testgetEntryIngredients()
     {
-	$obj = new IngredientModel();
-	$objs = $obj->getEntryIngredients(0);
+        $methodName = "getEntryIngredients";
+        $obj = new IngredientModel();
+        $this->assertClassMethodExist('IngredientModel', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
 
-	$this->assertInternalType('array', $objs);
+        $objs = $obj->getEntryIngredients(0);
+        $this->assertInternalType('array', $objs);
         $this->assertEquals(0, count($objs));
     }
-
 }

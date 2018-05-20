@@ -1,5 +1,6 @@
 <?php
 include_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/index.const');
+include_once(dirname(dirname(__FILE__)) . '/TestCaseEx.php');
 require_once(CONTROLLER . 'import.controller.php');
 
 
@@ -7,9 +8,15 @@ use PHPUnit\Framework\TestCase;
 
 class ImportControllerTest extends TestCase
 {
+    /**
+     * TestCase class extention Trait
+     *
+     */
+    use TestCaseEx;
+
     public function testName()
     {
-	$obj = new ImportController();
+        $obj = new ImportController();
         $this->assertNotEmpty($obj);
         $this->assertNotEmpty($obj->name);
         $this->assertEquals($obj->name, 'import');
@@ -18,9 +25,9 @@ class ImportControllerTest extends TestCase
 
     public function testControllerName()
     {
-	$obj = new ImportController();
-	$obj->setControllerName();
-	
+        $obj = new ImportController();
+        $obj->setControllerName();
+    
         $this->assertNotEmpty($obj);
         $this->assertNotEmpty($obj->name);
         $this->assertEquals($obj->name, 'import');
@@ -29,47 +36,61 @@ class ImportControllerTest extends TestCase
     
     public function testIndex()
     {
-	$obj = new ImportController();
+        $methodName = "index";
+        $obj = new ImportController();
         $this->assertNotEmpty($obj);
-
+        $this->assertClassMethodExist('ImportController', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
     
     public function testLoad()
     {
-	$obj = new ImportController();
+        $methodName = "load";
+        $obj = new ImportController();
         $this->assertNotEmpty($obj);
-
+        $this->assertClassMethodExist('ImportController', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
     
     public function testSave()
     {
-	$obj = new ImportController();
+        $methodName = "save";
+        $obj = new ImportController();
         $this->assertNotEmpty($obj);
-
+        $this->assertClassMethodExist('ImportController', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
     
     public function testStart()
     {
-	$obj = new ImportController();
+        $methodName = "start";
+        $obj = new ImportController();
         $this->assertNotEmpty($obj);
-
+        $this->assertClassMethodExist('ImportController', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
     public function testTest()
     {
-	$obj = new ImportController();
+        $methodName = "test";
+        $obj = new ImportController();
         $this->assertNotEmpty($obj);
-
+        $this->assertClassMethodExist('ImportController', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
     public function testTable()
     {
-	$obj = new ImportController();
+        $methodName = "table";
+        $obj = new ImportController();
         $this->assertNotEmpty($obj);
-
+        $this->assertClassMethodExist('ImportController', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
     public function testTablelist()
     {
-	$obj = new ImportController();
+        $methodName = "tablelist";
+        $obj = new ImportController();
         $this->assertNotEmpty($obj);
-
+        $this->assertClassMethodExist('ImportController', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
 }

@@ -7,13 +7,13 @@ class Router
     /** @var null The controller */
     private $url_controller = null;
 
-    /** @var null The method (of the above controller), often also named "action" */
+    /** @var null controller "action" */
     private $url_action = null;
 
-    /** @var array Parameters */
-    private $url_parameters = array();
+    /** @var array Action Parameters */
+    private $url_parameters = [];
 
-    /** @var null Parameters */
+    /** @var null Language */
     private $language = null;
 
     /**
@@ -33,35 +33,26 @@ class Router
      */
     public function route()
     {
-
-        // create array with URL parts in $url
         $this->splitUrl();
 
         $controllerFileName = CONTROLLER . $this->url_controller . '.controller.php';
 
-        // check for controller: does such a controller exist ?
         if (file_exists($controllerFileName)) {
-
-            // if so, then load this file and create this controller
             require($controllerFileName);
             $controllerClassName = ucfirst($this->url_controller) . "Controller" ;
 
             $this->url_controller = new $controllerClassName();
 
-            // check for method: does such a method exist in the controller ?
             if (method_exists($this->url_controller, $this->url_action)) {
-                // just call the method wit parameters array
                 $this->url_controller->{$this->url_action}($this->url_parameters);
             } else {
-                // default/fallback: call the index() method of a selected controller
-                $this->url_controller->index(array());
+                $this->url_controller->index([]);
             }
         } else {
-            // invalid URL, so simply show home/index
             $controllerFileName = CONTROLLER . 'home.controller.php';
             require($controllerFileName);
             $home = new HomeController();
-            $home->index(array());
+            $home->index([]);
         }
     }
     

@@ -42,8 +42,8 @@ class TagModel extends AbstractModel
      */
     public function getTags() : array
     {
-	$selected = Util::GetAlreadySelected("tag");
-	$order = ['tag_name' => 'ASC'];
+        $selected = Util::GetAlreadySelected("tag");
+        $order = ['tag_name' => 'ASC'];
         $tags = $this->db->select("*")->from("tags")->order($order)->all();
         return Util::FilterSelectedTags($selected, $tags);
     }
@@ -68,7 +68,7 @@ class TagModel extends AbstractModel
             $splitter = ",";
         }
         $where = [ "tag_id in ($tag_ids)" ];
-	$order = [ 'tag_group_id' => 'ASC' ];
+        $order = [ 'tag_group_id' => 'ASC' ];
         return $this->db->select("*")->from("tags")->where($where)->order($order)->all();
     }
 }

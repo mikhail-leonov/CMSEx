@@ -5,6 +5,7 @@
 require_once(CONTROLLER . 'abstract.controller.php');
 require_once(FACTORY . 'model.factory.php');
 require_once(FACTORY . 'view.factory.php');
+require_once(FACTORY . 'decorator.factory.php ');
 require_once(LIB . 'xml.class.php');
 
 /**
@@ -51,7 +52,7 @@ class ImportController extends AbstractController
 
         $importModel = ModelFactory::build("import");
 
-	$rules = $importModel->getRules();
+        $rules = $importModel->getRules();
         $importView->assign("rules", $rules);
 
         $pageView->assign("content", $importView->fetch());
@@ -64,7 +65,7 @@ class ImportController extends AbstractController
      *
      * @var array $params parameters
      *
-     * @return void 
+     * @return void
      */
     public function load(array $params)
     {
@@ -72,9 +73,9 @@ class ImportController extends AbstractController
         $result = $importModel->load($_POST);
 
         $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-	$decorator = DecoratorFactory::build($decoratorName);
-	$result = $decorator->Decorate($result);
-	
+        $decorator = DecoratorFactory::build($decoratorName);
+        $result = $decorator->Decorate($result);
+    
         print($result);
     }
 
@@ -92,8 +93,8 @@ class ImportController extends AbstractController
         $result = $importModel->save($_POST);
 
         $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-	$decorator = DecoratorFactory::build($decoratorName);
-	$result = $decorator->Decorate($result);
+        $decorator = DecoratorFactory::build($decoratorName);
+        $result = $decorator->Decorate($result);
         
         print($result);
     }
@@ -112,8 +113,8 @@ class ImportController extends AbstractController
         $result = $importModel->start($_POST);
         
         $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-	$decorator = DecoratorFactory::build($decoratorName);
-	$result = $decorator->Decorate($result);
+        $decorator = DecoratorFactory::build($decoratorName);
+        $result = $decorator->Decorate($result);
         
         print($result);
     }
@@ -132,8 +133,8 @@ class ImportController extends AbstractController
         $result = $importModel->test();
         
         $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-	$decorator = DecoratorFactory::build($decoratorName);
-	$result = $decorator->Decorate($result);
+        $decorator = DecoratorFactory::build($decoratorName);
+        $result = $decorator->Decorate($result);
         
         print($result);
     }
@@ -152,8 +153,8 @@ class ImportController extends AbstractController
         $result = $importModel->table();
         
         $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-	$decorator = DecoratorFactory::build($decoratorName);
-	$result = $decorator->Decorate($result);
+        $decorator = DecoratorFactory::build($decoratorName);
+        $result = $decorator->Decorate($result);
         
         print($result);
     }
@@ -171,8 +172,8 @@ class ImportController extends AbstractController
         $result = $importModel->tablelist();
         
         $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-	$decorator = DecoratorFactory::build($decoratorName);
-	$result = $decorator->Decorate($result);
+        $decorator = DecoratorFactory::build($decoratorName);
+        $result = $decorator->Decorate($result);
         
         print($result);
     }

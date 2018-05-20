@@ -24,12 +24,12 @@ class EntryModel extends AbstractModel
     public function GetEntryData(string $entry_id) : array
     {
         $result = [];
-        if (intval($entry_id) > 0) {
+        if (!empty($entry_id)) {
             $where = [ "entry_id" => $entry_id ];
             $entry = $this->db->select("*")->from("entries")->where($where)->first();
-	    if (false !== $entry) {
-		$result = $entry;
-	    }
+            if (false !== $entry) {
+                $result = $entry;
+            }
         }
         return $result;
     }
@@ -48,15 +48,19 @@ class EntryModel extends AbstractModel
     public function UpdateEntry(string $entry_id, string $entry_name, string $entry_text) : int
     {
         $result = 0;
-        $where = [ "entry_id" => $entry_id ];
-        $fields = [ "entry_name" => $entry_name, "entry_text" => $entry_text ];
-        $result = $this->db->update($fields)->into("entries")->where($where)->exec();
+	if (!empty($entry_id)) {
+            $where = [ "entry_id" => $entry_id ];
+            $fields = [ "entry_name" => $entry_name, "entry_text" => $entry_text ];
+            if (false !== $this->db->update($fields)->into("entries")->where($where)->exec()) {
+                $result = 1;
+	    }
+        }
         return $result;
     }
 
 
     /**
-     * Insert New Entry in Entries table 
+     * Insert New Entry in Entries table
      *
      * @var string $entry_name
      *
@@ -66,10 +70,17 @@ class EntryModel extends AbstractModel
      */
     public function CreateEntry(string $entry_name, string $entry_text) : int
     {
-        $fields = array("entry_name" => $entry_name, "entry_text" => $entry_text);
-        $this->db->insert($fields)->into("entries")->exec();
-	$record = $this->db->select("*")->from("entries")->where($fields)->first();
-        return $record['entry_id'];
+        $result = 0;
+	if (!empty($entry_name)) {
+	    if (!empty($entry_text)) {
+                $fields = [ "entry_name" => $entry_name, "entry_text" => $entry_text ];
+                $this->db->insert($fields)->into("entries")->exec();
+                $record = $this->db->select("*")->from("entries")->where($fields)->first();
+                if (false !== $record) {
+                    $result = $record['entry_id'];
+	        }
+            }
+	}
+        return $result;
     }
-
 }

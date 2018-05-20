@@ -12,9 +12,9 @@
         /// <summary>
         /// Strip root dir from dir list
         /// </summary>
-        public static function StripRootDir($list, $root)
+        public static function StripRootDir(array $list, string $root) : array
         {
-            $result = array();
+            $result = [];
             foreach ($list as $k => $v) {
                 $result[] = str_replace($root, "", $v);
             }
@@ -24,9 +24,9 @@
         /// <summary>
         /// Strip file exstention from dir list
         /// </summary>
-        public static function StripFileExt($list)
+        public static function StripFileExt(array $list) : array
         {
-            $result = array();
+            $result = [];
             foreach ($list as $k => $v) {
                 $arr = explode(".", $v);
                 unset($arr[ count($arr) - 1 ]);
@@ -38,7 +38,7 @@
         /// <summary>
         /// AddDir
         /// </summary>
-        public static function AddItem(&$arr, $item)
+        public static function AddItem(array &$arr, string $item)
         {
             if (is_array($arr)) {
                 array_push($arr, $item);
@@ -54,7 +54,7 @@
         /// <summary>
         /// List dir (one level)
         /// </summary>
-        public static function Enumerate($base)
+        public static function Enumerate(string $base) : array
         {
             return self::_Execute($base, "AddItem", 0);
         }
@@ -62,7 +62,7 @@
         /// <summary>
         /// List dir (recursive)
         /// </summary>
-        public static function EnumerateEx($base)
+        public static function EnumerateEx(string $base) : array
         {
             return self::_Execute($base, "AddItem", 1);
         }
@@ -70,9 +70,9 @@
         /// <summary>
         /// Exec function for each dir (recursive)
         /// </summary>
-        private static function _Execute($base, $function, $recursive = 1)
+        private static function _Execute(string $base, string $function, int $recursive = 1) : array
         {
-            $dirlist = array();
+            $dirlist = [];
             if (is_dir($base)) {
                 $dh = opendir($base);
                 $base = Util::RSlash($base);
@@ -104,7 +104,7 @@
         /// <summary>
         /// List files (one level)
         /// </summary>
-        public static function Enumerate($base)
+        public static function Enumerate(string $base) : array
         {
             return self::_Execute($base, "AddItem", 0);
         }
@@ -112,7 +112,7 @@
         /// <summary>
         /// List files (recursive)
         /// </summary>
-        public static function EnumerateEx($base)
+        public static function EnumerateEx(string $base) : array
         {
             return self::_Execute($base, "AddItem", 1);
         }
@@ -120,9 +120,9 @@
         /// <summary>
         /// Exec function for each file (recursive)
         /// </summary>
-        private static function _Execute($base, $function, $recursive = 1)
+        private static function _Execute(string $base, string $function, int $recursive = 1) : array
         {
-            $filelist = array();
+            $filelist = [];
             $base = Util::RSlash($base);
             if (is_dir($base)) {
                 $dh = opendir($base);

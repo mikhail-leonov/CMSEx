@@ -1,5 +1,6 @@
 <?php
 include_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/index.const');
+include_once(dirname(dirname(__FILE__)) . '/TestCaseEx.php');
 require_once(CONTROLLER . 'entry.controller.php');
 
 
@@ -7,9 +8,15 @@ use PHPUnit\Framework\TestCase;
 
 class EntryControllerTest extends TestCase
 {
+    /**
+     * TestCase class extention Trait
+     *
+     */
+    use TestCaseEx;
+
     public function testName()
     {
-	$obj = new EntryController();
+        $obj = new EntryController();
         $this->assertNotEmpty($obj);
         $this->assertNotEmpty($obj->name);
         $this->assertEquals($obj->name, 'entry');
@@ -18,8 +25,8 @@ class EntryControllerTest extends TestCase
 
     public function testControllerName()
     {
-	$obj = new EntryController();
-	$obj->setControllerName();
+        $obj = new EntryController();
+        $obj->setControllerName();
 
         $this->assertNotEmpty($obj);
         $this->assertNotEmpty($obj->name);
@@ -29,45 +36,46 @@ class EntryControllerTest extends TestCase
     
     public function testIndex()
     {
-	$obj = new EntryController();
+        $methodName = "index";
+        $obj = new EntryController();
         $this->assertNotEmpty($obj);
-
-    }
+        $this->assertClassMethodExist('EntryController', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
+   }
     
     public function testView()
     {
-	$obj = new EntryController();
+        $methodName = "view";
+        $obj = new EntryController();
         $this->assertNotEmpty($obj);
-
+        $this->assertClassMethodExist('EntryController', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
     
     public function testPrint()
     {
-	$obj = new EntryController();
+        $methodName = "print";
+        $obj = new EntryController();
         $this->assertNotEmpty($obj);
-
+        $this->assertClassMethodExist('EntryController', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
     
     public function testEdit()
     {
-	$obj = new EntryController();
+        $methodName = "edit";
+        $obj = new EntryController();
         $this->assertNotEmpty($obj);
-
+        $this->assertClassMethodExist('EntryController', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
     
-    public function testSave()
+    public function testNew()
     {
-	$obj = new EntryController();
+        $methodName = "new";
+        $obj = new EntryController();
         $this->assertNotEmpty($obj);
-
+        $this->assertClassMethodExist('EntryController', $methodName);
+        $this->assertObjectMethodExist($obj, $methodName);
     }
-
-    
-    public function testEdittags()
-    {
-	$obj = new EntryController();
-        $this->assertNotEmpty($obj);
-
-    }
-
 }
