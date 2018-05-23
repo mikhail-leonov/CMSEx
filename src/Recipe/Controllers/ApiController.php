@@ -18,7 +18,7 @@ namespace Recipe\Controllers;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class ApiController extends \Recipe\AbstractController
+class ApiController extends \Recipe\Abstracts\AbstractController
 {
     /**
      * Constructor

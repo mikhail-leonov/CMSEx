@@ -10,6 +10,8 @@
 
 namespace Recipe\Controllers;
 
+use \Recipe\Factories\ModelFactory;
+
 /**
  * Class Import Controller
  *
@@ -18,7 +20,7 @@ namespace Recipe\Controllers;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class ImportController extends \Recipe\AbstractController
+class ImportController extends \Recipe\Abstracts\AbstractController
 {
     /**
      * Constructor

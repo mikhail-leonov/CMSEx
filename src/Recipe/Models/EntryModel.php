@@ -18,7 +18,7 @@ namespace Recipe\Models;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class EntryModel extends AbstractModel
+class EntryModel extends \Recipe\Abstracts\AbstractModel  implements \Recipe\Interfaces\ModelInterface
 {
     /**
      * Get Entry from Entries table by entry_id

@@ -13,7 +13,7 @@ namespace Recipe\Views;
 /**
  * This is the "Page View class".
  */
-class PageView extends \Recipe\AbstractView
+class PageView extends \Recipe\Abstracts\AbstractView
 {
     /**
      * Constructor

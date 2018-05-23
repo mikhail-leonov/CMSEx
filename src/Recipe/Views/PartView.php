@@ -13,7 +13,7 @@ namespace Recipe\Views;
 /**
  * This is the "Parts View class".
  */
-class PartView extends \Recipe\AbstractView
+class PartView extends \Recipe\Abstracts\AbstractView
 {
     /**
      * Constructor

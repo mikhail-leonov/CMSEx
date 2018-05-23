@@ -14,7 +14,7 @@ namespace Recipe\Factories;
  * This is the "View factory class".
  * Extends AbstractFactory implements IViewFactory
  */
-class PartViewFactory extends \Recipe\AbstractFactory implements ViewFactoryInterface
+class PartViewFactory extends \Recipe\Abstracts\AbstractFactory implements \Recipe\Interfaces\ViewFactoryInterface
 {
     /**
      * Method to build an View object of $name type IView

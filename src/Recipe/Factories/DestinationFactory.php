@@ -13,7 +13,7 @@ namespace Recipe\Factories;
 /**
  * This is the "Destination data source factory class".
  */
-class DestinationFactory extends AbstractFactory implements DestinationFactoryInterface
+class DestinationFactory extends \Recipe\Abstracts\AbstractFactory implements \Recipe\Interfaces\DestinationFactoryInterface
 {
     /**
      * Method to build an Destination object of $name type IDestination
@@ -26,13 +26,7 @@ class DestinationFactory extends AbstractFactory implements DestinationFactoryIn
      */
     public static function build(string $name) : IDestination
     {
-        $destinationFileName = IMPORT . "destination." . strtolower($name) . '.class.php';
-        $destination_name = ucfirst(strtolower($name)) . "Destination";
-
-        if (file_exists($destinationFileName)) {
-            require_once($destinationFileName);
-            return new $destination_name();
-        }
-        throw new DestinationNotFoundException($destination_name, $destinationFileName);
+        $className = "\\Recipe\\Destinations\\" . ucfirst(strtolower($name)) . "Destination";
+        return new $className();
     }
 }

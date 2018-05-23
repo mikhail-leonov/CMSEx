@@ -14,10 +14,10 @@ namespace Recipe\Factories;
  * This is the "Model factory class".
  * Extends AbstractFactory implements IModelFactory
  */
-class ModelFactory extends AbstractFactory implements ModelFactoryInterface
+class ModelFactory extends \Recipe\Abstracts\AbstractFactory implements \Recipe\Interfaces\ModelFactoryInterface
 {
     /**
-     * Method to build an Model object of $name type IModel
+     * Method to build an Model object of $name type ModelInterface
      *
      * @var string $name Modelname to create
      *
@@ -25,14 +25,9 @@ class ModelFactory extends AbstractFactory implements ModelFactoryInterface
      *
      * @return IModel Model we have created
      */
-    public static function build(string $name) : IModel
+    public static function build(string $name) : \Recipe\Interfaces\ModelInterface
     {
-        $modelName = $name . "Model";
-        $modelFileName = MODEL . strtolower($name) . '.model.php';
-        if (file_exists($modelFileName)) {
-            require_once($modelFileName);
-            return new $modelName();
-        }
-        throw new ModelNotFoundException($modelName, $modelFileName);
+        $className = "\\Recipe\\Models\\" . ucfirst(strtolower($name)) . "Model";
+        return new $className();
     }
 }

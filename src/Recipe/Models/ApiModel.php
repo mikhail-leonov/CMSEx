@@ -18,7 +18,7 @@ namespace Recipe\Models;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class ApiModel extends AbstractModel
+class ApiModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interfaces\ModelInterface
 {
     /**
      * select_tag
