@@ -1,1 +1,0 @@
-php ../phpunit/phpunit-6.5.8.phar application/tests/.
