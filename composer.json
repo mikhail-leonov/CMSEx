@@ -3,7 +3,7 @@
    "description": "A recipe library",
    "keywords": ["recipe"],
    "homepage": "https://github.com/mikhail-leonov/recipe",
-   "version": "0.0.1",
+   "version": "0.1.1",
    "license": "MIT",
     "authors": [
         {
