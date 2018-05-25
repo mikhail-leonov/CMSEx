@@ -10,6 +10,8 @@
 
 namespace Recipe\Abstracts;
 
+use \Recipe\Interfaces\DecoratorInterface;
+
 /**
  * Class Decorator
  *
@@ -19,7 +21,7 @@ namespace Recipe\Abstracts;
  *
  * This is the "base Decorator class". All other "real" decorators extend this class.
  */
-abstract class AbstractDecorator implements \Recipe\Interfaces\DecoratorInterface
+abstract class AbstractDecorator implements DecoratorInterface
 {
     /**
      * Decorate
@@ -28,5 +30,5 @@ abstract class AbstractDecorator implements \Recipe\Interfaces\DecoratorInterfac
      *
      * @return string decorated Object
      */
-    abstract public function Decorate(stdClass $obj) : string;
+    abstract public function Decorate(\stdClass $obj) : string;
 }

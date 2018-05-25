@@ -10,6 +10,9 @@
 
 namespace Recipe\Decorators;
 
+use \Recipe\Abstracts\AbstractDecorator;
+use \Recipe\Interfaces\DecoratorInterface;
+
 /**
  * JSON Class Decorator
  *
@@ -17,7 +20,7 @@ namespace Recipe\Decorators;
  * Don't use the same name for class and method, as this might trigger an (unintended) __construct of the class.
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  */
-class JsonDecorator extends AbstractDecorator
+class JsonDecorator extends AbstractDecorator implements DecoratorInterface
 {
     /**
      * Decorate
@@ -26,7 +29,7 @@ class JsonDecorator extends AbstractDecorator
      *
      * @return string decorated Object
      */
-    public function Decorate(stdClass $obj) : string
+    public function Decorate(\stdClass $obj) : string
     {
         return json_encode($obj, JSON_FORCE_OBJECT);
     }

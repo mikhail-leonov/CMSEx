@@ -8,7 +8,7 @@
  * @license     MIT
  */
 
-namespace Recipe\Abstracts;
+namespace Recipe\Interfaces;
 
 /**
  * This is the "basic decorator interface".
@@ -22,6 +22,6 @@ interface DecoratorInterface
      *
      * @return string decorated Object
      */
-    public function Decorate(stdClass $obj) : string;
+    public function Decorate(\stdClass $obj) : string;
 }
 

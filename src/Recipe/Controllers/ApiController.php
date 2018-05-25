@@ -14,6 +14,9 @@ use \Klein\Request;
 use \Klein\DataCollection\DataCollection;
 use \Recipe\Util;
 use \Recipe\Factories\ModelFactory;
+use \Recipe\Factories\DecoratorFactory;
+use \Recipe\Abstracts\AbstractController;
+use \Recipe\Abstracts\AbstractDecorator;
 
 /**
  * Class Api Controller
@@ -23,7 +26,7 @@ use \Recipe\Factories\ModelFactory;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class ApiController extends \Recipe\Abstracts\AbstractController
+class ApiController extends AbstractController
 {
     /**
      * Constructor
@@ -55,7 +58,7 @@ class ApiController extends \Recipe\Abstracts\AbstractController
      */
     public function SelectTag(Request $request) : string
     {
-		$params = $this->paramsPut();
+		$params = Util::paramsPut();
 		
         $apiModel = ModelFactory::build("api");
         $result = $apiModel->SelectTag($params);

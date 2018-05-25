@@ -12,6 +12,9 @@ namespace Recipe\Decorators;
 
 use \Recipe\Util;
 use \Recipe\Array2XML;
+use \Recipe\Abstracts\AbstractDecorator;
+use \Recipe\Interfaces\DecoratorInterface;
+
 
 /**
  * XML Class Decorator
@@ -20,7 +23,7 @@ use \Recipe\Array2XML;
  * Don't use the same name for class and method, as this might trigger an (unintended) __construct of the class.
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  */
-class XmlDecorator extends AbstractDecorator
+class XmlDecorator extends AbstractDecorator implements DecoratorInterface
 {
     /**
      * Decorate
@@ -29,7 +32,7 @@ class XmlDecorator extends AbstractDecorator
      *
      * @return string decorated Object
      */
-    public function Decorate(stdClass $obj) : string
+    public function Decorate(\stdClass $obj) : string
     {
         $obj = Util::obj2arr($obj);
         $xml = Array2XML::createXML('root', $obj);
