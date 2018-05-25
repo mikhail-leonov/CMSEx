@@ -13,7 +13,7 @@ namespace Recipe\Exceptions;
 /**
  * This is the "Destination File Not Found Exception class".
  */
-class DestinationNotFoundException extends AbstractException
+class DestinationNotFoundException extends \Recipe\Abstracts\AbstractException
 {
     /**
      * Constructor

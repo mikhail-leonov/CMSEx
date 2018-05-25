@@ -13,7 +13,7 @@ namespace Recipe\Exceptions;
 /**
  * This is the "Model File Not Found Exception class".
  */
-class ModelNotFoundException extends AbstractException
+class ModelNotFoundException extends \Recipe\Abstracts\AbstractException
 {
     /**
      * Constructor

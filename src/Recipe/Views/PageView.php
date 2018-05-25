@@ -10,10 +10,12 @@
 
 namespace Recipe\Views;
 
+use \Recipe\Exceptions\ViewNotFoundException;
+
 /**
  * This is the "Page View class".
  */
-class PageView extends \Recipe\Abstracts\AbstractView
+class PageView extends \Recipe\Abstracts\AbstractView implements \Recipe\Interfaces\ViewInterface
 {
     /**
      * Constructor
@@ -27,9 +29,8 @@ class PageView extends \Recipe\Abstracts\AbstractView
     public function __construct(string $name)
     {
         parent::__construct($name);
-        $this->dir = "pages";
 
-        $templateName = VIEW . $this->dir . DS . $this->name . ".view.html";
+        $templateName = $this->VIEW . $this->name . ".html";
         if (!$this->smarty->templateExists($templateName)) {
             throw new ViewNotFoundException($this->name, $templateName);
         }

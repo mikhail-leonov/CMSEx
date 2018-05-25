@@ -10,6 +10,11 @@
 
 namespace Recipe\Controllers;
 
+use \Klein\Request;
+use \Klein\DataCollection\DataCollection;
+use \Recipe\Util;
+use \Recipe\Factories\ModelFactory;
+
 /**
  * Class Api Controller
  *
@@ -41,96 +46,98 @@ class ApiController extends \Recipe\Abstracts\AbstractController
     }
 
     /**
-     * PAGE: api/index
-     * This method handles what happens when you move to http://yourproject/api/index
-     *
-     * @var array $params parameters
-     *
-     * @return void
-     */
-    public function index(array $params)
-    {
-        $href = Util::GetAttribute($_GET, 'href', '/');
-        header("Location: {$href}");
-    }
-
-    /**
      * PAGE: api/SelectTag
      * This method handles what happens when you move to http://yourproject/api/SelectTag
      *
-     * @var array $params parameters
+     * @var Request $request parameters
      *
-     * @return void
+     * @return string Rendered response
      */
-    public function SelectTag(array $params)
+    public function SelectTag(Request $request) : string
     {
+		$params = $this->paramsPut();
+		
         $apiModel = ModelFactory::build("api");
-        $result = $apiModel->SelectTag();
+        $result = $apiModel->SelectTag($params);
 
-        $href = Util::GetAttribute($_GET, 'href', '/');
-        header("Location: {$href}");
+        $decoratorName = Util::GetAttribute($params, 'format', 'json');
+        $decorator = DecoratorFactory::build($decoratorName);
+        $result = $decorator->Decorate($result);
+
+        return $result;
     }
 
     /**
      * PAGE: api/UnselectTag
      * This method handles what happens when you move to http://yourproject/api/UnselectTag
      *
-     * @var array $params parameters
+     * @var Request $request parameters
      *
-     * @return void
+     * @return string Rendered response
      */
-    public function UnselectTag(array $params)
+    public function UnselectTag(Request $request) : string
     {
-        $apiModel = ModelFactory::build("api");
-        $result = $apiModel->UnselectTag();
+		$params = $request->paramsGet();
 
-        $href = Util::GetAttribute($_GET, 'href', '/');
-        header("Location: {$href}");
+        $apiModel = ModelFactory::build("api");
+        $result = $apiModel->UnselectTag($params);
+
+        $decoratorName = Util::GetAttribute($params, 'format', 'json');
+        $decorator = DecoratorFactory::build($decoratorName);
+        $result = $decorator->Decorate($result);
+
+        return $result;
     }
 
     /**
      * PAGE: api/AddTag
      * This method handles what happens when you move to http://yourproject/api/AddTag
      *
-     * @var array $params parameters
+     * @var Request $request parameters
      *
-     * @return void
+     * @return string Rendered response
      */
-    public function AddTag(array $params)
+    public function AddTag(Request $request) : string
     {
         $apiModel = ModelFactory::build("api");
         $result = $apiModel->AddTag($_GET);
 
-        $href = Util::GetAttribute($_GET, 'href', '/');
-        header("Location: {$href}");
+        $decoratorName = Util::GetAttribute($params, 'format', 'json');
+        $decorator = DecoratorFactory::build($decoratorName);
+        $result = $decorator->Decorate($result);
+
+        return $result;
     }
 
     /**
      * PAGE: api/DelTag
      * This method handles what happens when you move to http://yourproject/api/DelTag
      *
-     * @var array $params parameters
+     * @var Request $request parameters
      *
-     * @return void
+     * @return string Rendered response
      */
-    public function DelTag(array $params)
+    public function DelTag(Request $request) : string
     {
         $apiModel = ModelFactory::build("api");
         $result = $apiModel->DelTag($_GET);
 
-        $href = Util::GetAttribute($_GET, 'href', '/');
-        header("Location: {$href}");
+        $decoratorName = Util::GetAttribute($params, 'format', 'json');
+        $decorator = DecoratorFactory::build($decoratorName);
+        $result = $decorator->Decorate($result);
+
+        return $result;
     }
 
     /**
      * PAGE: api/NewTag
      * This method handles what happens when you move to http://yourproject/api/NewTag
      *
-     * @var array $params parameters
+     * @var Request $request parameters
      *
-     * @return void
+     * @return string Rendered response
      */
-    public function NewTag(array $params)
+    public function NewTag(Request $request) : string
     {
         $params = array_merge($_POST, $_GET);
 
@@ -141,18 +148,18 @@ class ApiController extends \Recipe\Abstracts\AbstractController
         $decorator = DecoratorFactory::build($decoratorName);
         $result = $decorator->Decorate($result);
 
-        print($result);
+        return $result;
     }
 
     /**
      * PAGE: api/FindTags
      * This method handles what happens when you move to http://yourproject/api/FindTags
      *
-     * @var array $params parameters
+     * @var Request $request parameters
      *
-     * @return void
+     * @return string Rendered response
      */
-    public function FindTags(array $params)
+    public function FindTags(Request $request) : string
     {
         $params = array_merge($_POST, $_GET);
 
@@ -163,18 +170,18 @@ class ApiController extends \Recipe\Abstracts\AbstractController
         $decorator = DecoratorFactory::build($decoratorName);
         $result = $decorator->Decorate($result);
 
-        print($result);
+        return $result;
     }
 
     /**
      * PAGE: api/AssignTags
      * This method handles what happens when you move to http://yourproject/api/AssignTags
      *
-     * @var array $params parameters
+     * @var Request $request parameters
      *
-     * @return void
+     * @return string Rendered response
      */
-    public function AssignTags(array $params)
+    public function AssignTags(Request $request) : string
     {
         $params = array_merge($_POST, $_GET);
 
@@ -185,19 +192,18 @@ class ApiController extends \Recipe\Abstracts\AbstractController
         $decorator = DecoratorFactory::build($decoratorName);
         $result = $decorator->Decorate($result);
 
-
-        print($result);
+        return $result;
     }
     
     /**
      * PAGE: api/SaveEntry
      * This method handles what happens when you move to http://yourproject/api/SaveEntry
      *
-     * @var array $params parameters
+     * @var Request $request parameters
      *
-     * @return void
+     * @return string Rendered response
      */
-    public function SaveEntry(array $params)
+    public function SaveEntry(Request $request) : string
     {
         $params = array_merge($_POST, $_GET);
 
@@ -208,18 +214,18 @@ class ApiController extends \Recipe\Abstracts\AbstractController
         $decorator = DecoratorFactory::build($decoratorName);
         $result = $decorator->Decorate($result);
 
-        print($result);
+        return $result;
     }
     
     /**
      * PAGE: api/SaveNewEntry
      * This method handles what happens when you move to http://yourproject/api/SaveNewEntry
      *
-     * @var array $params parameters
+     * @var Request $request parameters
      *
-     * @return void
+     * @return string Rendered response
      */
-    public function SaveNewEntry(array $params)
+    public function SaveNewEntry(Request $request) : string
     {
         $params = array_merge($_POST, $_GET);
 
@@ -230,6 +236,6 @@ class ApiController extends \Recipe\Abstracts\AbstractController
         $decorator = DecoratorFactory::build($decoratorName);
         $result = $decorator->Decorate($result);
 
-        print($result);
+        return $result;
     }
 }

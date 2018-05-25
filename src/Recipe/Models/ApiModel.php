@@ -10,6 +10,8 @@
 
 namespace Recipe\Models;
 
+use \Recipe\Util;
+
 /**
  * API Model
  *
@@ -23,14 +25,17 @@ class ApiModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interf
     /**
      * select_tag
      *
-     * @return stdClass { result: 0|1, data: object };
+     * @var array $params parameters
+     *
+     * @return \stdClass { result: 0|1, data: object };
      */
-    public function SelectTag() : stdClass
+    public function SelectTag(array $params) : \stdClass
     {
         $result = 0;
-        $tag = Util::GetAttribute($_GET, 'tag', []);
-        foreach ($tag as $name => $value) {
-            Cookie::setCookieFOREVER("tag[$name]", $value);
+        $tag_id   = Util::GetAttribute($params, 'tag_id'  , '');
+        $tag_name = Util::GetAttribute($params, 'tag_name', '');
+		if ( (!empty($tag_id)) && (!empty($tag_name)) ) {
+            Cookie::setCookieFOREVER("tag[$tag_id]", $tag_name);
             $result = 1;
         }
         return (object)[ 'result' => $result, 'data' => (object)[] ];
@@ -38,9 +43,9 @@ class ApiModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interf
     /**
      * unselect_tag
      *
-     * @return stdClass { result: 0|1, data: object };
+     * @return \stdClass { result: 0|1, data: object };
      */
-    public function UnselectTag() : stdClass
+    public function UnselectTag() : \stdClass
     {
         $result = 0;
         $tag = Util::GetAttribute($_GET, 'tag', []);
@@ -57,9 +62,9 @@ class ApiModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interf
      *
      * @var array $params parameters
      *
-     * @return stdClass { result: 0|1, data: object };
+     * @return \stdClass { result: 0|1, data: object };
      */
-    public function AddTag(array $params) : stdClass
+    public function AddTag(array $params) : \stdClass
     {
         $result = 0;
 
@@ -80,9 +85,9 @@ class ApiModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interf
      *
      * @var array $params parameters
      *
-     * @return stdClass { result: 0|1, data: object };
+     * @return \stdClass { result: 0|1, data: object };
      */
-    public function DelTag(array $params) : stdClass
+    public function DelTag(array $params) : \stdClass
     {
         $result = 0;
         $tag_id   = Util::GetAttribute($params, 'tag_id', 0);
@@ -102,9 +107,9 @@ class ApiModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interf
      *
      * @var array $params parameters
      *
-     * @return stdClass { result: 0|1, data: object };
+     * @return \stdClass { result: 0|1, data: object };
      */
-    public function NewTag(array $params) : stdClass
+    public function NewTag(array $params) : \stdClass
     {
         $result = 0;
 
@@ -127,9 +132,9 @@ class ApiModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interf
      *
      * @var array $params parameters
      *
-     * @return stdClass { result: 0|1, data: object };
+     * @return \stdClass { result: 0|1, data: object };
      */
-    public function FindTags(array $params) : stdClass
+    public function FindTags(array $params) : \stdClass
     {
         $tags_text = Util::GetAttribute($params, 'tags_text', '');
         $tags_text = trim($tags_text);
@@ -142,9 +147,9 @@ class ApiModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interf
      *
      * @var array $params parameters
      *
-     * @return stdClass { result: 0|1, data: object };
+     * @return \stdClass { result: 0|1, data: object };
      */
-    public function AssignTags(array $params) : stdClass
+    public function AssignTags(array $params) : \stdClass
     {
         $result = 0;
         $entry_id = Util::GetAttribute($params, 'entry_id', 0);
@@ -168,9 +173,9 @@ class ApiModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interf
      *
      * @var array $params parameters
      *
-     * @return stdClass { result: 0|1, data: object };
+     * @return \stdClass { result: 0|1, data: object };
      */
-    public function SaveEntry(array $params) : stdClass
+    public function SaveEntry(array $params) : \stdClass
     {
         $result = 0;
         $entry_id   = Util::GetAttribute($_POST, "entry_id", 0);
@@ -191,9 +196,9 @@ class ApiModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interf
      *
      * @var array $params parameters
      *
-     * @return stdClass { result: 0|1, data: object };
+     * @return \stdClass { result: 0|1, data: object };
      */
-    public function SaveNewEntry(array $params) : stdClass
+    public function SaveNewEntry(array $params) : \stdClass
     {
         $result = 0;
         $entry_name = Util::GetAttribute($_POST, "entry_name", '');

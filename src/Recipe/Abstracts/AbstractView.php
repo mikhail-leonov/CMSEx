@@ -16,6 +16,11 @@ namespace Recipe\Abstracts;
 abstract class AbstractView implements \Recipe\Interfaces\ViewInterface
 {
     /**
+     * @var '' Template Directory
+     */
+    protected $VIEW = '';
+
+    /**
      * @var '' Template Name to display
      */
     protected $name = '';
@@ -41,11 +46,12 @@ abstract class AbstractView implements \Recipe\Interfaces\ViewInterface
     {
         $this->dir = '';
         $this->name = $name;
-        $this->smarty = new Smarty();
-        $this->smarty->setTemplateDir(VIEW);
+        $this->smarty = new \Smarty();
+	$this->VIEW = dirname(__DIR__) . DIRECTORY_SEPARATOR . "Views" . DIRECTORY_SEPARATOR . "Templates" . DIRECTORY_SEPARATOR ; 
+        $this->smarty->setTemplateDir($this->VIEW);
         $tmpDir = TEMP . "templates_c/$name";
         if (!file_exists($tmpDir)) {
-            mkdir($tmpDir);
+            mkdir($tmpDir, 0777, true);
         }
         $this->smarty->setCompileDir($tmpDir);
         $this->smarty->force_compile = DEBUG;
@@ -74,10 +80,12 @@ abstract class AbstractView implements \Recipe\Interfaces\ViewInterface
     public function fetch() : string
     {
         $result = "";
-        $templateName = VIEW . $this->dir . DS . $this->name . ".view.html";
+        $templateName = $this->VIEW . $this->name . ".html";
         if ($this->smarty->templateExists($templateName)) {
             $result = $this->smarty->fetch($templateName);
-        }
+        } else {
+           throw new ViewNotFoundException($this->name, $templateName);
+	}
         return $result;
     }
 

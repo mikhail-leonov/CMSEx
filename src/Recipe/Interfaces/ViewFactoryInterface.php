@@ -16,7 +16,7 @@ namespace Recipe\Interfaces;
 interface ViewFactoryInterface
 {
     /**
-     * Method to build an View object of $name type IView
+     * Method to build an View object of $name type \Recipe\Interfaces\ViewInterface;
      *
      * @var string $name View name to create
      *
@@ -24,5 +24,5 @@ interface ViewFactoryInterface
      *
      * @return IView View we have created
      */
-    public static function build(string $name) : IView;
+    public static function build(string $name) : \Recipe\Interfaces\ViewInterface;
 }

@@ -11,8 +11,17 @@
 namespace Recipe\Abstracts;
 
 /**
- * This is the "Abstract Exception class". All other "real" exceptions extend this class.
+ * This is the "basic decorator interface".
  */
-abstract class AbstractException extends \Exception
+interface DecoratorInterface
 {
+    /**
+     * Decorate
+     *
+     * @var stdClass $obj parameters
+     *
+     * @return string decorated Object
+     */
+    public function Decorate(stdClass $obj) : string;
 }
+

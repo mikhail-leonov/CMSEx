@@ -11,21 +11,21 @@
 namespace Recipe\Exceptions;
 
 /**
- * This is the "Source File Not Found Exception class".
+ * This is the "View File Not Found Exception class".
  */
-class SourceNotFoundException extends \Recipe\Abstracts\AbstractException
+class ViewNotFoundException extends \Recipe\Abstracts\AbstractException
 {
     /**
      * Constructor
      *
-     * @var string $name Source Class Name
+     * @var string $name View Class Name
      *
-     * @var string $filename Source Class File Name
+     * @var string $filename View Class File Name
      *
      * @return void
      */
     public function __construct($name, $fileName)
     {
-        parent::__construct("Source [{$name}] is not found in file: {$fileName}.");
+        parent::__construct("View [{$name}] is not found in file: {$fileName}.");
     }
 }

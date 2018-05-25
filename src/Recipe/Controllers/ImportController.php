@@ -11,6 +11,7 @@
 namespace Recipe\Controllers;
 
 use \Recipe\Factories\ModelFactory;
+use \Recipe\Utils;
 
 /**
  * Class Import Controller
@@ -76,11 +77,7 @@ class ImportController extends \Recipe\Abstracts\AbstractController
         $importModel = ModelFactory::build("import");
         $result = $importModel->load($_POST);
 
-        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-    
-        print($result);
+        return $result;
     }
 
     /**
@@ -96,11 +93,7 @@ class ImportController extends \Recipe\Abstracts\AbstractController
         $importModel = ModelFactory::build("import");
         $result = $importModel->save($_POST);
 
-        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-        
-        print($result);
+        return $result;
     }
 
     /**
@@ -115,12 +108,8 @@ class ImportController extends \Recipe\Abstracts\AbstractController
     {
         $importModel = ModelFactory::build("import");
         $result = $importModel->start($_POST);
-        
-        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-        
-        print($result);
+
+        return $result;
     }
 
     /**
@@ -135,12 +124,8 @@ class ImportController extends \Recipe\Abstracts\AbstractController
     {
         $importModel = ModelFactory::build("import");
         $result = $importModel->test();
-        
-        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-        
-        print($result);
+
+        return $result;
     }
 
     /**
@@ -155,12 +140,8 @@ class ImportController extends \Recipe\Abstracts\AbstractController
     {
         $importModel = ModelFactory::build("import");
         $result = $importModel->table();
-        
-        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-        
-        print($result);
+
+        return $result;
     }
     /**
      * PAGE: Get DB table list
@@ -174,11 +155,7 @@ class ImportController extends \Recipe\Abstracts\AbstractController
     {
         $importModel = ModelFactory::build("import");
         $result = $importModel->tablelist();
-        
-        $decoratorName = Util::GetAttribute($_POST, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-        
-        print($result);
+
+        return $result;
     }
 }

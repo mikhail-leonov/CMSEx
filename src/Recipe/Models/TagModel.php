@@ -10,6 +10,8 @@
 
 namespace Recipe\Models;
 
+use \Recipe\Util;
+
 /**
  * Tag Model
  *
@@ -27,8 +29,7 @@ class TagModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interf
      */
     public function getGroups() : array
     {
-        $order = ["group_id" => "ASC"];
-        return $this->db->select("*")->from("groups")->order($order)->all();
+        return $this->db->from('groups')->orderBy("group_id ASC")->fetchAll();
     }
 
     /**
@@ -49,23 +50,20 @@ class TagModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interf
     public function getTags() : array
     {
         $selected = Util::GetAlreadySelected("tag");
-        $order = ['tag_name' => 'ASC'];
-        $tags = $this->db->select("*")->from("tags")->order($order)->all();
+        $tags = $this->db->from('tags')->orderBy("tag_name ASC")->fetchAll();
         return Util::FilterSelectedTags($selected, $tags);
     }
 
     /**
      * Get all tags for entry
      *
-     * @var string $entry_id
+     * @var int $entry_id
      *
      * @return array
      */
-    public function getEntryTags(string $entry_id) : array
+    public function getEntryTags(int $entry_id) : array
     {
-        $where = [ "entry_id" => $entry_id];
-        $entry_tag_ids = $this->db->select("*")->from("entries_tags")->where($where)->all();
-
+        $entry_tag_ids = $this->db->from('entries_tags')->where('entry_id', $entry_id)->fetchAll();
         $tag_ids = "";
         $splitter = "";
         foreach ($entry_tag_ids as $k => $entry_tag_id) {
@@ -73,8 +71,6 @@ class TagModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interf
             $tag_ids = "{$tag_ids}{$splitter}{$tag_id}";
             $splitter = ",";
         }
-        $where = [ "tag_id in ($tag_ids)" ];
-        $order = [ 'tag_group_id' => 'ASC' ];
-        return $this->db->select("*")->from("tags")->where($where)->order($order)->all();
+		return $this->db->from('tags')->where("tag_id in ($tag_ids)")->orderBy("tag_group_id ASC")->fetchAll();
     }
 }

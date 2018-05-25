@@ -16,6 +16,20 @@ namespace Recipe;
     class Util
     {
 
+        public static function PUT() : array
+        {
+	    $_PUT = [];
+	    if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+	        parse_str(file_get_contents("php://input"), $_PUT);
+		foreach ($_PUT as $key => $value) {
+		    unset($_PUT[$key]);
+		    $_PUT[str_replace('amp;', '', $key)] = $value;
+	        }
+           
+            }
+            return $_PUT;
+       	}
+
     /**
      * Get Table list for DB connection settings
      *
@@ -250,6 +264,14 @@ namespace Recipe;
             }
             return $result;
         }
+        /// <summary>
+        /// Get value from $attributes by name or return default value
+        /// </summary>
+        public static function Get($value, $def)
+        {
+            $result = $def; if (isset($value)) { $result = $value; } return $result;
+        }
+
         /// <summary>
         /// Get value from $attributes by name nested @cdata or return default value
         /// </summary>

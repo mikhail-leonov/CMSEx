@@ -42,14 +42,14 @@ class ImportModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Int
      *
      * @var array $params Parameters
      *
-     * @return stdClass Save rule { result: 0|1, data: object };
+     * @return \stdClass Save rule { result: 0|1, data: object };
      */
-    public function save(array $params) : stdClass
+    public function save(array $params) : \stdClass
     {
         $result = 0;
 
-        $settings = Util::GetAttribute($params, 'settings', []);
-        $title = Util::GetAttribute($settings, 'ruleTitle', '');
+        $settings = \Recipe\Util::GetAttribute($params, 'settings', []);
+        $title = \Recipe\Util::GetAttribute($settings, 'ruleTitle', '');
         $title = trim($title);
         if ('' !== $title) {
             $slug = str_replace(' ', '_', strtolower($title));
@@ -84,13 +84,13 @@ class ImportModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Int
      *
      * @var array $params Parameters
      *
-     * @return stdClass Load rule { result: 0|1, data: object };
+     * @return \stdClass Load rule { result: 0|1, data: object };
      */
-    public function load(array $params) : stdClass
+    public function load(array $params) : \stdClass
     {
         $result = 0;
         $rule = [];
-        $rule_file_name = Util::GetAttribute($params, 'rule_file_name', '');
+        $rule_file_name = \Recipe\Util::GetAttribute($params, 'rule_file_name', '');
         $rule_file_name = RULES . $rule_file_name;
         if (file_exists($rule_file_name)) {
             $xml = file_get_contents($rule_file_name);
@@ -105,13 +105,13 @@ class ImportModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Int
      *
      * @var array $params
      *
-     * @return stdClass Load rule result { result: 0|1, data: object };
+     * @return \stdClass Load rule result { result: 0|1, data: object };
      */
-    public function start(array $params) : stdClass
+    public function start(array $params) : \stdClass
     {
         $result = 0;
-        $settings = Util::GetAttribute($params, 'settings', []);
-        $title = Util::GetAttribute($settings, 'ruleTitle', '');
+        $settings = \Recipe\Util::GetAttribute($params, 'settings', []);
+        $title = \Recipe\Util::GetAttribute($settings, 'ruleTitle', '');
         $title = trim($title);
         if ('' !== $title) {
             $slug = str_replace(' ', '_', strtolower($title));
@@ -119,13 +119,13 @@ class ImportModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Int
 
             $xml = file_get_contents($rule_file_name);
             $rule = XML2Array::createArray($xml);
-            $root = Util::GetAttribute($rule, 'root', []);
+            $root = \Recipe\Util::GetAttribute($rule, 'root', []);
 
-            $src  = Util::GetAttribute($root, 'src', []);
-            $dst  = Util::GetAttribute($root, 'dst', []);
-            $rule = Util::GetAttribute($root, 'rule', []);
-            $key  = Util::GetAttribute($root, 'key', []);
-            $settings = Util::GetAttribute($root, 'settings', []);
+            $src  = \Recipe\Util::GetAttribute($root, 'src', []);
+            $dst  = \Recipe\Util::GetAttribute($root, 'dst', []);
+            $rule = \Recipe\Util::GetAttribute($root, 'rule', []);
+            $key  = \Recipe\Util::GetAttribute($root, 'key', []);
+            $settings = \Recipe\Util::GetAttribute($root, 'settings', []);
     
             $this->run($src, $dst, $key, $settings, $rule);
 
@@ -155,14 +155,14 @@ class ImportModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Int
 
         require_once(LIB . 'html.class.php');
 
-        $sourceType = Util::GetCData($src, 'sourceType', '');
+        $sourceType = \Recipe\Util::GetCData($src, 'sourceType', '');
         $dataSource = SourceFactory::build($sourceType);
 
-        $destType = Util::GetCData($dst, 'destinationType', '');
+        $destType = \Recipe\Util::GetCData($dst, 'destinationType', '');
         $dataDestination = DestinationFactory::build($destType);
     
-        $ruleCondition = Util::GetAttribute($settings, 'ruleCondition', []);
-        $ruleAfter = Util::GetAttribute($settings, 'ruleAfter', []);
+        $ruleCondition = \Recipe\Util::GetAttribute($settings, 'ruleCondition', []);
+        $ruleAfter = \Recipe\Util::GetAttribute($settings, 'ruleAfter', []);
     
         $source = $dataSource->get($src);
         $result = $this->proccessItem($env, $source, $ruleCondition);
@@ -187,10 +187,10 @@ class ImportModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Int
     {
         $result = [];
         foreach ($src as $name => $item) {
-            $result[$name] = Util::GetCData($src, $name, '');
+            $result[$name] = \Recipe\Util::GetCData($src, $name, '');
         }
         foreach ($dst as $name => $item) {
-            $result[$name] = Util::GetCData($dst, $name, '');
+            $result[$name] = \Recipe\Util::GetCData($dst, $name, '');
         }
         return $result;
     }
@@ -229,7 +229,7 @@ class ImportModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Int
     protected function proccessItem($env, $data, $item) : string
     {
         $result = '';
-        $item  = Util::GetAttribute($item, '@cdata', '');
+        $item  = \Recipe\Util::GetAttribute($item, '@cdata', '');
         if ('' !== $item) {
             eval($item);
         }
@@ -239,22 +239,22 @@ class ImportModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Int
     /**
      * Test connection rule settings
      *
-     * @return stdClass Table metadata settings as array { result: 0|1, data: object };
+     * @return \stdClass Table metadata settings as array { result: 0|1, data: object };
      */
-    public function test() : stdClass
+    public function test() : \stdClass
     {
         $result = 0;
 
-        $type = Util::GetAttribute($_POST, 'type', "");
+        $type = \Recipe\Util::GetAttribute($_POST, 'type', "");
         if ("sql" === $type) {
-            $meta = new DBMeta(Util::getCFG($_POST));
+            $meta = new DBMeta(\Recipe\Util::getCFG($_POST));
             if ($meta->testConnection()) {
                 $result = 1;
             }
             $meta = null;
         }
         if ("web" === $type) {
-            $url = Util::GetAttribute($_POST, 'url', "");
+            $url = \Recipe\Util::GetAttribute($_POST, 'url', "");
             if (!empty($url)) {
                 $content = file_get_contents($url);
                 if (!empty($content)) {
@@ -268,15 +268,15 @@ class ImportModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Int
     /**
      * Get Table metadata settings
      *
-     * @return stdClass Table metadata settings as array { result: 0|1, data: object };
+     * @return \stdClass Table metadata settings as array { result: 0|1, data: object };
      */
-    public function table() : stdClass
+    public function table() : \stdClass
     {
         $result = 0;
         $list = [];
-        $type = Util::GetAttribute($_POST, 'type', "");
+        $type = \Recipe\Util::GetAttribute($_POST, 'type', "");
         if ("sql" === $type) {
-            $meta = new DBMeta(Util::getCFG($_POST));
+            $meta = new DBMeta(\Recipe\Util::getCFG($_POST));
             $list = $meta->tableMeta();
             $result = 1;
         }
@@ -286,15 +286,15 @@ class ImportModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Int
     /**
      * Get Table list for DB connection settings
      *
-     * @return stdClass Tables in DB as array { result: 0|1, data: object };
+     * @return \stdClass Tables in DB as array { result: 0|1, data: object };
      */
-    public function tablelist() : stdClass
+    public function tablelist() : \stdClass
     {
         $result = 0;
         $list = [];
-        $type = Util::GetAttribute($_POST, 'type', "");
+        $type = \Recipe\Util::GetAttribute($_POST, 'type', "");
         if ("sql" === $type) {
-            $meta = new DBMeta(Util::getCFG($_POST));
+            $meta = new DBMeta(\Recipe\Util::getCFG($_POST));
             $list = $meta->tableList();
             $result = 1;
         }

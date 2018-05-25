@@ -8,11 +8,10 @@
  * @license     MIT
  */
 
-namespace Recipe\Abstracts;
-
-/**
- * This is the "Abstract Exception class". All other "real" exceptions extend this class.
+/*
+ * Load and register Recipe Autoloader
  */
-abstract class AbstractException extends \Exception
-{
+if (!class_exists('Recipe_Autoloader')) {
+    require dirname(__FILE__) . '/Autoloader.php';
 }
+Recipe_Autoloader::register(true);

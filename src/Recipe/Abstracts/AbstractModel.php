@@ -10,8 +10,6 @@
  
 namespace Recipe\Abstracts;
 
-include "libs/FluentPDO/FluentPDO.php";
-
 /**
  * This is the "Base model class". All other "real" models extend this class.
  */
@@ -29,6 +27,6 @@ class AbstractModel implements \Recipe\Interfaces\ModelInterface
     */
     public function __construct()
     {
-        $this->db = DB::instance();
+	$this->db = \Recipe\DB::GetInstance();
     }
 }

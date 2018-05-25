@@ -10,10 +10,12 @@
 
 namespace Recipe\Views;
 
+use \Recipe\Exceptions\ViewNotFoundException;
+
 /**
  * This is the "Parts View class".
  */
-class PartView extends \Recipe\Abstracts\AbstractView
+class PartView extends \Recipe\Abstracts\AbstractView implements \Recipe\Interfaces\ViewInterface
 {
     /**
      * Constructor
@@ -27,9 +29,11 @@ class PartView extends \Recipe\Abstracts\AbstractView
     public function __construct(string $name)
     {
         parent::__construct($name);
-        $this->dir = "parts";
 
-        $templateName = VIEW . $this->dir . DS . $this->name . ".view.html";
+	$this->VIEW = $this->VIEW . "Widgets" . DIRECTORY_SEPARATOR ; 
+        $this->smarty->setTemplateDir($this->VIEW);
+
+        $templateName = $this->VIEW . $this->name . ".html";
         if (!$this->smarty->templateExists($templateName)) {
             throw new ViewNotFoundException($this->name, $templateName);
         }

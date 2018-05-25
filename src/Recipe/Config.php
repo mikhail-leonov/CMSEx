@@ -29,15 +29,18 @@ namespace Recipe;
         /// <summary>
         /// Constructor
         /// </summary>
-        public function __construct($fileName = "")
+        public function __construct(string $fileName = "config.cfg")
         {
-            $this->fileName	= CONFIG . "config.cfg";
-            if (!empty($fileName)) {
+            if (empty($fileName)) {
+                $this->fileName = defined("CONFIG") ? CONFIG : $fileName;
+            } else {
                 if (file_exists($fileName)) {
                     $this->fileName = $fileName;
                 }
             }
-            $this->vars = parse_ini_file($this->fileName, true);
+            if (file_exists($this->fileName)) {
+                $this->vars = parse_ini_file($this->fileName, true);
+            }
         }
 
         /// <summary>
@@ -55,7 +58,7 @@ namespace Recipe;
         {
             $result = $this->GetRaw($section, $key, $default);
             $result = $this->HandleVariables($result, $replaces);
-            return Util::Get($result, $default) ;
+            return \Recipe\Util::Get($result, $default) ;
         }
         
         /// <summary>
@@ -69,7 +72,7 @@ namespace Recipe;
                     $result = $this->vars[ $section ][ $key ];
                 }
             }
-            return Util::Get($result, $default) ;
+            return \Recipe\Util::Get($result, $default) ;
         }
         
         /// <summary>
@@ -117,7 +120,7 @@ namespace Recipe;
         public function GetKeys($section)
         {
             $result = [];
-            $tmpArray = Util::GetAttribute($this->vars, $section, []);
+            $tmpArray = \Recipe\Util::GetAttribute($this->vars, $section, []);
             foreach ($tmpArray as $key => $value) {
                 $newValue = $this->Get($section, $key, "");
                 $result[ $key ] = $newValue;
@@ -131,7 +134,7 @@ namespace Recipe;
         public function GetRawKeys($section)
         {
             $result = [];
-            $tmpArray = Util::GetAttribute($this->vars, $section, []);
+            $tmpArray = \Recipe\Util::GetAttribute($this->vars, $section, []);
             foreach ($tmpArray as $key => $value) {
                 $newValue = $this->GetRaw($section, $key, "");
                 $result[ $key ] = $newValue;
