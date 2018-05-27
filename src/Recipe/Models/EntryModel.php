@@ -10,7 +10,7 @@
 
 namespace Recipe\Models;
 
-use \Recipe\Util;
+use \Recipe\Utils\Util;
 use \Klein\DataCollection\DataCollection;
 
 /**
@@ -47,19 +47,20 @@ class EntryModel extends \Recipe\Abstracts\AbstractModel  implements \Recipe\Int
         $selectedTags = Util::GetAlreadySelected("tag");
         if (count($selectedTags) > 0) {
 
-			$found = [];
+            $found = [];
             foreach ($selectedTags as $k => $tag) {
                 $tag_id = Util::GetAttribute($tag, 'tag_id', "");
                 $current = [];
-				$items = $this->db->from('entries_tags')->where("tag_id", $tag_id)->orderBy("entry_id ASC")->select('entry_id')->fetchAll();
-				foreach($items as $idx => $item) {
-					$current[ Util::GetAttribute($item, 'entry_id', "") ] = Util::GetAttribute($item, 'entry_id', "");
-				}
-				if (0 === $k ) {
-					$found = $current;
-				} else {
-					$found = array_intersect_key ($found, $current);
-				}
+                $items = $this->db->from('entries_tags')->where("tag_id", $tag_id)->orderBy("entry_id ASC")->select('entry_id')->fetchAll();
+                foreach($items as $idx => $item) {
+                    $entry_id = Util::GetAttribute($item, 'entry_id', "");
+                    $current[ $entry_id ] = $entry_id;
+                }
+                if (0 === $k ) {
+                    $found = $current;
+                } else {
+                    $found = array_intersect_key ($found, $current);
+                }
             }
             if (count($found) > 0 ) {
                 $selectedIds = implode(",", $found);
@@ -120,16 +121,15 @@ class EntryModel extends \Recipe\Abstracts\AbstractModel  implements \Recipe\Int
     public function UpdateEntry(string $entry_id, string $entry_name, string $entry_text) : int
     {
         $result = 0;
-		if (!empty($entry_id)) {
+        if (!empty($entry_id)) {
             $where = [ "entry_id" => $entry_id ];
             $fields = [ "entry_name" => $entry_name, "entry_text" => $entry_text ];
             if (false !== $this->db->update($fields)->into("entries")->where($where)->exec()) {
                 $result = 1;
-			}
+            }
         }
         return $result;
     }
-
 
     /**
      * Insert New Entry in Entries table
@@ -143,25 +143,39 @@ class EntryModel extends \Recipe\Abstracts\AbstractModel  implements \Recipe\Int
         $result = 0;
         $entry_name = Util::GetAttribute($params, 'entry_name', ''); 
         $entry_text = Util::GetAttribute($params, 'entry_text', ''); 
-		if (!empty($entry_name)) {
-			if (!empty($entry_text)) {
+        if (!empty($entry_name)) {
+            if (!empty($entry_text)) {
                 $fields = [ "entry_name" => $entry_name, "entry_text" => $entry_text ];
                 $this->db->insert($fields)->into("entries")->exec();
                 $record = $this->db->select("*")->from("entries")->where($fields)->first();
                 if (false !== $record) {
                     $result = $record['entry_id'];
-				}
+                }
             }
-		}
+        }
         return $result;
     }
 
+    /**
+     * Bulk update all Entries in Entries table
+     *
+     * @var array $params
+     *
+     * @return int 0|N entry_id
+     */
     public function BulkUpdate(array $params) 
     {
 
     }
     
-	public function DeleteAll(array $params) 
+    /**
+     * Delete All Entries in Entries table
+     *
+     * @var array $params
+     *
+     * @return int 0|N entry_id
+     */
+    public function DeleteAll(array $params) 
     {
 
     }

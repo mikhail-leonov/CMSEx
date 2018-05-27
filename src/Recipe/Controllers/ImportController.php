@@ -11,7 +11,7 @@
 namespace Recipe\Controllers;
 
 use \Recipe\Factories\ModelFactory;
-use \Recipe\Utils;
+use \Recipe\Utils\Util;
 
 /**
  * Class Import Controller

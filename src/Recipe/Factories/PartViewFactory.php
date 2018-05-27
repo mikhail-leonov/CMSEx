@@ -10,11 +10,16 @@
 
 namespace Recipe\Factories;
 
+use \Recipe\Views\PartView;
+use \Recipe\Abstracts\AbstractFactory;
+use \Recipe\Interfaces\ViewInterface;
+use \Recipe\Interfaces\ViewFactoryInterface;
+
 /**
  * This is the "View factory class".
  * Extends AbstractFactory implements IViewFactory
  */
-class PartViewFactory extends \Recipe\Abstracts\AbstractFactory implements \Recipe\Interfaces\ViewFactoryInterface
+class PartViewFactory extends AbstractFactory implements ViewFactoryInterface
 {
     /**
      * Method to build an View object of $name type \Recipe\Interfaces\ViewInterface;
@@ -25,8 +30,8 @@ class PartViewFactory extends \Recipe\Abstracts\AbstractFactory implements \Reci
      *
      * @return IView View we have created
      */
-    public static function build(string $name) : \Recipe\Interfaces\ViewInterface
+    public static function build(string $name) : ViewInterface
     {
-        return new \Recipe\Views\PartView($name);
+        return new PartView($name);
     }
 }

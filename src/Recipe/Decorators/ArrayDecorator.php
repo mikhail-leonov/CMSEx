@@ -10,7 +10,7 @@
 
 namespace Recipe\Decorators;
 
-use \Recipe\Util;
+use \Recipe\Utils\Util;
 use \Recipe\Abstracts\AbstractDecorator;
 use \Recipe\Interfaces\DecoratorInterface;
 

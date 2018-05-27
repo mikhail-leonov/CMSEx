@@ -10,6 +10,8 @@
  
 namespace Recipe\Abstracts;
 
+use \Recipe\Utils\Db;
+
 /**
  * This is the "Base model class". All other "real" models extend this class.
  */
@@ -27,6 +29,6 @@ class AbstractModel implements \Recipe\Interfaces\ModelInterface
     */
     public function __construct()
     {
-	$this->db = \Recipe\DB::GetInstance();
+	$this->db = Db::GetInstance();
     }
 }

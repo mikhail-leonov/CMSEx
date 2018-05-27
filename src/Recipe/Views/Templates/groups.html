@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->  
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->  
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]--> 
+<head>
+    {include file='Widgets/header.html'}
+    {include file='Widgets/header_wysiwyg.html'}
+</head>
+<body>
+    <div class="page-wrapper page-content">
+        <header class="header">  
+            {include file='Widgets/top_nav.html'}
+        </header>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    {include file='Widgets/left_menu_wysiwyg.html'}
+                </div>
+                <div class="col-md-6">
+                    {$content}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="out">Output:</label>
+                    <textarea id="out" class="form-control" cols="50" rows="10"></textarea>
+				</div>
+            </div>
+        </div>
+    </div>
+</body>
+{include file='Widgets/js.html'}
+{include file='Widgets/js_wysiwyg.html'}
+</html>

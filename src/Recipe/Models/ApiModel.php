@@ -10,7 +10,10 @@
 
 namespace Recipe\Models;
 
-use \Recipe\Util;
+use \Recipe\Utils\Util;
+use \Recipe\Utils\Cookie;
+use Klein\DataCollection\DataCollection;
+
 
 /**
  * API Model
@@ -23,17 +26,17 @@ use \Recipe\Util;
 class ApiModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interfaces\ModelInterface
 {
     /**
-     * select_tag
+     * Select Tag
      *
-     * @var array $params parameters
+     * @var DataCollection $params parameters
      *
      * @return \stdClass { result: 0|1, data: object };
      */
-    public function SelectTag(array $params) : \stdClass
+    public function SelectTag(DataCollection $params) : \stdClass
     {
         $result = 0;
-        $tag_id   = Util::GetAttribute($params, 'tag_id'  , '');
-        $tag_name = Util::GetAttribute($params, 'tag_name', '');
+        $tag_id   = $params->get('tag_id'  , '');
+        $tag_name = $params->get('tag_name', '');
 		if ( (!empty($tag_id)) && (!empty($tag_name)) ) {
             Cookie::setCookieFOREVER("tag[$tag_id]", $tag_name);
             $result = 1;
@@ -41,17 +44,19 @@ class ApiModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interf
         return (object)[ 'result' => $result, 'data' => (object)[] ];
     }
     /**
-     * unselect_tag
+     * Unselect Tag
+     *
+     * @var DataCollection $params parameters
      *
      * @return \stdClass { result: 0|1, data: object };
      */
-    public function UnselectTag() : \stdClass
+    public function UnselectTag(DataCollection $params) : \stdClass
     {
         $result = 0;
-        $tag = Util::GetAttribute($_GET, 'tag', []);
-        foreach ($tag as $name => $value) {
-            unset($_COOKIE[ "tag" ][$name]);
-            Cookie::setCookie("tag[$name]", false, - Cookie::YEAR);
+        $tag_id   = $params->get('tag_id'  , '');
+        $tag_name = $params->get('tag_name', '');
+		if ( (!empty($tag_id)) && (!empty($tag_name)) ) {
+            Cookie::setCookie("tag[$tag_id]", false, - Cookie::YEAR);
             $result = 1;
         }
         return (object)[ 'result' => $result, 'data' => (object)[] ];

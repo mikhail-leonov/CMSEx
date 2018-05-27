@@ -10,6 +10,8 @@
 
 namespace Recipe\Destinations;
 
+use \Recipe\Utils\Util;
+
 /**
  * This is the "SQL Destination data source class".
  */

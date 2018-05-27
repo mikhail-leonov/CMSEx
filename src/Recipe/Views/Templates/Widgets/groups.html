@@ -1,0 +1,31 @@
+<div class="card panel">
+    <div class="card-title clearfix">
+        <h5 class="pull-left">Groups tree</h5>
+        <div class="pull-right">
+            <button id="btnOut" type="button" class="btn btn-success"> <i class="glyphicon glyphicon-ok"></i> Save</button>
+        </div>
+    </div>
+    <div class="card-body" id="cont">
+        <ul id="groups_tree" class="sortableLists list-group">
+			{if count($groups) > 0}
+                {foreach from=$groups key=groupIdx item=group name=groupLoop}
+				<li class="list-group-item" data-text="{$group['group_name']}" data-icon="fa-home" data-href="" data-group_id="{$group['group_id']}" data-group_parent_id="{$group['group_parent_id']}">
+					<div>
+						<i class="fa fa-home"></i> 
+						<span class="txt">{$group['group_id']} - {$group['group_name']} - {$group['group_parent_id']}</span>
+						<div class="btn-group pull-right"> 
+							<a href="#" class="btn btn-default btn-xs btnEdit">Edit</a> 
+							<a href="#" class="btn btn-danger btn-xs btnRemove">X</a> 
+						</div>
+					</div>
+					<!-- sub items 
+					<ul>
+						
+					</ul>
+					-->
+				</li>
+                {/foreach}
+			{/if}
+        </ul>
+    </div>
+</div>

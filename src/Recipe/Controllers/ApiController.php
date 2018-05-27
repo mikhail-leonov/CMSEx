@@ -12,7 +12,7 @@ namespace Recipe\Controllers;
 
 use \Klein\Request;
 use \Klein\DataCollection\DataCollection;
-use \Recipe\Util;
+use \Recipe\Utils\Util;
 use \Recipe\Factories\ModelFactory;
 use \Recipe\Factories\DecoratorFactory;
 use \Recipe\Abstracts\AbstractController;
@@ -58,7 +58,7 @@ class ApiController extends AbstractController
      */
     public function SelectTag(Request $request) : string
     {
-		$params = Util::paramsPut();
+        $params = Util::paramsPut();
 		
         $apiModel = ModelFactory::build("api");
         $result = $apiModel->SelectTag($params);
@@ -80,7 +80,7 @@ class ApiController extends AbstractController
      */
     public function UnselectTag(Request $request) : string
     {
-		$params = $request->paramsGet();
+        $params = $request->paramsGet();
 
         $apiModel = ModelFactory::build("api");
         $result = $apiModel->UnselectTag($params);

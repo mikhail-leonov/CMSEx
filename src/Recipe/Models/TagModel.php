@@ -10,7 +10,7 @@
 
 namespace Recipe\Models;
 
-use \Recipe\Util;
+use \Recipe\Utils\Util;
 
 /**
  * Tag Model

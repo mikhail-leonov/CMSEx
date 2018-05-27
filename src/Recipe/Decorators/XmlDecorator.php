@@ -10,8 +10,8 @@
 
 namespace Recipe\Decorators;
 
-use \Recipe\Util;
-use \Recipe\Array2XML;
+use \Recipe\Utils\Util;
+use \Recipe\Utils\Array2XML;
 use \Recipe\Abstracts\AbstractDecorator;
 use \Recipe\Interfaces\DecoratorInterface;
 

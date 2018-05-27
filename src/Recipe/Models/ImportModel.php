@@ -10,6 +10,8 @@
 
 namespace Recipe\Models;
 
+use \Recipe\Utils\Util;
+
 /**
  * Import Model
  *
