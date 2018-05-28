@@ -7,20 +7,20 @@
 	    <a href="#" id="control_0" class="control"><strong>- Selected</strong></a><br>
 	    <ul class="control_list control_list_control_0" style="display:none;">
 	    {foreach from=$selected key=selectedIdx item=selectedTag name=selectedLoop}
-	        <li class="tag" id='tag_{$selectedTag['tag_id']}'>
-		    <a href='#' onclick='return unselectTag( site, "{$selectedTag['tag_id']}", "{$selectedTag['tag_name']}" )'>{$selectedTag['tag_name']}</a>
+	        <li class="tag" id='tag_{$selectedTag->GetId()}'>
+		    <a href='#' onclick='return unselectTag( site, "{$selectedTag->GetId()}", "{$selectedTag->GetName()}" )'>{$selectedTag->GetName()}</a>
 		</li>
 	    {/foreach}
 	    </ul>
 	    {/if}
 		
 	    {foreach from=$groups key=groupIdx item=group name=groupLoop}
-	    <a href="#" id="control_{$group['group_id']}" class="control"><strong>- {$group['group_name']}</strong></a><br>
-	    <ul class="control_list control_list_control_{$group['group_id']}" style="display:none;">
+	    <a href="#" id="control_{$group->GetId()}" class="control"><strong>- {$group->GetName()}</strong></a><br>
+	    <ul class="control_list control_list_control_{$group->GetId()}" style="display:none;">
                 {foreach from=$tags key=tagIdx item=tag name=tagLoop}
-                    {if $tag['tag_group_id'] eq $group['group_id']}
-	    	        <li class="tag" id='tag_{$tag['tag_id']}'>
-	    	            <a href='#' onclick='return selectTag( site, "{$tag['tag_id']}", "{$tag['tag_name']}" )'>{$tag['tag_name']}</a>
+                    {if $tag->GetParentId() eq $group->GetId()}
+	    	        <li class="tag" id='tag_{$tag->GetId()}'>
+	    	            <a href='#' onclick='return selectTag( site, "{$tag->GetId()}", "{$tag->GetName()}" )'>{$tag->GetName()}</a>
 		        </li>
         	    {/if}
                 {/foreach}

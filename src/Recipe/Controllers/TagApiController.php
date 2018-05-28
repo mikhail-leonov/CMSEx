@@ -18,14 +18,14 @@ use \Recipe\Factories;
 use \Recipe\Models;
 
 /**
- * Class Group Controller
+ * Class Tag Controller
  *
  * Please note:
  * Don't use the same name for class and method, as this might trigger an (unintended) __construct of the class.
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class GroupApiController extends AbstractController
+class TagApiController extends AbstractController
 {
     /**
      * Constructor
@@ -43,19 +43,19 @@ class GroupApiController extends AbstractController
      */
     public function setControllerName()
     {
-        $this->name = "groupapi";
+        $this->name = "tagapi";
     }
 
     /**
-     * getGroups - Returns all groups 
+     * getTags - Returns all Tags 
      * 
      * @var Request $request parameters
      *
      * @return string Rendered response
      */
-    public function getGroups(Request $request) : string {
-        $groupModel = ModelFactory::build("group");
-        $result = $groupModel->getGroups($request->paramsGet());
+    public function getTags(Request $request) : string {
+        $TagModel = ModelFactory::build("tag");
+        $result = $TagModel->getTags($request->paramsGet());
 
         $decoratorName = Util::GetAttribute($params, 'format', 'json');
         $decorator = DecoratorFactory::build($decoratorName);
@@ -64,15 +64,15 @@ class GroupApiController extends AbstractController
         return $result;
     }
     /**
-     * postGroups - Create a new groups
+     * postTags - Create a new Tags
      * 
      * @var Request $request parameters
      *
      * @return string Rendered response
      */
-    public function postGroups(Request $request) : string {
-        $groupModel = ModelFactory::build("group");
-        $result = $groupModel->postGroups($request->paramsPost());
+    public function postTags(Request $request) : string {
+        $TagModel = ModelFactory::build("tag");
+        $result = $TagModel->postTags($request->paramsPost());
 
         $decoratorName = Util::GetAttribute($params, 'format', 'json');
         $decorator = DecoratorFactory::build($decoratorName);
@@ -81,15 +81,15 @@ class GroupApiController extends AbstractController
         return $result;
     }
     /**
-     * putGroups - Bulk update of groups
+     * putTags - Bulk update of Tags
      * 
      * @var Request $request parameters
      *
      * @return string Rendered response
      */
-    public function putGroups(Request $request) : string {
-        $groupModel = ModelFactory::build("group");
-        $result = $groupModel->putGroups(Util::paramsPut());
+    public function putTags(Request $request) : string {
+        $TagModel = ModelFactory::build("tag");
+        $result = $TagModel->putTags(Util::paramsPut());
 
         $decoratorName = Util::GetAttribute($params, 'format', 'json');
         $decorator = DecoratorFactory::build($decoratorName);
@@ -98,15 +98,15 @@ class GroupApiController extends AbstractController
         return $result;
     }
     /**
-     * deleteGroups - Delete all groups
+     * deleteTags - Delete all Tags
      * 
      * @var Request $request parameters
      *
      * @return string Rendered response
      */
-    public function deleteGroups(Request $request) : string {
-        $groupModel = ModelFactory::build("group");
-        $result = $groupModel->putGroups(Util::paramsDelete());
+    public function deleteTags(Request $request) : string {
+        $TagModel = ModelFactory::build("tag");
+        $result = $TagModel->putTags(Util::paramsDelete());
 
         $decoratorName = Util::GetAttribute($params, 'format', 'json');
         $decorator = DecoratorFactory::build($decoratorName);
@@ -115,15 +115,15 @@ class GroupApiController extends AbstractController
         return $result;
     }
     /**
-     * getGroup - Return a specified groups
+     * getTag - Return a specified Tags
      * 
      * @var Request $request parameters
      *
      * @return string Rendered response
      */
-    public function getGroup(Request $request) : string {
-        $groupModel = ModelFactory::build("group");
-        $result = $groupModel->getGroups($request->paramsGet());
+    public function getTag(Request $request) : string {
+        $TagModel = ModelFactory::build("tag");
+        $result = $TagModel->getTags($request->paramsGet());
 
         $decoratorName = Util::GetAttribute($params, 'format', 'json');
         $decorator = DecoratorFactory::build($decoratorName);
@@ -132,15 +132,15 @@ class GroupApiController extends AbstractController
         return $result;
     }
     /**
-     * postGroup - Not allowed
+     * postTag - Not allowed
      * 
      * @var Request $request parameters
      *
      * @return string Rendered response
      */
-    public function postGroup(Request $request) : string {
-        $groupModel = ModelFactory::build("group");
-        $result = $groupModel->postGroup($request->paramsPost());
+    public function postTag(Request $request) : string {
+        $TagModel = ModelFactory::build("tag");
+        $result = $TagModel->postTag($request->paramsPost());
 
         $decoratorName = Util::GetAttribute($params, 'format', 'json');
         $decorator = DecoratorFactory::build($decoratorName);
@@ -149,15 +149,15 @@ class GroupApiController extends AbstractController
         return $result;
     }
     /**
-     * putGroup - Update a specified groups
+     * putTag - Update a specified Tags
      * 
      * @var Request $request parameters
      *
      * @return string Rendered response
      */
-    public function putGroup(Request $request) : string {
-        $groupModel = ModelFactory::build("group");
-        $result = $groupModel->putGroup(Util::paramsPut());
+    public function putTag(Request $request) : string {
+        $TagModel = ModelFactory::build("tag");
+        $result = $TagModel->putTag(Util::paramsPut());
 
         $decoratorName = Util::GetAttribute($params, 'format', 'json');
         $decorator = DecoratorFactory::build($decoratorName);
@@ -166,15 +166,15 @@ class GroupApiController extends AbstractController
         return $result;
     }
     /**
-     * deleteGroup - Delete a specified groups
+     * deleteTag - Delete a specified Tags
      * 
      * @var Request $request parameters
      *
      * @return string Rendered response
      */
-    public function deleteGroup(Request $request) : string {
-        $groupModel = ModelFactory::build("group");
-        $result = $groupModel->putGroup(Util::paramsDelete());
+    public function deleteTag(Request $request) : string {
+        $TagModel = ModelFactory::build("tag");
+        $result = $TagModel->putTag(Util::paramsDelete());
 
         $decoratorName = Util::GetAttribute($params, 'format', 'json');
         $decorator = DecoratorFactory::build($decoratorName);

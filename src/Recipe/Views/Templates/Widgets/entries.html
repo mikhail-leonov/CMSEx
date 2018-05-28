@@ -1,19 +1,19 @@
 <div class="col-md-9 col-sm-9">
 	<br>
-	{if count($entries) > 0}
+	{if count($entries->count()) > 0}
 		<div class="card mb-12">
                 	<div class="card-header">
 				Entries 
 			</div>
 			<div class="card-body">
 				<ul>
-					{section name=entryIndex loop=$entries}
-					<a href='/ui/v1/entries/{$entries[entryIndex]["entry_id"]}'>
-						<li class="entry entry-selected" id='entry_{$entries[entryIndex]["entry_id"]}'>
-							{$entries[entryIndex]['entry_name']}
+                 			{foreach from=$entries key=entryIdx item=entry name=entryLoop}
+					<a href='/ui/v1/entries/{$entry->GetId()}'>
+						<li class="entry entry-selected" id='entry_{$entry->GetId()}'>
+							{$entry->GetName()}
 						</li>
 					</a>
-					{/section}
+					{/foreach}
 				</ul>
                     	</div>
                     	<div class="card-footer small text-muted"><br></div>

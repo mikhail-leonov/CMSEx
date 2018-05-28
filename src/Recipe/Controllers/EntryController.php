@@ -12,6 +12,7 @@ namespace Recipe\Controllers;
 
 use \Klein\DataCollection\DataCollection;
 use \Klein\Request;
+use \Recipe\Abstracts\AbstractController;
 use \Recipe\Factories\PageViewFactory;
 use \Recipe\Factories\PartViewFactory;
 use \Recipe\Factories\ModelFactory;
@@ -26,7 +27,7 @@ use \Recipe\Views;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class EntryController extends \Recipe\Abstracts\AbstractController
+class EntryController extends AbstractController
 {
     /**
      * Constructor
@@ -60,9 +61,15 @@ class EntryController extends \Recipe\Abstracts\AbstractController
         $pageView   = PageViewFactory::build("entries");
 
         $tagModel   = ModelFactory::build("tag");
-        $groups     = $tagModel->getGroups();
-        $tags       = $tagModel->getTags();
+        $tags       = $tagModel->getTags(new DataCollection());
+        $tags       = $tags->data->tags;
+
         $selected   = $tagModel->getSelectedTags();
+        $selected   = $selected->data->tags;
+
+        $groupModel = ModelFactory::build("group");
+        $groups     = $groupModel->getGroups(new DataCollection());
+        $groups     = $groups->data->groups;
 
         $entryModel = ModelFactory::build("entry");
         $entries = $entryModel->GetSelectedEntries($params);
@@ -93,9 +100,15 @@ class EntryController extends \Recipe\Abstracts\AbstractController
         $pageView   = PageViewFactory::build("entries");
 
         $tagModel   = ModelFactory::build("tag");
-        $groups     = $tagModel->getGroups();
-        $tags       = $tagModel->getTags();
+        $tags       = $tagModel->getTags(new DataCollection());
+        $tags       = $tags->data->tags;
+
         $selected   = $tagModel->getSelectedTags();
+        $selected   = $selected->data->tags;
+
+        $groupModel = ModelFactory::build("group");
+        $groups     = $groupModel->getGroups(new DataCollection());
+        $groups     = $groups->data->groups;
 
         $entryModel = ModelFactory::build("entry");
         $entries = $entryModel->GetFoundEntries($params);
@@ -126,9 +139,15 @@ class EntryController extends \Recipe\Abstracts\AbstractController
         $pageView   = PageViewFactory::build("entries");
 
         $tagModel   = ModelFactory::build("tag");
-        $groups     = $tagModel->getGroups();
-        $tags       = $tagModel->getTags();
+        $tags       = $tagModel->getTags(new DataCollection());
+        $tags       = $tags->data->tags;
+
         $selected   = $tagModel->getSelectedTags();
+        $selected   = $selected->data->tags;
+
+        $groupModel = ModelFactory::build("group");
+        $groups     = $groupModel->getGroups(new DataCollection());
+        $groups     = $groups->data->groups;
 
         $entryModel = ModelFactory::build("entry");
         $entries = $entryModel->GetAllEntries($params);
@@ -162,10 +181,18 @@ class EntryController extends \Recipe\Abstracts\AbstractController
         $entry      = $entryModel->GetEntryById($entry_id);
 
         $tagModel   = ModelFactory::build("tag");
-        $groups     = $tagModel->getGroups();
         $entry_tags = $tagModel->getEntryTags($entry_id);
-        $tags       = $tagModel->getTags();
+        $entry_tags = $entry_tags->data->tags;
+
+        $tags       = $tagModel->getTags(new DataCollection());
+        $tags       = $tags->data->tags;
+
         $selected   = $tagModel->getSelectedTags();
+        $selected   = $selected->data->tags;
+
+        $groupModel = ModelFactory::build("group");
+        $groups     = $groupModel->getGroups(new DataCollection());
+        $groups     = $groups->data->groups;
 
         $pageView   = PageViewFactory::build("entry.view");
 
@@ -202,10 +229,18 @@ class EntryController extends \Recipe\Abstracts\AbstractController
         $entry      = $entryModel->GetEntryById($entry_id);
 
         $tagModel   = ModelFactory::build("tag");
-        $groups     = $tagModel->getGroups();
         $entry_tags = $tagModel->getEntryTags($entry_id);
-        $tags       = $tagModel->getTags();
+        $entry_tags = $entry_tags->data->tags;
+
+        $tags       = $tagModel->getTags(new DataCollection());
+        $tags       = $tags->data->tags;
+
         $selected   = $tagModel->getSelectedTags();
+        $selected   = $selected->data->tags;
+
+        $groupModel = ModelFactory::build("group");
+        $groups     = $groupModel->getGroups(new DataCollection());
+        $groups     = $groups->data->groups;
 
         $pageView   = PageViewFactory::build("entry.view");
 
@@ -243,6 +278,7 @@ class EntryController extends \Recipe\Abstracts\AbstractController
 
         $tagModel = ModelFactory::build("tag");
         $entry_tags = $tagModel->getEntryTags($entry_id);
+        $entry_tags = $entry_tags->data->tags;
 
         $pageView     = PageViewFactory::build("entry.print");
 
@@ -270,11 +306,18 @@ class EntryController extends \Recipe\Abstracts\AbstractController
         $entry_id   = $request->entry_id;
 
         $tagModel   = ModelFactory::build("tag");
-        $groups     = $tagModel->getGroups();
-        $tags       = $tagModel->getTags();
-        $selected   = $tagModel->getSelectedTags();
 
-        $pageView   = PageViewFactory::build("entry.edit");
+        $tags       = $tagModel->getTags(new DataCollection());
+        $tags       = $tags->data->tags;
+
+        $selected   = $tagModel->getSelectedTags();
+        $selected   = $selected->data->tags;
+
+        $groupModel = ModelFactory::build("group");
+        $groups     = $groupModel->getGroups(new DataCollection());
+        $groups     = $groups->data->groups;
+
+        $pageView   = PageViewFactory::build("entry.new");
 
         $pageView->assign("selected", $selected);
         $pageView->assign("tags", $tags);

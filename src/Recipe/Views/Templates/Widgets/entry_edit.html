@@ -2,27 +2,27 @@
 	<br>
 	<div class="card mb-12">
         	<div class="card-header">
-			<strong><a href="/">{$entry['entry_name']}</a></strong>
+			<strong><a href="/">{$entry->GetName()}</a></strong>
 		</div>
 		<div class="card-body">
 			<nav aria-label="toolbutton">
   				<ul class="pagination">
 
 					<li class="page-item"><a class="page-link" href="#" onclick="window.location.href = '{$href}';"><i class="material-icons">reply</i></a></li>
-					<li class="page-item"><a class="page-link" href="/ui/v1/entries/{$entry['entry_id']}/print" target="_blank"><i class="material-icons">print</i></a></li>
-					<li class="page-item"><a class="page-link" href="#" onclick="return saveEntry('{$entry['entry_id']}'); "><i class="material-icons">save</i></a></li>
-					<li class="page-item"><a class="page-link" href="/ui/v1/entries/{$entry['entry_id']}"><i class="material-icons">dashboard</i></a></li>
+					<li class="page-item"><a class="page-link" href="/ui/v1/entries/{$entry->GetId()}/print" target="_blank"><i class="material-icons">print</i></a></li>
+					<li class="page-item"><a class="page-link" href="#" onclick="return saveEntry('{$entry->GetId()}'); "><i class="material-icons">save</i></a></li>
+					<li class="page-item"><a class="page-link" href="/ui/v1/entries/{$entry->GetId()}"><i class="material-icons">dashboard</i></a></li>
 
   				</ul>
 			</nav>
 			
 			<form id="edit_entry_form">
 				<div class="form-group">
-    					<input type="text" class="form-control" id="entry_name" placeholder="Entry title" value="{$entry['entry_name']}"></input>
-    					<input type="hidden" id="entry_id" value="{$entry['entry_id']}"></input>
+    					<input type="text" class="form-control" id="entry_name" placeholder="Entry title" value="{$entry->GetName()}"></input>
+    					<input type="hidden" id="entry_id" value="{$entry->GetId()}"></input>
 				</div>
   				<div class="form-group">
-					<textarea name="entry_text" id="entry_text" class="form-control" rows="20" cols="213">{$entry['entry_text']}</textarea>
+					<textarea name="entry_text" id="entry_text" class="form-control" rows="20" cols="213">{$entry->GetText()}</textarea>
   				</div>
 
 

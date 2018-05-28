@@ -11,6 +11,10 @@
 namespace Recipe\Models;
 
 use Klein\DataCollection\DataCollection;
+use \Recipe\Objects\Group;
+use \Recipe\Collections\GroupCollection;
+use \Recipe\Abstracts\AbstractModel;
+use \Recipe\Interfaces\ModelInterface;
 
 /**
  * Group Model
@@ -20,7 +24,7 @@ use Klein\DataCollection\DataCollection;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class GroupModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interfaces\ModelInterface
+class GroupModel extends AbstractModel implements ModelInterface
 {
     /**
      * getGroups - Returns all groups
@@ -31,7 +35,11 @@ class GroupModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Inte
      */
     public function getGroups(DataCollection $params) : \stdClass {
         $result = 1;
-        $groups = $this->db->from("groups")->fetchAll();
+        $groups = new GroupCollection( $this->db->from("groups")->fetchAll() );
+        if (false === $groups) {
+            $groups = [];
+            $result = 0;
+        }
         return (object)[ 'result' => $result, 'data' => (object)[ 'groups' => $groups ] ];
     }
     /**

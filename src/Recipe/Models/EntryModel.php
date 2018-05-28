@@ -12,6 +12,10 @@ namespace Recipe\Models;
 
 use \Recipe\Utils\Util;
 use \Klein\DataCollection\DataCollection;
+use \Recipe\Objects\Entry;
+use \Recipe\Collections\EntryCollection;
+use \Recipe\Abstracts\AbstractModel;
+use \Recipe\Interfaces\ModelInterface;
 
 /**
  * Entry Model
@@ -21,27 +25,31 @@ use \Klein\DataCollection\DataCollection;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class EntryModel extends \Recipe\Abstracts\AbstractModel  implements \Recipe\Interfaces\ModelInterface
+class EntryModel extends AbstractModel implements ModelInterface
 {
     /**
      * Get all Entries
      *
      * @var DataCollection $params Parameters
      *
-     * @return array All entries matched to selected Tags
+     * @return EntryCollection All entries matched to selected Tags
      */
-    public function GetAllEntries(DataCollection $params) : array
+    public function GetAllEntries(DataCollection $params) : EntryCollection
     {
-        return $this->db->from("entries")->fetchAll();
+	$result = $this->db->from("entries")->fetchAll();
+        if (false === $result) {
+            $result = [];
+        }
+        return new EntryCollection( $result );
     }
     /**
      * Get all selected Entries
      *
      * @var DataCollection $params Parameters
      *
-     * @return array All entries matched to selected Tags
+     * @return EntryCollection All entries matched to selected Tags
      */
-    public function GetSelectedEntries(DataCollection $params) : array
+    public function GetSelectedEntries(DataCollection $params) : EntryCollection
     {
         $result = [];
         $selectedTags = Util::GetAlreadySelected("tag");
@@ -67,7 +75,7 @@ class EntryModel extends \Recipe\Abstracts\AbstractModel  implements \Recipe\Int
                 $result = $this->db->from("entries")->where("entry_id in ($selectedIds)")->fetchAll();
             }
         }
-        return $result;
+        return new EntryCollection( $result );
     }
 
     /**
@@ -75,16 +83,16 @@ class EntryModel extends \Recipe\Abstracts\AbstractModel  implements \Recipe\Int
      *
      * @var DataCollection $params Parameters
      *
-     * @return array All entries matched to selected Tags
+     * @return EntryCollection All entries matched to selected Tags
      */
-    public function GetFoundEntries(DataCollection $params) : array
+    public function GetFoundEntries(DataCollection $params) : EntryCollection
     {
         $result = [];
         $q = $params->get('q', '');
         if (!empty($q)) {
             $result = $this->db->from("entries")->where("entry_name LIKE '%{$q}%' OR entry_text LIKE '%{$q}%'")->fetchAll();
         }
-        return $result;
+        return new EntryCollection( $result );
     }
 
     /**
@@ -92,9 +100,9 @@ class EntryModel extends \Recipe\Abstracts\AbstractModel  implements \Recipe\Int
      *
      * @var DataCollection $params parameters
      *
-     * @return array
+     * @return Entry
      */
-    public function GetEntryById(int $entry_id) : array
+    public function GetEntryById(int $entry_id) : Entry
     {
         $result = [];
         if (!empty($entry_id)) {
@@ -104,7 +112,7 @@ class EntryModel extends \Recipe\Abstracts\AbstractModel  implements \Recipe\Int
                 $result = $entry[0];
             }
         }
-        return $result;
+        return new Entry( $result );
     }
 
     /**

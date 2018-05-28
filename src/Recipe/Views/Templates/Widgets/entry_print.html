@@ -2,7 +2,7 @@
 	<br>
 	<div class="card mb-12">
         	<div class="card-header">
-			<strong>{$entry['entry_name']}</strong>
+			<strong>{$entry->GetName()}</strong>
 		</div>
 		<div class="card-body">
 			{if count($entry_tags)> 0}
@@ -17,7 +17,7 @@
 				<br>
 			</nav>
 			{/if}
-			{$entry['entry_text']}
+			{$entry->GetText()}
             	</div>
 	</div>
 </div>

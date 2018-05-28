@@ -2,7 +2,7 @@
 	<br>
 	<div class="card mb-12">
         	<div class="card-header">
-			<strong><a href="/">{$entry['entry_name']}</a></strong>
+			<strong><a href="/">{$entry->GetName()}</a></strong>
 		</div>
 		<div class="card-body">
 			<nav aria-label="toolbutton">
@@ -12,15 +12,16 @@
 						<a href="#" onclick="newTagEdit();">
     						<span class="badge badge-danger">Новый <span class="badge badge-danger">&nbsp;</span></span>
 						</a><br>
-						{if count($entry_tags)> 0}
-							{section name=tagIndex loop=$entry_tags}
-    								<span class="badge badge-primary" title="{$entry_tags[tagIndex]['tag_text']}">
-									{$entry_tags[tagIndex]['tag_name']} 
-									<a href='#' onclick='return delTag( "{$entry['entry_id']}", "{$entry_tags[tagIndex]['tag_id']}" )'>
+						{if $entry_tags->count() > 0}
+
+                  					{foreach from=$entry_tags key=entrytagIdx item=entry_tag name=entrytagLoop}
+    								<span class="badge badge-primary" title="{$entry_tag->GetName()}">
+									{$entry_tag->GetName()} 
+									<a href='#' onclick='return delTag( "{$entry->GetId()}", "{$entry_tag->GetId()}" )'>
 										<span class="badge badge-light">x</span>
 									</a>
 								</span>
-			       	       			{/section}
+			       	       			{/foreach}
 						{/if}
   					</li>
 				<br>
@@ -28,15 +29,15 @@
   				<ul class="pagination">
 
 					<li class="page-item"><a class="page-link" href="#" onclick="window.location.href = '{$href}';"><i class="material-icons">reply</i></a></li>
-					<li class="page-item"><a class="page-link" href="/ui/v1/entries/{$entry['entry_id']}/print" target="_blank"><i class="material-icons">print</i></a></li>
-					<li class="page-item"><a class="page-link" href="/ui/v1/entries/{$entry['entry_id']}/edit"><i class="material-icons">mode_edit</i></a></li>
+					<li class="page-item"><a class="page-link" href="/ui/v1/entries/{$entry->GetId()}/print" target="_blank"><i class="material-icons">print</i></a></li>
+					<li class="page-item"><a class="page-link" href="/ui/v1/entries/{$entry->GetId()}/edit"><i class="material-icons">mode_edit</i></a></li>
 					<li class="page-item"><a class="page-link" href="#" onclick="return assignTags();"><i class="material-icons">format_list_numbered</i></a></li>
 					
   				</ul>
 
 			</nav>
 			<br>
-			{$entry['entry_text']}
+			{$entry->GetText()}
             	</div>
             	<div class="card-footer small text-muted"><a href="/">Back</a></div>
 	</div>
@@ -66,9 +67,9 @@
           <div class="form-group">
             <label for="new_tag_group_id" class="col-form-label">Tag group:</label>
 	    <select id="new_tag_group_id" class="form-control">
-		{section name=groupIndex loop=$groups}
-	            <option value="{$groups[groupIndex]['group_id']}">{$groups[groupIndex]['group_id']} - {$groups[groupIndex]['group_name']}</option>
-   	       	{/section}
+               	{foreach from=$groups key=groupIdx item=group name=groupLoop}
+	            <option value="{$group->GetId()}">{$group->GetId()} - {$group->GetName()}</option>
+   	       	{/foreach}
 	    </select>            
           </div>
         </form>
@@ -108,7 +109,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" onclick="findTags();" >Find</button>
-        <button type="button" class="btn btn-primary" onclick="assingFoundTags('{$entry['entry_id']}');" >Assign</button>
+        <button type="button" class="btn btn-primary" onclick="assingFoundTags('{$entry->GetId()}');" >Assign</button>
       </div>
     </div>
   </div>
