@@ -28,30 +28,150 @@ use \Recipe\Interfaces\ModelInterface;
 class EntryModel extends AbstractModel implements ModelInterface
 {
     /**
-     * Get all Entries
+     * getEntries - Returns all Entries
+     * 
+     * @var DataCollection $params parameters
      *
-     * @var DataCollection $params Parameters
-     *
-     * @return EntryCollection All entries matched to selected Tags
+     * @return \stdClass { result: 0|1, data: object };
      */
-    public function GetAllEntries(DataCollection $params) : EntryCollection
-    {
-	$result = $this->db->from("entries")->fetchAll();
-        if (false === $result) {
-            $result = [];
+    public function getEntries(DataCollection $params) : \stdClass {
+        $result = 1;
+	$entries = $this->db->from("entries")->fetchAll();
+        if (false === $entries) {
+            $entries = [];
+            $result = 0;
         }
-        return new EntryCollection( $result );
+        $entries = new EntryCollection( $entries );
+        return (object)[ 'result' => $result, 'data' => (object)[ 'entries'=> $entries ] ];
     }
+    /**
+     * postEntries - Create a new Entries
+     * 
+     * @var DataCollection $params parameters
+     *
+     * @return \stdClass { result: 0|1, data: object };
+     */
+    public function postEntries(DataCollection $params) : \stdClass {
+        $result = 0;
+
+        $entry_name = $params->get('entry_name', '');
+        $entry_text = $params->get('entry_text', '');
+
+        if (!empty($entry_name) && !empty($entry_text)) {
+            $fields = [ "entry_name" => $entry_name, "entry_text" => $entry_text ];
+            $record = $this->db->insertInto('entries')->values($fields)->execute();
+            if (false !== $record) {
+                $result = 1;
+            }
+        }
+        return (object)[ 'result' => $result, 'data' => (object)[] ];
+    }
+    /**
+     * putEntries - Bulk update of Entries
+     * 
+     * @var DataCollection $params parameters
+     *
+     * @return \stdClass { result: 0|1, data: object };
+     */
+    public function putEntries(DataCollection $params) : \stdClass {
+        $result = 0;
+        return (object)[ 'result' => $result, 'data' => (object)[] ];
+    }
+    /**
+     * deleteEntries - Delete all Entries
+     * 
+     * @var DataCollection $params parameters
+     *
+     * @return \stdClass { result: 0|1, data: object };
+     */
+    public function deleteEntries(DataCollection $params) : \stdClass {
+        $result = 0;
+        return (object)[ 'result' => $result, 'data' => (object)[] ];
+    }
+    /**
+     * getEntry - Return a specified Entry
+     * 
+     * @var DataCollection $params parameters
+     *
+     * @return \stdClass { result: 0|1, data: object };
+     */
+    public function getEntry(DataCollection $params) : \stdClass {
+        $result = 0;
+        $entry_id = $params->get('entry_id', '');
+
+        if (!empty($entry_id)) {
+            $where = [ "entry_id" => $entry_id ];
+
+            $entries = $this->db->from("entries")->where("entry_id", $entry_id)->fetchAll();
+
+            if (false === $entries) {
+                $entry = [];
+            } else {
+                if (count($entries) > 0) {
+                    $entry = $entries[0];
+                    $result = 1;
+                } else {
+                    $entry = [];
+                }
+            }
+        }
+        $entry = new Entry( $entry );
+        return (object)[ 'result' => $result, 'data' => (object)[ 'entry' => $entry ] ];
+    }
+    /**
+     * postEntry - Not allowed
+     * 
+     * @var DataCollection $params parameters
+     *
+     * @return \stdClass { result: 0|1, data: object };
+     */
+    public function postEntry(DataCollection $params) : \stdClass {
+        $result = 0;
+        return (object)[ 'result' => $result, 'data' => (object)[] ];
+    }
+    /**
+     * putEntry - Update a specified Entry
+     * 
+     * @var DataCollection $params parameters
+     *
+     * @return \stdClass { result: 0|1, data: object };
+     */
+    public function putEntry(DataCollection $params) : \stdClass {
+        $result = 0;
+        $entry_id = $params->get('entry_id', '');
+        $entry_name = $params->get('entry_name', '');
+        $entry_text = $params->get('entry_text', '');
+        if (!empty($entry_id) && !empty($entry_name) && !empty($entry_text)) {
+            $fields = [ "entry_name" => $entry_name, "entry_text" => $entry_text ];
+            $update = $this->db->update('entries')->set($fields)->where("entry_id", $entry_id);
+            if (false !== $update) {
+                $result = 1;
+            }
+        }
+        return (object)[ 'result' => $result, 'data' => (object)[] ];
+    }
+    /**
+     * deleteEntry - Delete a specified Entry
+     * 
+     * @var DataCollection $params parameters
+     *
+     * @return \stdClass { result: 0|1, data: object };
+     */
+    public function deleteEntry(DataCollection $params) : \stdClass {
+        $result = 0;
+        return (object)[ 'result' => $result, 'data' => (object)[] ];
+    }
+
     /**
      * Get all selected Entries
      *
      * @var DataCollection $params Parameters
      *
-     * @return EntryCollection All entries matched to selected Tags
+     * @return \stdClass { result: 0|1, data: object };
      */
-    public function GetSelectedEntries(DataCollection $params) : EntryCollection
-    {
-        $result = [];
+    public function GetSelectedEntries(DataCollection $params) : \stdClass {
+        $result = 0; 
+        $entries = [];
         $selectedTags = Util::GetAlreadySelected("tag");
         if (count($selectedTags) > 0) {
 
@@ -72,10 +192,15 @@ class EntryModel extends AbstractModel implements ModelInterface
             }
             if (count($found) > 0 ) {
                 $selectedIds = implode(",", $found);
-                $result = $this->db->from("entries")->where("entry_id in ($selectedIds)")->fetchAll();
+                $entries = $this->db->from("entries")->where("entry_id in ($selectedIds)")->fetchAll();
+                $result = 1; 
             }
         }
-        return new EntryCollection( $result );
+        if (false === $entries) {
+            $entries = [];
+        }
+        $entries = new EntryCollection( $entries );
+        return (object)[ 'result' => $result, 'data' => (object)[ 'entries' => $entries ] ];
     }
 
     /**
@@ -83,110 +208,25 @@ class EntryModel extends AbstractModel implements ModelInterface
      *
      * @var DataCollection $params Parameters
      *
-     * @return EntryCollection All entries matched to selected Tags
+     * @return \stdClass { result: 0|1, data: object };
      */
-    public function GetFoundEntries(DataCollection $params) : EntryCollection
-    {
-        $result = [];
+    public function GetFoundEntries(DataCollection $params)  : \stdClass {
+        $result = 0;  
+        $entries = [];
         $q = $params->get('q', '');
         if (!empty($q)) {
-            $result = $this->db->from("entries")->where("entry_name LIKE '%{$q}%' OR entry_text LIKE '%{$q}%'")->fetchAll();
-        }
-        return new EntryCollection( $result );
-    }
-
-    /**
-     * Get Entry from Entries table by entry_id
-     *
-     * @var DataCollection $params parameters
-     *
-     * @return Entry
-     */
-    public function GetEntryById(int $entry_id) : Entry
-    {
-        $result = [];
-        if (!empty($entry_id)) {
-            $where = [ "entry_id" => $entry_id ];
-            $entry = $this->db->from("entries")->where("entry_id", $entry_id)->fetchAll();
-            if (count($entry) > 0) {
-                $result = $entry[0];
+            $entries = $this->db->from("entries")->where("entry_name LIKE '%{$q}%' OR entry_text LIKE '%{$q}%'")->fetchAll();
+            $result = 1;  
+            if (false === $entries) {
+                $entries = [];
+                $result = 0;  
             }
         }
-        return new Entry( $result );
-    }
-
-    /**
-     * Update Entry in Entries table by entry_id
-     *
-     * @var string $entry_id
-     *
-     * @var string $entry_name
-     *
-     * @var string $entry_text
-     *
-     * @return int 0|1
-     */
-    public function UpdateEntry(string $entry_id, string $entry_name, string $entry_text) : int
-    {
-        $result = 0;
-        if (!empty($entry_id)) {
-            $where = [ "entry_id" => $entry_id ];
-            $fields = [ "entry_name" => $entry_name, "entry_text" => $entry_text ];
-            if (false !== $this->db->update($fields)->into("entries")->where($where)->exec()) {
-                $result = 1;
-            }
+        if (false === $entries) {
+            $entries = [];
         }
-        return $result;
+        $entries = new EntryCollection( $entries );
+        return (object)[ 'result' => $result, 'data' => (object)[ 'entries' => $entries ] ];
     }
-
-    /**
-     * Insert New Entry in Entries table
-     *
-     * @var array $params
-     *
-     * @return int 0|N entry_id
-     */
-    public function CreateEntry(array $params) : int
-    {
-        $result = 0;
-        $entry_name = Util::GetAttribute($params, 'entry_name', ''); 
-        $entry_text = Util::GetAttribute($params, 'entry_text', ''); 
-        if (!empty($entry_name)) {
-            if (!empty($entry_text)) {
-                $fields = [ "entry_name" => $entry_name, "entry_text" => $entry_text ];
-                $this->db->insert($fields)->into("entries")->exec();
-                $record = $this->db->select("*")->from("entries")->where($fields)->first();
-                if (false !== $record) {
-                    $result = $record['entry_id'];
-                }
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * Bulk update all Entries in Entries table
-     *
-     * @var array $params
-     *
-     * @return int 0|N entry_id
-     */
-    public function BulkUpdate(array $params) 
-    {
-
-    }
-    
-    /**
-     * Delete All Entries in Entries table
-     *
-     * @var array $params
-     *
-     * @return int 0|N entry_id
-     */
-    public function DeleteAll(array $params) 
-    {
-
-    }
-
 
 }

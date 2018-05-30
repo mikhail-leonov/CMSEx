@@ -56,9 +56,10 @@ class TagUiController extends AbstractController
      * @return string Rendered response
      */
     public function getTags(Request $request) : string {
-
+        $params = $this->MergedRequestParams($request, $request->paramsGet());
+    
         $tagModel = ModelFactory::build("tag");
-        $tagsObj  = $tagModel->getTags($request->paramsGet());
+        $tagsObj  = $tagModel->getTags($params);
 
         $pageView   = PageViewFactory::build("tags");
 
@@ -68,7 +69,7 @@ class TagUiController extends AbstractController
              $tags = $tagsObj->data->tags;
         }
         $tagModel   = ModelFactory::build("tag");
-        $tags       = $tagModel->getTags(new DataCollection());
+        $tags       = $tagModel->getTags($params);
         $tags       = $tags->data->tags;
 
         $contentView->assign("tags", $tags);

@@ -10,6 +10,10 @@
 
 namespace Recipe\Abstracts;
 
+use \Klein\Request;
+use Klein\DataCollection\DataCollection;
+use \Recipe\Interfaces\ControllerInterface;
+
 /**
  * Class Abstract Controller
  *
@@ -19,7 +23,7 @@ namespace Recipe\Abstracts;
  *
  * This is the "base controller class". All other "real" controllers extend this class.
  */
-abstract class AbstractController implements \Recipe\Interfaces\ControllerInterface
+abstract class AbstractController implements ControllerInterface
 {
     /**
      * @var string|null Controller name
@@ -41,40 +45,17 @@ abstract class AbstractController implements \Recipe\Interfaces\ControllerInterf
      * @return void
      */
     abstract public function setControllerName();
-
     /**
-     * Get PUT Parameters
+     * MergedRequestParams - Returns merged request params and named values 
+     * 
+     * @var Request $request parameters
+     * 
+     * @var DataCollection $params request typed parameters
      *
-     * @return void
+     * @return DataCollection Merged Request parameters
      */
-    public function ParamsPut() : \stdClass 
-    { 
-    	$a_data = (object)[];
-      	$input = file_get_contents('php://input');
-      	preg_match('/boundary=(.*)$/', $_SERVER['CONTENT_TYPE'], $matches);
-        if ($matches) {
-            $boundary = $matches[1];
-            $a_blocks = preg_split("/-+$boundary/", $input);
-            array_pop($a_blocks);
-        } else {
-            parse_str($input, $a_blocks);
-        }
-
-        foreach ($a_blocks as $id => $block) {
-            if (empty($block)) {
-                continue;
-            }
-            if (strpos($block, 'application/octet-stream') !== FALSE) {
-                preg_match("/name=\"([^\"]*)\".*stream[\n|\r]+([^\n\r].*)?$/s", $block, $matches);
-            } else {
-                preg_match('/name=\"([^\"]*)\"[\n|\r]+([^\n\r].*)?\r$/s', $block, $matches);
-            }
-            if ($matches) {
-                $a_data->{$matches[1]} = $matches[2];
-            } else {
-                $a_data->{$id} = $block;
-            }
-        }
-        return $a_data;
+    public function MergedRequestParams(Request $request, DataCollection $params) : DataCollection {
+        $named = $request->paramsNamed();
+        return $params->merge($named->all());
     }
 }

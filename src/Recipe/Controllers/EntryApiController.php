@@ -10,22 +10,24 @@
 
 namespace Recipe\Controllers;
 
-use \Klein\Request;
-use \Recipe\Utils\Util;
 use \Klein\DataCollection\DataCollection;
+use \Klein\Request;
 use \Recipe\Abstracts\AbstractApiController;
-use \Recipe\Factories;
+use \Recipe\Factories\PageViewFactory;
+use \Recipe\Factories\PartViewFactory;
+use \Recipe\Factories\ModelFactory;
 use \Recipe\Models;
+use \Recipe\Views;
 
 /**
- * Class Group Controller
+ * Class Entry Api Controller
  *
  * Please note:
  * Don't use the same name for class and method, as this might trigger an (unintended) __construct of the class.
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class GroupApiController extends AbstractApiController
+class EntryApiController extends AbstractApiController
 {
     /**
      * Constructor
@@ -43,87 +45,87 @@ class GroupApiController extends AbstractApiController
      */
     public function setControllerName()
     {
-        $this->name = "groupapi";
+        $this->name = "entryapi";
     }
 
     /**
-     * getGroups - Returns all groups 
+     * getEntries - Returns all Entries 
      * 
      * @var Request $request parameters
      * @return string Rendered response
      */
-    public function getGroups(Request $request) : string {
+    public function getEntries(Request $request) : string {
         $params = $this->MergedRequestParams($request, $request->paramsGet());
-        return $this->actionEntity($params, "group", __FUNCTION__);
+        return $this->actionEntity($params, "entry", __FUNCTION__);
     }
     /**
-     * postGroups - Create a new groups
+     * postEntries - Create a new Entries
      * 
      * @var Request $request parameters
      * @return string Rendered response
      */
-    public function postGroups(Request $request) : string {
+    public function postEntries(Request $request) : string {
         $params = $this->MergedRequestParams($request, $request->paramsPost());
-        return $this->actionEntity($params, "group", __FUNCTION__);
+        return $this->actionEntity($params, "entry", __FUNCTION__);
     }
     /**
-     * putGroups - Bulk update of groups
+     * putEntries - Bulk update of Entries
      * 
      * @var Request $request parameters
      * @return string Rendered response
      */
-    public function putGroups(Request $request) : string {
+    public function putEntries(Request $request) : string {
         $params = $this->MergedRequestParams($request, Util::paramsPut());
-        return $this->actionEntity($params, "group", __FUNCTION__);
+        return $this->actionEntity($params, "entry", __FUNCTION__);
     }
     /**
-     * deleteGroups - Delete all groups
+     * deleteEntries - Delete all Entries
      * 
      * @var Request $request parameters
      * @return string Rendered response
      */
-    public function deleteGroups(Request $request) : string {
+    public function deleteEntries(Request $request) : string {
         $params = $this->MergedRequestParams($request, Util::paramsDelete());
-        return $this->actionEntity($params, "group", __FUNCTION__);
+        return $this->actionEntity($params, "entry", __FUNCTION__);
     }
     /**
-     * getGroup - Return a specified groups
+     * getEntry - Return a specified Entries
      * 
      * @var Request $request parameters
      * @return string Rendered response
      */
-    public function getGroup(Request $request) : string {
+    public function getEntry(Request $request) : string {
         $params = $this->MergedRequestParams($request, $request->paramsGet());
-        return $this->actionEntity($params, "group", __FUNCTION__);
+        return $this->actionEntity($params, "entry", __FUNCTION__);
     }
     /**
-     * postGroup - Not allowed
+     * postEntry - Not allowed
      * 
      * @var Request $request parameters
      * @return string Rendered response
      */
-    public function postGroup(Request $request) : string {
+    public function postEntry(Request $request) : string {
         $params = $this->MergedRequestParams($request, $request->paramsPost());
-        return $this->actionEntity($params, "group", __FUNCTION__);
+        return $this->actionEntity($params, "entry", __FUNCTION__);
     }
     /**
-     * putGroup - Update a specified groups
+     * putEntry - Update a specified Entries
      * 
      * @var Request $request parameters
      * @return string Rendered response
      */
-    public function putGroup(Request $request) : string {
+    public function putEntry(Request $request) : string {
         $params = $this->MergedRequestParams($request, Util::paramsPut());
-        return $this->actionEntity($params, "group", __FUNCTION__);
+        return $this->actionEntity($params, "entry", __FUNCTION__);
     }
     /**
-     * deleteGroup - Delete a specified groups
+     * deleteEntry - Delete a specified Entries
      * 
      * @var Request $request parameters
      * @return string Rendered response
      */
-    public function deleteGroup(Request $request) : string {
+    public function deleteEntry(Request $request) : string {
         $params = $this->MergedRequestParams($request, Util::paramsDelete());
-        return $this->actionEntity($params, "group", __FUNCTION__);
+        return $this->actionEntity($params, "entry", __FUNCTION__);
     }
 }

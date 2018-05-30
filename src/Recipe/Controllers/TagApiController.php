@@ -13,9 +13,11 @@ namespace Recipe\Controllers;
 use \Klein\Request;
 use \Recipe\Utils\Util;
 use \Klein\DataCollection\DataCollection;
-use \Recipe\Abstracts\AbstractController;
+use \Recipe\Abstracts\AbstractApiController;
 use \Recipe\Factories;
 use \Recipe\Models;
+use \Recipe\Factories\ModelFactory;
+use \Recipe\Factories\DecoratorFactory;
 
 /**
  * Class Tag Controller
@@ -25,7 +27,7 @@ use \Recipe\Models;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class TagApiController extends AbstractController
+class TagApiController extends AbstractApiController
 {
     /**
      * Constructor
@@ -45,141 +47,84 @@ class TagApiController extends AbstractController
     {
         $this->name = "tagapi";
     }
-
     /**
      * getTags - Returns all Tags 
      * 
      * @var Request $request parameters
-     *
      * @return string Rendered response
      */
     public function getTags(Request $request) : string {
-        $TagModel = ModelFactory::build("tag");
-        $result = $TagModel->getTags($request->paramsGet());
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, $request->paramsGet());
+        return $this->actionEntity($params, "tag", __FUNCTION__);
     }
     /**
      * postTags - Create a new Tags
      * 
      * @var Request $request parameters
-     *
      * @return string Rendered response
      */
     public function postTags(Request $request) : string {
-        $TagModel = ModelFactory::build("tag");
-        $result = $TagModel->postTags($request->paramsPost());
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, $request->paramsPost());
+        return $this->actionEntity($params, "tag", __FUNCTION__);
     }
     /**
      * putTags - Bulk update of Tags
      * 
      * @var Request $request parameters
-     *
      * @return string Rendered response
      */
     public function putTags(Request $request) : string {
-        $TagModel = ModelFactory::build("tag");
-        $result = $TagModel->putTags(Util::paramsPut());
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, Util::paramsPut());
+        return $this->actionEntity($params, "tag", __FUNCTION__);
     }
     /**
      * deleteTags - Delete all Tags
      * 
      * @var Request $request parameters
-     *
      * @return string Rendered response
      */
     public function deleteTags(Request $request) : string {
-        $TagModel = ModelFactory::build("tag");
-        $result = $TagModel->putTags(Util::paramsDelete());
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, Util::paramsDelete());
+        return $this->actionEntity($params, "tag", __FUNCTION__);
     }
     /**
      * getTag - Return a specified Tags
      * 
      * @var Request $request parameters
-     *
      * @return string Rendered response
      */
     public function getTag(Request $request) : string {
-        $TagModel = ModelFactory::build("tag");
-        $result = $TagModel->getTags($request->paramsGet());
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, $request->paramsGet());
+        return $this->actionEntity($params, "tag", __FUNCTION__);
     }
     /**
      * postTag - Not allowed
      * 
      * @var Request $request parameters
-     *
      * @return string Rendered response
      */
     public function postTag(Request $request) : string {
-        $TagModel = ModelFactory::build("tag");
-        $result = $TagModel->postTag($request->paramsPost());
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, $request->paramsPost());
+        return $this->actionEntity($params, "tag", __FUNCTION__);
     }
     /**
      * putTag - Update a specified Tags
      * 
      * @var Request $request parameters
-     *
      * @return string Rendered response
      */
     public function putTag(Request $request) : string {
-        $TagModel = ModelFactory::build("tag");
-        $result = $TagModel->putTag(Util::paramsPut());
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, Util::paramsPut());
+        return $this->actionEntity($params, "tag", __FUNCTION__);
     }
     /**
      * deleteTag - Delete a specified Tags
      * 
      * @var Request $request parameters
-     *
      * @return string Rendered response
      */
     public function deleteTag(Request $request) : string {
-        $TagModel = ModelFactory::build("tag");
-        $result = $TagModel->putTag(Util::paramsDelete());
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, Util::paramsDelete());
+        return $this->actionEntity($params, "tag", __FUNCTION__);
     }
 }

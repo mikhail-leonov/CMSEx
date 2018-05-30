@@ -10,6 +10,8 @@
 
 namespace Recipe\Interfaces;
 
+use \Recipe\Interfaces\ViewInterface;
+
 /**
  * This is the "ViewFactory interface".
  */
@@ -24,5 +26,5 @@ interface ViewFactoryInterface
      *
      * @return IView View we have created
      */
-    public static function build(string $name) : \Recipe\Interfaces\ViewInterface;
+    public static function build(string $name) : ViewInterface;
 }

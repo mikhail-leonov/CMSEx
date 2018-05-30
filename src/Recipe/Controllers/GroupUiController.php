@@ -57,9 +57,10 @@ class GroupUiController extends AbstractController
      * @return string Rendered response
      */
     public function getGroups(Request $request) : string {
+        $params = $this->MergedRequestParams($request, $request->paramsGet());
 
         $groupModel = ModelFactory::build("group");
-        $groupsObj  = $groupModel->getGroups($request->paramsGet());
+        $groupsObj  = $groupModel->getGroups($params);
 
         $pageView   = PageViewFactory::build("groups");
 

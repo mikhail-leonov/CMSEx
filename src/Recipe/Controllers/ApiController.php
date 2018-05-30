@@ -15,7 +15,7 @@ use \Klein\DataCollection\DataCollection;
 use \Recipe\Utils\Util;
 use \Recipe\Factories\ModelFactory;
 use \Recipe\Factories\DecoratorFactory;
-use \Recipe\Abstracts\AbstractController;
+use \Recipe\Abstracts\AbstractApiController;
 use \Recipe\Abstracts\AbstractDecorator;
 
 /**
@@ -26,7 +26,7 @@ use \Recipe\Abstracts\AbstractDecorator;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class ApiController extends AbstractController
+class ApiController extends AbstractApiController
 {
     /**
      * Constructor
@@ -58,16 +58,8 @@ class ApiController extends AbstractController
      */
     public function SelectTag(Request $request) : string
     {
-        $params = Util::paramsPut();
-		
-        $apiModel = ModelFactory::build("api");
-        $result = $apiModel->SelectTag($params);
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, Util::paramsPut());
+        return $this->actionEntity($params, "api", __FUNCTION__);
     }
 
     /**
@@ -80,16 +72,8 @@ class ApiController extends AbstractController
      */
     public function UnselectTag(Request $request) : string
     {
-        $params = $request->paramsGet();
-
-        $apiModel = ModelFactory::build("api");
-        $result = $apiModel->UnselectTag($params);
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, $request->paramsGet());
+        return $this->actionEntity($params, "api", __FUNCTION__);
     }
 
     /**
@@ -102,14 +86,8 @@ class ApiController extends AbstractController
      */
     public function AddTag(Request $request) : string
     {
-        $apiModel = ModelFactory::build("api");
-        $result = $apiModel->AddTag($_GET);
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, $request->paramsGet());
+        return $this->actionEntity($params, "api", __FUNCTION__);
     }
 
     /**
@@ -122,14 +100,8 @@ class ApiController extends AbstractController
      */
     public function DelTag(Request $request) : string
     {
-        $apiModel = ModelFactory::build("api");
-        $result = $apiModel->DelTag($_GET);
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, $request->paramsGet());
+        return $this->actionEntity($params, "api", __FUNCTION__);
     }
 
     /**
@@ -142,16 +114,8 @@ class ApiController extends AbstractController
      */
     public function NewTag(Request $request) : string
     {
-        $params = array_merge($_POST, $_GET);
-
-        $apiModel = ModelFactory::build("api");
-        $result = $apiModel->NewTag($params);
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, $request->paramsGet());
+        return $this->actionEntity($params, "api", __FUNCTION__);
     }
 
     /**
@@ -164,16 +128,8 @@ class ApiController extends AbstractController
      */
     public function FindTags(Request $request) : string
     {
-        $params = array_merge($_POST, $_GET);
-
-        $apiModel = ModelFactory::build("api");
-        $result = $apiModel->FindTags($params);
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, $request->paramsGet());
+        return $this->actionEntity($params, "api", __FUNCTION__);
     }
 
     /**
@@ -186,16 +142,8 @@ class ApiController extends AbstractController
      */
     public function AssignTags(Request $request) : string
     {
-        $params = array_merge($_POST, $_GET);
-
-        $apiModel = ModelFactory::build("api");
-        $result = $apiModel->AssignTags($params);
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, $request->paramsGet());
+        return $this->actionEntity($params, "api", __FUNCTION__);
     }
     
     /**
@@ -208,16 +156,8 @@ class ApiController extends AbstractController
      */
     public function SaveEntry(Request $request) : string
     {
-        $params = array_merge($_POST, $_GET);
-
-        $apiModel = ModelFactory::build("api");
-        $result = $apiModel->SaveEntry($params);
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, $request->paramsGet());
+        return $this->actionEntity($params, "api", __FUNCTION__);
     }
     
     /**
@@ -230,15 +170,7 @@ class ApiController extends AbstractController
      */
     public function SaveNewEntry(Request $request) : string
     {
-        $params = array_merge($_POST, $_GET);
-
-        $apiModel = ModelFactory::build("api");
-        $result = $apiModel->SaveNewEntry($params);
-
-        $decoratorName = Util::GetAttribute($params, 'format', 'json');
-        $decorator = DecoratorFactory::build($decoratorName);
-        $result = $decorator->Decorate($result);
-
-        return $result;
+        $params = $this->MergedRequestParams($request, $request->paramsGet());
+        return $this->actionEntity($params, "api", __FUNCTION__);
     }
 }

@@ -13,6 +13,8 @@ namespace Recipe\Models;
 use \Recipe\Utils\Util;
 use \Recipe\Utils\Cookie;
 use Klein\DataCollection\DataCollection;
+use \Recipe\Abstracts\AbstractModel;
+use \Recipe\Interfaces\ModelInterface;
 
 
 /**
@@ -23,7 +25,7 @@ use Klein\DataCollection\DataCollection;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class ApiModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interfaces\ModelInterface
+class ApiModel extends AbstractModel implements ModelInterface
 {
     /**
      * Select Tag
@@ -37,7 +39,7 @@ class ApiModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interf
         $result = 0;
         $tag_id   = $params->get('tag_id'  , '');
         $tag_name = $params->get('tag_name', '');
-		if ( (!empty($tag_id)) && (!empty($tag_name)) ) {
+        if ( (!empty($tag_id)) && (!empty($tag_name)) ) {
             Cookie::setCookieFOREVER("tag[$tag_id]", $tag_name);
             $result = 1;
         }
@@ -55,54 +57,9 @@ class ApiModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interf
         $result = 0;
         $tag_id   = $params->get('tag_id'  , '');
         $tag_name = $params->get('tag_name', '');
-		if ( (!empty($tag_id)) && (!empty($tag_name)) ) {
+        if ( (!empty($tag_id)) && (!empty($tag_name)) ) {
             Cookie::setCookie("tag[$tag_id]", false, - Cookie::YEAR);
             $result = 1;
-        }
-        return (object)[ 'result' => $result, 'data' => (object)[] ];
-    }
-
-    /**
-     * add_tag
-     *
-     * @var array $params parameters
-     *
-     * @return \stdClass { result: 0|1, data: object };
-     */
-    public function AddTag(array $params) : \stdClass
-    {
-        $result = 0;
-
-        $tag_id   = Util::GetAttribute($params, 'tag_id', 0);
-        $entry_id = Util::GetAttribute($params, 'entry_id', 0);
-        if (!empty($tag_id)) {
-            if (!empty($entry_id)) {
-                $fields = [ "tag_id" => $tag_id, "entry_id" => $entry_id ];
-                $this->db->insert($fields)->into("entries_tags")->exec();
-                $result = 1;
-            }
-        }
-        return (object)[ 'result' => $result, 'data' => (object)[] ];
-    }
-
-    /**
-     * del_tag
-     *
-     * @var array $params parameters
-     *
-     * @return \stdClass { result: 0|1, data: object };
-     */
-    public function DelTag(array $params) : \stdClass
-    {
-        $result = 0;
-        $tag_id   = Util::GetAttribute($params, 'tag_id', 0);
-        $entry_id = Util::GetAttribute($params, 'entry_id', 0);
-        if (!empty($tag_id)) {
-            if (!empty($entry_id)) {
-                $where = [ "tag_id" => $tag_id, "entry_id" => $entry_id ];
-                $this->db->delete()->from("entries_tags")->where($where)->exec();
-                $result = 1;
-            }
         }
         return (object)[ 'result' => $result, 'data' => (object)[] ];
     }

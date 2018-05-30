@@ -57,6 +57,15 @@ class TagModel extends AbstractModel implements ModelInterface
      */
     public function postTags(DataCollection $params) : \stdClass {
         $result = 0;
+        $tag_id   = $params->get('tag_id', 0);
+        $entry_id = $params->get('entry_id', 0);
+        if (!empty($tag_id) && !empty($entry_id)) {
+            $fields = [ "tag_id" => $tag_id, "entry_id" => $entry_id ];
+            $record = $this->db->insertInto('entries_tags')->values($fields)->execute();
+            if (false !== $record) {
+                $result = 1;
+            }
+        }
         return (object)[ 'result' => $result, 'data' => (object)[] ];
     }
     /**
@@ -68,6 +77,13 @@ class TagModel extends AbstractModel implements ModelInterface
      */
     public function putTags(DataCollection $params) : \stdClass {
         $result = 0;
+        $tag_id   = $params->get('tag_id', 0);
+        $entry_id = $params->get('entry_id', 0);
+        if (!empty($tag_id) && !empty($entry_id)) {
+            $where = [ "tag_id" => $tag_id, "entry_id" => $entry_id ];
+            $this->db->delete()->from("entries_tags")->where($where)->execute();
+            $result = 1;
+        }
         return (object)[ 'result' => $result, 'data' => (object)[] ];
     }
     /**
