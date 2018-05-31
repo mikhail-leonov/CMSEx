@@ -17,6 +17,14 @@ namespace Recipe\Abstracts;
  * Don't use the same name for class and method, as this might trigger an (unintended) __construct of the class.
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  */
-abstract class AbstractObject 
+abstract class AbstractObject implements \JsonSerializable
 {
+    /**
+     * jsonSerialize
+     *
+     * @return array  Fields to retrieve
+    */
+    public function jsonSerialize() : array {
+        return get_object_vars($this);
+    }
 }

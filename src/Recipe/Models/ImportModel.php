@@ -11,6 +11,8 @@
 namespace Recipe\Models;
 
 use \Recipe\Utils\Util;
+use \Recipe\Abstracts\AbstractModel;
+use \Recipe\Interfaces\ModelInterface;
 
 /**
  * Import Model
@@ -20,7 +22,7 @@ use \Recipe\Utils\Util;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class ImportModel extends \Recipe\Abstracts\AbstractModel implements \Recipe\Interfaces\ModelInterface
+class ImportModel extends AbstractModel implements ModelInterface
 {
     /**
      * Get all rules stored in RULES dir

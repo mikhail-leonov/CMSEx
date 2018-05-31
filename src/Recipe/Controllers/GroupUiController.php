@@ -65,11 +65,18 @@ class GroupUiController extends AbstractController
         $pageView   = PageViewFactory::build("groups");
 
         $contentView = PartViewFactory::build("groups");
+
         $groups = [];
         if ( !empty($groupsObj->data->groups)) {
              $groups = $groupsObj->data->groups;
         }
+
+	$tree = new Tree();
+	$tree->AssignGroups($groups);
+
         $contentView->assign("groups", $groups);
+        $contentView->assign("tree", $tree);
+
         $content = $contentView->fetch();
 
         $pageView->assign("content", $content);

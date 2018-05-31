@@ -35,11 +35,15 @@ class GroupModel extends AbstractModel implements ModelInterface
      */
     public function getGroups(DataCollection $params) : \stdClass {
         $result = 1;
-        $groups = new GroupCollection( $this->db->from("groups")->fetchAll() );
-        if (false === $groups) {
-            $groups = [];
-            $result = 0;
-        }
+
+        $order  = $this->GetSortOrder($params, "group_name", "ASC" );
+	$fields = $this->GetQueryFields($params);
+        $limit  = $this->GetQueryLimit($params);
+        $offset = $this->GetQueryOffset($params);
+
+        $groups     = $this->db->from("groups")->orderBy($order)->select($fields)->limit($limit)->offset($offset)->fetchAll();
+        if (false === $groups) { $groups = []; $result = 0; }
+        $groups = new GroupCollection( $groups );
         return (object)[ 'result' => $result, 'data' => (object)[ 'groups' => $groups ] ];
     }
     /**
@@ -51,6 +55,14 @@ class GroupModel extends AbstractModel implements ModelInterface
      */
     public function postGroups(DataCollection $params) : \stdClass {
         $result = 0;
+        $group_name  = $params->get('group_name', '');
+        if (!empty($group_name)) {
+            $fields = [ "group_name" => $group_name ];
+            $record = $this->db->insertInto('groups')->values($fields)->execute();
+            if (false !== $record) {
+                $result = 1;
+            }
+        }
         return (object)[ 'result' => $result, 'data' => (object)[] ];
     }
     /**
@@ -117,6 +129,13 @@ class GroupModel extends AbstractModel implements ModelInterface
      */
     public function deleteGroup(DataCollection $params) : \stdClass {
         $result = 0;
+        $group_id   = $params->get('group_id', 0);
+        if (!empty($group_id)) {
+            $record = $this->db->deleteFrom('groups')->where('group_id', $group_id)->execute();
+            if (false !== $record) {
+                $result = 1;
+            }
+        }
         return (object)[ 'result' => $result, 'data' => (object)[] ];
     }
 }

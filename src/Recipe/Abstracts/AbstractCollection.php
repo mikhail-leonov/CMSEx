@@ -15,6 +15,7 @@ use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use JsonSerializable;
 
 /**
  * Abstract Data Collection
@@ -23,7 +24,7 @@ use IteratorAggregate;
  * designed to work with HTTP data (request params, session data, etc)
  *
  */
-abstract class AbstractCollection implements IteratorAggregate, ArrayAccess, Countable
+abstract class AbstractCollection implements IteratorAggregate, ArrayAccess, Countable, JsonSerializable
 {
 
     /**
@@ -311,5 +312,13 @@ abstract class AbstractCollection implements IteratorAggregate, ArrayAccess, Cou
     public function count()
     {
         return count($this->attributes);
+    }
+    /**
+     * jsonSerialize
+     *
+     * @return array  Objects to retrieve
+    */
+    public function jsonSerialize() : array {
+        return $this->all();
     }
 }

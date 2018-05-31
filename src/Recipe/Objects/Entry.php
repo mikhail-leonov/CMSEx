@@ -12,6 +12,7 @@ namespace Recipe\Objects;
 
 use \Recipe\Utils\Util;
 use \Recipe\Interfaces\ObjectInterface;
+use \Recipe\Abstracts\AbstractObject;
 
 /**
  * entry
@@ -21,8 +22,14 @@ use \Recipe\Interfaces\ObjectInterface;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class Entry implements ObjectInterface
+class Entry extends AbstractObject implements ObjectInterface
 {
+    /**
+     * Properties
+     */
+    protected $entry_id;
+    protected $entry_name;
+    protected $entry_group_id;
     /**
      * Constructor
      *
@@ -60,7 +67,7 @@ class Entry implements ObjectInterface
      * @return string node Name
      */
     public function GetName() : string {
-        return $this->entry_name;
+        return str_replace( '"', '&quot;', $this->entry_name);
     }
     /**
      * Get Node Parent Id 
@@ -93,5 +100,32 @@ class Entry implements ObjectInterface
      */
     public function GetText() : string {
         return $this->entry_text;
+    }
+
+
+
+    /**
+     * Get Entry Ui Edit URL
+     *
+     * @return string 
+     */
+    public function GetUiEditUrl() : string {
+        return "/ui/v1/entries/{$this->GetId()}/edit";
+    }
+    /**
+     * Get Entry Ui View URL
+     *
+     * @return string 
+     */
+    public function GetUiViewUrl() : string {
+        return "/ui/v1/entries/{$this->GetId()}";
+    }
+    /**
+     * Get Entry Ui Print URL
+     *
+     * @return string 
+     */
+    public function GetUiPrintUrl() : string {
+        return "/ui/v1/entries/{$this->GetId()}/print";
     }
 }

@@ -1,0 +1,34 @@
+{assign var=group value=$node->GetData()}
+<li class="list-group-item" data-text="{$group->GetName()}" data-icon="fa-home" data-href="" data-group_id="{$group->GetId()}" data-group_parent_id="{$group->GetParentId()}">
+    <div style="cursor: pointer;">
+        <span class="txt">{$group->GetId()} - {$group->GetName()} - {$group->GetParentId()}</span>
+        <div class="btn-group btn-group-sm pull-right"> 
+            <a href="#" class="btn btn-info   btn-sm btnEdit">Edit</a> 
+            <a href="#" class="btn btn-danger btn-sm btnRemove" data-entity="groups" data-group_id="{$group->GetId()}" data-group_parent_id="{$group->GetParentId()}">X</a> 
+        </div>
+    </div>
+    {if $node->childrenExists()} 
+        <ul>
+        {foreach from=$node->getChildren() item=subNode name=subTreeLoop}
+            {include file='tags_tree.html' node=$subNode}
+        {/foreach}
+        </ul>
+    {/if} 
+</li>
+
+
+
+{if $tags->count() > 0}
+	{foreach from=$tags key=tagIdx item=tag name=tagLoop}
+		<li class="list-group-item" data-text="{$tag->GetName()}" data-icon="fa-home" data-href="" data-tag_id="{$tag->GetId()}" data-tag_parent_id="{$tag->GetParentId()}">
+			<div style="cursor: pointer;">
+				<i class="fa fa-home"></i> 
+				<span class="txt">{$tag->GetId()} - {$tag->GetName()} - {$tag->GetParentId()}</span>
+				<div class="btn-group btn-group-sm pull-right"> 
+					<a href="#" class="btn btn-info   btn-sm btnEdit">Edit</a> 
+					<a href="#" class="btn btn-danger btn-sm btnRemove" data-entity="tags" data-tag_id="{$tag->GetId()}" data-tag_parent_id="{$tag->GetParentId()}">X</a> 
+				</div>
+			</div>
+		</li>
+	{/foreach}
+{/if}

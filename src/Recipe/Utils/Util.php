@@ -75,17 +75,19 @@ use Klein\DataCollection\DataCollection;
         public static function FindTag($obj, $part, &$arr)
         {
             $result = 0;
-            $where = [ "tag_name LIKE '%$part%'" ];
-            $found = $obj->db->select("*")->from("tags")->where($where)->first();
-            if (false !== $found) {
-                $arr[ $found['tag_id'] ] = $found;
-                $result = 1;
+            $founds = $obj->db->from("tags")->where("tag_name LIKE '%$part%'")->fetchAll();
+            if (is_array($founds)) {
+                foreach($founds as $k => $found) {
+                    $arr[ $found['tag_id'] ] = $found;
+                    $result = 1;
+                }  
             }
-            $where = [ "tag_text LIKE '%$part%'" ];
-            $found = $obj->db->select("*")->from("tags")->where($where)->first();
-            if (false !== $found) {
-                $arr[ $found['tag_id'] ] = $found;
-                $result = 1;
+            $founds = $obj->db->from("tags")->where("tag_text LIKE '%$part%'")->fetchAll();
+            if (is_array($founds)) {
+                foreach($founds as $k => $found) {
+                    $arr[ $found['tag_id'] ] = $found;
+                    $result = 1;
+                } 
             }
             return $result;
         }
@@ -171,10 +173,12 @@ use Klein\DataCollection\DataCollection;
                     $id = trim($id);
                     if ('' !==  $id) {
                         $where = [ "tag_id" => $id ];
-                        $found = $obj->db->select("*")->from("tags")->where($where)->first();
-                        if (false !== $found) {
-                            $arr[ $found['tag_id'] ] = $found;
-                            $result = 1;
+                        $founds = $obj->db->from("tags")->where("tag_id", $id)->fetchAll();
+                        if (is_array($founds)) {
+                            foreach($founds as $k => $found) {
+                                $arr[ $found['tag_id'] ] = $found;
+                                $result = 1;
+                            } 
                         }
                     }
                 }

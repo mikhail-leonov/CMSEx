@@ -5,13 +5,13 @@
 			<strong>{$entry->GetName()}</strong>
 		</div>
 		<div class="card-body">
-			{if count($entry_tags)> 0}
+			{if $entry_tags->count() > 0}
 			<nav aria-label="toolbutton">
 				<ul class="list-group">
   					<li class="list-group-item align-items-left">
-					{section name=tagIndex loop=$entry_tags}
-    						<span class="badge badge-light">{$entry_tags[tagIndex]['tag_name']}</span>
-		       	       		{/section}
+               	                        {foreach from=$entry_tags key=entry_tagIdx item=entry_tag name=entry_tagLoop}
+    						<span class="badge badge-light">{$entry_tag->GetName()}</span>
+   	       	                        {/foreach}
   					</li>
 				</ul>
 				<br>

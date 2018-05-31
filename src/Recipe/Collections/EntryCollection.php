@@ -20,7 +20,7 @@ use \Recipe\Objects\Entry;
  * designed to work with HTTP data (request params, session data, etc)
  *
  */
-class EntryCollection extends AbstractCollection
+class EntryCollection extends AbstractCollection implements \JsonSerializable
 {
     /**
      * Constructor

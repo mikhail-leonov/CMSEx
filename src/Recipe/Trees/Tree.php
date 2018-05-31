@@ -35,6 +35,17 @@ class Tree
 	$this->roots = [];
     }
     /**
+     * Assign Tags to tree data from plain array
+     *
+     * @var TagCollection $nodes Nodes to be added to the Tree
+     *
+     * @return void
+     */
+    function GetRoots() {
+	return $this->roots;
+    }
+
+    /**
      * Search node with id = $node_id
      *
      * @var int $node_id Search a node with given id

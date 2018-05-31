@@ -29,8 +29,8 @@
   				<ul class="pagination">
 
 					<li class="page-item"><a class="page-link" href="#" onclick="window.location.href = '{$href}';"><i class="material-icons">reply</i></a></li>
-					<li class="page-item"><a class="page-link" href="/ui/v1/entries/{$entry->GetId()}/print" target="_blank"><i class="material-icons">print</i></a></li>
-					<li class="page-item"><a class="page-link" href="/ui/v1/entries/{$entry->GetId()}/edit"><i class="material-icons">mode_edit</i></a></li>
+					<li class="page-item"><a class="page-link" href="{$entry->GetUiPrintUrl()}" target="_blank"><i class="material-icons">print</i></a></li>
+					<li class="page-item"><a class="page-link" href="{$entry->GetUiEditUrl()}"><i class="material-icons">mode_edit</i></a></li>
 					<li class="page-item"><a class="page-link" href="#" onclick="return assignTags();"><i class="material-icons">format_list_numbered</i></a></li>
 					
   				</ul>
@@ -108,7 +108,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="findTags();" >Find</button>
+        <button type="button" class="btn btn-primary" onclick="findTags({$entry->GetId()});" >Find</button>
         <button type="button" class="btn btn-primary" onclick="assingFoundTags('{$entry->GetId()}');" >Assign</button>
       </div>
     </div>

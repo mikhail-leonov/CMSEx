@@ -189,7 +189,7 @@ class EntryUIController extends AbstractController
         $entry      = $entry->data->entry;
         
         $tagModel   = ModelFactory::build("tag");
-        $entry_tags = $tagModel->getEntryTags($entry_id);
+        $entry_tags = $tagModel->getEntryTags($params);
         $entry_tags = $entry_tags->data->tags;
 
         $tags       = $tagModel->getTags($params);
@@ -239,7 +239,7 @@ class EntryUIController extends AbstractController
         $entry      = $entry->data->entry;
 
         $tagModel   = ModelFactory::build("tag");
-        $entry_tags = $tagModel->getEntryTags($entry_id);
+        $entry_tags = $tagModel->getEntryTags($params);
         $entry_tags = $entry_tags->data->tags;
 
         $tags       = $tagModel->getTags($params);
@@ -289,7 +289,7 @@ class EntryUIController extends AbstractController
         $entry      = $entry->data->entry;
 
         $tagModel = ModelFactory::build("tag");
-        $entry_tags = $tagModel->getEntryTags($entry_id);
+        $entry_tags = $tagModel->getEntryTags($params);
         $entry_tags = $entry_tags->data->tags;
 
         $pageView     = PageViewFactory::build("entry.print");

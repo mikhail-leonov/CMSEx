@@ -1,0 +1,36 @@
+<br><br>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Edit Group</h5>
+    </div>
+    <div class="card-body">
+        <form id="frmEdit" class="form-horizontal">
+            <input type="hidden" name="mnu_icon" id="mnu_icon">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <div class="input-group">
+                        <input type="text" class="edit-id form-control" id="group_id" name="group_id" placeholder="group_id">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <div class="input-group">
+                        <input type="text" class="edit-name form-control" id="group_name" name="group_name" placeholder="group_name">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <div class="input-group">
+                        <input type="text" class="edit-parent_id form-control" id="group_parent_id" name="group_parent_id" placeholder="group_parent_id">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card-footer">
+        <button type="button" id="btnUpdate" class="btn btn-primary" disabled><i class="fa fa-refresh"></i> Update</button>
+        <button type="button" id="btnAdd" class="btn btn-success" data-entity="groups"><i class="fa fa-plus"></i> Add</button>
+    </div>
+</div>

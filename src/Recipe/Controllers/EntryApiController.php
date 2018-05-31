@@ -18,6 +18,7 @@ use \Recipe\Factories\PartViewFactory;
 use \Recipe\Factories\ModelFactory;
 use \Recipe\Models;
 use \Recipe\Views;
+use \Recipe\Utils\Util;
 
 /**
  * Class Entry Api Controller
@@ -45,7 +46,7 @@ class EntryApiController extends AbstractApiController
      */
     public function setControllerName()
     {
-        $this->name = "entryapi";
+        $this->name = "entry";
     }
 
     /**
@@ -56,7 +57,7 @@ class EntryApiController extends AbstractApiController
      */
     public function getEntries(Request $request) : string {
         $params = $this->MergedRequestParams($request, $request->paramsGet());
-        return $this->actionEntity($params, "entry", __FUNCTION__);
+        return $this->actionEntity($params, $this->name, __FUNCTION__);
     }
     /**
      * postEntries - Create a new Entries
@@ -66,7 +67,7 @@ class EntryApiController extends AbstractApiController
      */
     public function postEntries(Request $request) : string {
         $params = $this->MergedRequestParams($request, $request->paramsPost());
-        return $this->actionEntity($params, "entry", __FUNCTION__);
+        return $this->actionEntity($params, $this->name, __FUNCTION__);
     }
     /**
      * putEntries - Bulk update of Entries
@@ -76,7 +77,7 @@ class EntryApiController extends AbstractApiController
      */
     public function putEntries(Request $request) : string {
         $params = $this->MergedRequestParams($request, Util::paramsPut());
-        return $this->actionEntity($params, "entry", __FUNCTION__);
+        return $this->actionEntity($params, $this->name, __FUNCTION__);
     }
     /**
      * deleteEntries - Delete all Entries
@@ -86,7 +87,7 @@ class EntryApiController extends AbstractApiController
      */
     public function deleteEntries(Request $request) : string {
         $params = $this->MergedRequestParams($request, Util::paramsDelete());
-        return $this->actionEntity($params, "entry", __FUNCTION__);
+        return $this->actionEntity($params, $this->name, __FUNCTION__);
     }
     /**
      * getEntry - Return a specified Entries
@@ -96,7 +97,7 @@ class EntryApiController extends AbstractApiController
      */
     public function getEntry(Request $request) : string {
         $params = $this->MergedRequestParams($request, $request->paramsGet());
-        return $this->actionEntity($params, "entry", __FUNCTION__);
+        return $this->actionEntity($params, $this->name, __FUNCTION__);
     }
     /**
      * postEntry - Not allowed
@@ -106,7 +107,7 @@ class EntryApiController extends AbstractApiController
      */
     public function postEntry(Request $request) : string {
         $params = $this->MergedRequestParams($request, $request->paramsPost());
-        return $this->actionEntity($params, "entry", __FUNCTION__);
+        return $this->actionEntity($params, $this->name, __FUNCTION__);
     }
     /**
      * putEntry - Update a specified Entries
@@ -116,7 +117,7 @@ class EntryApiController extends AbstractApiController
      */
     public function putEntry(Request $request) : string {
         $params = $this->MergedRequestParams($request, Util::paramsPut());
-        return $this->actionEntity($params, "entry", __FUNCTION__);
+        return $this->actionEntity($params, $this->name, __FUNCTION__);
     }
     /**
      * deleteEntry - Delete a specified Entries
@@ -126,6 +127,6 @@ class EntryApiController extends AbstractApiController
      */
     public function deleteEntry(Request $request) : string {
         $params = $this->MergedRequestParams($request, Util::paramsDelete());
-        return $this->actionEntity($params, "entry", __FUNCTION__);
+        return $this->actionEntity($params, $this->name, __FUNCTION__);
     }
 }

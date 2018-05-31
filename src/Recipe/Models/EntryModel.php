@@ -36,7 +36,13 @@ class EntryModel extends AbstractModel implements ModelInterface
      */
     public function getEntries(DataCollection $params) : \stdClass {
         $result = 1;
-	$entries = $this->db->from("entries")->fetchAll();
+        
+        $order  = $this->GetSortOrder($params, "entry_name", "ASC" );
+	$fields = $this->GetQueryFields($params);
+        $limit  = $this->GetQueryLimit($params);
+        $offset = $this->GetQueryOffset($params);
+
+	$entries = $this->db->from("entries")->orderBy($order)->select($fields)->limit($limit)->offset($offset)->fetchAll();
         if (false === $entries) {
             $entries = [];
             $result = 0;
@@ -56,15 +62,21 @@ class EntryModel extends AbstractModel implements ModelInterface
 
         $entry_name = $params->get('entry_name', '');
         $entry_text = $params->get('entry_text', '');
-
+        $entry_id = '';
         if (!empty($entry_name) && !empty($entry_text)) {
             $fields = [ "entry_name" => $entry_name, "entry_text" => $entry_text ];
             $record = $this->db->insertInto('entries')->values($fields)->execute();
             if (false !== $record) {
                 $result = 1;
+                $entries = $this->db->from("entries")->where('entry_name', $entry_name)->fetchAll();
+                if (false !== $entries) {
+                    foreach($entries as $k => $entry) {
+                        $entry_id = $entry['entry_id'];
+                    }
+                }
             }
         }
-        return (object)[ 'result' => $result, 'data' => (object)[] ];
+        return (object)[ 'result' => $result, 'data' => (object)[ 'entry_id' => $entry_id ] ];
     }
     /**
      * putEntries - Bulk update of Entries
@@ -138,12 +150,12 @@ class EntryModel extends AbstractModel implements ModelInterface
      */
     public function putEntry(DataCollection $params) : \stdClass {
         $result = 0;
-        $entry_id = $params->get('entry_id', '');
-        $entry_name = $params->get('entry_name', '');
-        $entry_text = $params->get('entry_text', '');
+        $entry_id   = $params->get('entry_id', '');
+        $entry_name = $params->get('entry_name', ''); $entry_name = str_replace( '"', '&quot;', $entry_name);
+        $entry_text = $params->get('entry_text', ''); $entry_text = str_replace( '"', '&quot;', $entry_text);
         if (!empty($entry_id) && !empty($entry_name) && !empty($entry_text)) {
             $fields = [ "entry_name" => $entry_name, "entry_text" => $entry_text ];
-            $update = $this->db->update('entries')->set($fields)->where("entry_id", $entry_id);
+            $update = $this->db->update('entries')->set($fields)->where("entry_id", $entry_id)->execute();
             if (false !== $update) {
                 $result = 1;
             }
@@ -172,6 +184,12 @@ class EntryModel extends AbstractModel implements ModelInterface
     public function GetSelectedEntries(DataCollection $params) : \stdClass {
         $result = 0; 
         $entries = [];
+
+        $order  = $this->GetSortOrder($params, "entry_name", "ASC" );
+	$fields = $this->GetQueryFields($params);
+        $limit  = $this->GetQueryLimit($params);
+        $offset = $this->GetQueryOffset($params);
+
         $selectedTags = Util::GetAlreadySelected("tag");
         if (count($selectedTags) > 0) {
 
@@ -192,7 +210,7 @@ class EntryModel extends AbstractModel implements ModelInterface
             }
             if (count($found) > 0 ) {
                 $selectedIds = implode(",", $found);
-                $entries = $this->db->from("entries")->where("entry_id in ($selectedIds)")->fetchAll();
+                $entries = $this->db->from("entries")->where("entry_id in ($selectedIds)")->orderBy($order)->select($fields)->limit($limit)->offset($offset)->fetchAll();
                 $result = 1; 
             }
         }
@@ -212,10 +230,16 @@ class EntryModel extends AbstractModel implements ModelInterface
      */
     public function GetFoundEntries(DataCollection $params)  : \stdClass {
         $result = 0;  
+        
+        $order  = $this->GetSortOrder($params, "entry_name", "ASC" );
+	$fields = $this->GetQueryFields($params);
+        $limit  = $this->GetQueryLimit($params);
+        $offset = $this->GetQueryOffset($params);
+
         $entries = [];
         $q = $params->get('q', '');
         if (!empty($q)) {
-            $entries = $this->db->from("entries")->where("entry_name LIKE '%{$q}%' OR entry_text LIKE '%{$q}%'")->fetchAll();
+            $entries = $this->db->from("entries")->where("entry_name LIKE '%{$q}%' OR entry_text LIKE '%{$q}%'")->orderBy($order)->select($fields)->limit($limit)->offset($offset)->fetchAll();
             $result = 1;  
             if (false === $entries) {
                 $entries = [];
@@ -228,5 +252,4 @@ class EntryModel extends AbstractModel implements ModelInterface
         $entries = new EntryCollection( $entries );
         return (object)[ 'result' => $result, 'data' => (object)[ 'entries' => $entries ] ];
     }
-
 }

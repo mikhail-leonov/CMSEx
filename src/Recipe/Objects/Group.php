@@ -12,6 +12,7 @@ namespace Recipe\Objects;
 
 use \Recipe\Utils\Util;
 use \Recipe\Interfaces\ObjectInterface;
+use \Recipe\Abstracts\AbstractObject;
 
 
 /**
@@ -22,8 +23,15 @@ use \Recipe\Interfaces\ObjectInterface;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class Group implements ObjectInterface
+class Group extends AbstractObject implements ObjectInterface
 {
+    /**
+     * Properties
+     */
+    protected $group_id;
+    protected $group_name;
+    protected $group_parent_id;
+    
     /**
      * Constructor
      *
@@ -60,7 +68,7 @@ class Group implements ObjectInterface
      * @return string node Name
      */
     public function GetName() : string {
-        return $this->group_name;
+        return str_replace( '"', '&quot;', $this->group_name);
     }
     /**
      * Get Node Parent Id 

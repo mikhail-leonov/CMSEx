@@ -18,6 +18,7 @@ use \Recipe\Factories\PartViewFactory;
 use \Recipe\Abstracts\AbstractController;
 use \Recipe\Models;
 use \Recipe\Utils\Util;
+use \Recipe\Trees\Tree;
 
 /**
  * Class Tag Controller
@@ -58,6 +59,13 @@ class TagUiController extends AbstractController
     public function getTags(Request $request) : string {
         $params = $this->MergedRequestParams($request, $request->paramsGet());
     
+        $groupModel = ModelFactory::build("group");
+        $groupsObj  = $groupModel->getGroups($params);
+        $groups = [];
+        if ( !empty($groupsObj->data->groups)) {
+             $groups = $groupsObj->data->groups;
+        }
+
         $tagModel = ModelFactory::build("tag");
         $tagsObj  = $tagModel->getTags($params);
 
@@ -72,7 +80,13 @@ class TagUiController extends AbstractController
         $tags       = $tagModel->getTags($params);
         $tags       = $tags->data->tags;
 
+	$tree = new Tree();
+	$tree->AssignGroups($groups);
+	$tree->AssignTags($tags);
+
         $contentView->assign("tags", $tags);
+        $contentView->assign("tree", $tree);
+
         $content = $contentView->fetch();
 
         $pageView->assign("content", $content);

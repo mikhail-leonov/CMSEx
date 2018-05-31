@@ -20,7 +20,7 @@ use \Recipe\Objects\Tag;
  * designed to work with HTTP data (request params, session data, etc)
  *
  */
-class TagCollection extends AbstractCollection
+class TagCollection extends AbstractCollection implements \JsonSerializable
 {
     /**
      * Constructor

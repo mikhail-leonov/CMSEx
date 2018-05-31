@@ -43,7 +43,7 @@ class GroupApiController extends AbstractApiController
      */
     public function setControllerName()
     {
-        $this->name = "groupapi";
+        $this->name = "group";
     }
 
     /**
@@ -54,7 +54,7 @@ class GroupApiController extends AbstractApiController
      */
     public function getGroups(Request $request) : string {
         $params = $this->MergedRequestParams($request, $request->paramsGet());
-        return $this->actionEntity($params, "group", __FUNCTION__);
+        return $this->actionEntity($params, $this->name, __FUNCTION__);
     }
     /**
      * postGroups - Create a new groups
@@ -64,7 +64,7 @@ class GroupApiController extends AbstractApiController
      */
     public function postGroups(Request $request) : string {
         $params = $this->MergedRequestParams($request, $request->paramsPost());
-        return $this->actionEntity($params, "group", __FUNCTION__);
+        return $this->actionEntity($params, $this->name, __FUNCTION__);
     }
     /**
      * putGroups - Bulk update of groups
@@ -74,7 +74,7 @@ class GroupApiController extends AbstractApiController
      */
     public function putGroups(Request $request) : string {
         $params = $this->MergedRequestParams($request, Util::paramsPut());
-        return $this->actionEntity($params, "group", __FUNCTION__);
+        return $this->actionEntity($params, $this->name, __FUNCTION__);
     }
     /**
      * deleteGroups - Delete all groups
@@ -84,7 +84,7 @@ class GroupApiController extends AbstractApiController
      */
     public function deleteGroups(Request $request) : string {
         $params = $this->MergedRequestParams($request, Util::paramsDelete());
-        return $this->actionEntity($params, "group", __FUNCTION__);
+        return $this->actionEntity($params, $this->name, __FUNCTION__);
     }
     /**
      * getGroup - Return a specified groups
@@ -94,7 +94,7 @@ class GroupApiController extends AbstractApiController
      */
     public function getGroup(Request $request) : string {
         $params = $this->MergedRequestParams($request, $request->paramsGet());
-        return $this->actionEntity($params, "group", __FUNCTION__);
+        return $this->actionEntity($params, $this->name, __FUNCTION__);
     }
     /**
      * postGroup - Not allowed
@@ -104,7 +104,7 @@ class GroupApiController extends AbstractApiController
      */
     public function postGroup(Request $request) : string {
         $params = $this->MergedRequestParams($request, $request->paramsPost());
-        return $this->actionEntity($params, "group", __FUNCTION__);
+        return $this->actionEntity($params, $this->name, __FUNCTION__);
     }
     /**
      * putGroup - Update a specified groups
@@ -114,7 +114,7 @@ class GroupApiController extends AbstractApiController
      */
     public function putGroup(Request $request) : string {
         $params = $this->MergedRequestParams($request, Util::paramsPut());
-        return $this->actionEntity($params, "group", __FUNCTION__);
+        return $this->actionEntity($params, $this->name, __FUNCTION__);
     }
     /**
      * deleteGroup - Delete a specified groups
@@ -124,6 +124,6 @@ class GroupApiController extends AbstractApiController
      */
     public function deleteGroup(Request $request) : string {
         $params = $this->MergedRequestParams($request, Util::paramsDelete());
-        return $this->actionEntity($params, "group", __FUNCTION__);
+        return $this->actionEntity($params, $this->name, __FUNCTION__);
     }
 }

@@ -65,4 +65,20 @@ class TreeNode
         $id = $obj->GetPrefix() . $obj->GetId();
 	$this->children[ $id ] = $node;
     }
+    /**
+     * Exists Children nodes
+     *
+     * @return bool
+     */
+    public function childrenExists() {
+	return (count($this->children) > 0);
+    }
+    /**
+     * Get All Children nodes
+     *
+     * @return array
+     */
+    public function getChildren() {
+	return $this->children;
+    }
 }

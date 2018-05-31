@@ -20,7 +20,7 @@ use \Recipe\Objects\Group;
  * designed to work with HTTP data (request params, session data, etc)
  *
  */
-class GroupCollection extends AbstractCollection
+class GroupCollection extends AbstractCollection implements \JsonSerializable
 {
     /**
      * Constructor

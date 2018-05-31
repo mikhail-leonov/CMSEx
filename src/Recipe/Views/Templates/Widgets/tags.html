@@ -1,31 +1,16 @@
-<div class="card panel">
-    <div class="card-title clearfix">
-        <h5 class="pull-left">tags tree</h5>
-        <div class="pull-right">
-            <button id="btnOut" type="button" class="btn btn-success"> <i class="glyphicon glyphicon-ok"></i> Save</button>
-        </div>
+<br><br>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Tags tree</h5>
     </div>
     <div class="card-body" id="cont">
-        <ul id="tags_tree" class="sortableLists list-tag">
-		{if $tags->count() > 0}
-                	{foreach from=$tags key=tagIdx item=tag name=tagLoop}
-				<li class="list-tag-item" data-text="{$tag->GetName()}" data-icon="fa-home" data-href="" data-tag_id="{$tag->GetId()}" data-tag_parent_id="{$tag->GetParentId()}">
-					<div>
-						<i class="fa fa-home"></i> 
-						<span class="txt">{$tag->GetId()} - {$tag->GetName()} - {$tag->GetParentId()}</span>
-						<div class="btn-tag pull-right"> 
-							<a href="#" class="btn btn-default btn-xs btnEdit">Edit</a> 
-							<a href="#" class="btn btn-danger btn-xs btnRemove">X</a> 
-						</div>
-					</div>
-					<!-- sub items 
-					<ul>
-						
-					</ul>
-					-->
-				</li>
-                	{/foreach}
-		{/if}
+        <ul id="tags_tree" class="sortableLists list-group">
+            {foreach from=$tree->GetRoots() key=treeIdx item=node name=treeLoop}
+                {include file='tags_tree.html' node=$node}
+            {/foreach}
         </ul>
+    </div>
+    <div class="card-footer">
+        <button id="btnOut" type="button" class="btn btn-success"> <i class="glyphicon glyphicon-ok"></i> Save</button>
     </div>
 </div>

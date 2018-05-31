@@ -12,6 +12,7 @@ namespace Recipe\Objects;
 
 use \Recipe\Utils\Util;
 use \Recipe\Interfaces\ObjectInterface;
+use \Recipe\Abstracts\AbstractObject;
 
 /**
  * Tag
@@ -21,8 +22,15 @@ use \Recipe\Interfaces\ObjectInterface;
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class Tag implements ObjectInterface
+class Tag extends AbstractObject implements ObjectInterface
 {
+    /**
+     * Properties
+     */
+    protected $tag_id;
+    protected $tag_name;
+    protected $tag_group_id;
+
     /**
      * Constructor
      *
@@ -59,7 +67,7 @@ class Tag implements ObjectInterface
      * @return string node Name
      */
     public function GetName() : string {
-        return $this->tag_name;
+        return str_replace( '"', '&quot;', $this->tag_name);
     }
     /**
      * Get Node Parent Id 

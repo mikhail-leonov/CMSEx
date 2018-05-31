@@ -9,20 +9,20 @@
   				<ul class="pagination">
 
 					<li class="page-item"><a class="page-link" href="#" onclick="window.location.href = '{$href}';"><i class="material-icons">reply</i></a></li>
-					<li class="page-item"><a class="page-link" href="/ui/v1/entries/{$entry->GetId()}/print" target="_blank"><i class="material-icons">print</i></a></li>
+					<li class="page-item"><a class="page-link" href="{$entry->GetUiPrintUrl()}" target="_blank"><i class="material-icons">print</i></a></li>
 					<li class="page-item"><a class="page-link" href="#" onclick="return saveEntry('{$entry->GetId()}'); "><i class="material-icons">save</i></a></li>
-					<li class="page-item"><a class="page-link" href="/ui/v1/entries/{$entry->GetId()}"><i class="material-icons">dashboard</i></a></li>
+					<li class="page-item"><a class="page-link" href="{$entry->GetUiViewUrl()}"><i class="material-icons">dashboard</i></a></li>
 
   				</ul>
 			</nav>
 			
 			<form id="edit_entry_form">
 				<div class="form-group">
-    					<input type="text" class="form-control" id="entry_name" placeholder="Entry title" value="{$entry->GetName()}"></input>
+                                        <textarea placeholder="Entry title" name="entry_name" id="entry_name" class="form-control" rows="1" cols="213">{$entry->GetName()}</textarea>   
     					<input type="hidden" id="entry_id" value="{$entry->GetId()}"></input>
 				</div>
   				<div class="form-group">
-					<textarea name="entry_text" id="entry_text" class="form-control" rows="20" cols="213">{$entry->GetText()}</textarea>
+					<textarea placeholder="Entry text"  name="entry_text" id="entry_text" class="form-control" rows="20" cols="213">{$entry->GetText()}</textarea>
   				</div>
 
 

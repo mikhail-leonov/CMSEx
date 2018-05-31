@@ -1,31 +1,16 @@
-<div class="card panel">
-    <div class="card-title clearfix">
-        <h5 class="pull-left">Groups tree</h5>
-        <div class="pull-right">
-            <button id="btnOut" type="button" class="btn btn-success"> <i class="glyphicon glyphicon-ok"></i> Save</button>
-        </div>
+<br><br>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Groups tree</h5>
     </div>
     <div class="card-body" id="cont">
         <ul id="groups_tree" class="sortableLists list-group">
-		{if $groups->count() > 0}
-                	{foreach from=$groups key=groupIdx item=group name=groupLoop}
-				<li class="list-group-item" data-text="{$group->GetName()}" data-icon="fa-home" data-href="" data-group_id="{$group->GetId()}" data-group_parent_id="{$group->GetParentId()}">
-					<div>
-						<i class="fa fa-home"></i> 
-						<span class="txt">{$group->GetId()} - {$group->GetName()} - {$group->GetParentId()}</span>
-						<div class="btn-group pull-right"> 
-							<a href="#" class="btn btn-default btn-xs btnEdit">Edit</a> 
-							<a href="#" class="btn btn-danger btn-xs btnRemove">X</a> 
-						</div>
-					</div>
-					<!-- sub items 
-					<ul>
-						
-					</ul>
-					-->
-				</li>
-                	{/foreach}
-		{/if}
+            {foreach from=$tree->GetRoots() key=treeIdx item=node name=treeLoop}
+                {include file='groups_tree.html' node=$node}
+            {/foreach}
         </ul>
+    </div>
+    <div class="card-footer">
+        <button id="btnOut" type="button" class="btn btn-success"> <i class="glyphicon glyphicon-ok"></i> Save</button>
     </div>
 </div>
